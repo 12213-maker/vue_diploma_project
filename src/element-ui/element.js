@@ -29,7 +29,8 @@ import {
     Slider,
     Progress,
     Drawer,
-    Backtop
+    Backtop,
+    MessageBox
 }
     from 'element-ui'
 
@@ -67,3 +68,4 @@ Vue.use(Backtop)
 
 
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm
