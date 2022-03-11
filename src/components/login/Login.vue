@@ -91,18 +91,6 @@ export default {
   methods: {
     /* 将登录成功之后的token,保存到客户端的sessionstorage中*/
     login() {
-    //   const confirRustle = await this.$confirm("是否登录?", "登录选项", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning",
-    //   }).catch((err) => err);
-    //   // console.log(confirRustle);
-    //   if (confirRustle === "cancel") return;
-    //   else {
-    //     this.$router.push("/home");
-    //     this.$message.success("登录成功");
-    //     this.$store.commit("changeLogin");
-    //   }
 
     //进行表单验证
     this.$refs.loginFormRef.validate(async (valid) => {
@@ -111,10 +99,11 @@ export default {
         if (!valid) return;
         //验证成功了之后再发送请求,这里还没有接口暂时不写
 
-
+        
         this.$router.push('/home')
         this.$message.success("登录成功");
-        this.$store.commit("changeLogin");
+        this.$store.commit("changeLogin",true);
+        window.sessionStorage.setItem('login',true)
       });
 
     },
@@ -122,9 +111,6 @@ export default {
     resetLoginForm(){
         this.loginForm = {}
     }
-  },
-  created() {
-    this.isLogin = this.$store.state.isLogin;
   },
 };
 </script>

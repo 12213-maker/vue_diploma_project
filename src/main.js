@@ -10,6 +10,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import '../src/assets/css/global.css'
 
 
+//echarts
+// import '../src/assets/echarts.min'
+
 
 //还要引入iconfont
 
