@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -29,9 +28,24 @@ const routes = [
         path:'/user',
         component:()=>import('../views/User_Center/User')
       },
+      /*管理员页面*/
       {
         path:'/administartor',
-        component:()=>import('../views/User_Center/Administrator')
+        component:()=>import('../views/User_Center/Administrator'),
+        children:[
+          {
+            path:'',
+            component:()=>import('../views/User_Center/MyHome'),
+          },
+          {
+            path:'/administartor/unfinished',
+            component:()=>('../views/User_Center/Unfinished'),
+          },
+          {
+            path:'/administartor/finished',
+            component:()=>import('../views/User_Center/Finished')
+          }
+        ]
       },
       /* 企业排污 */
       {

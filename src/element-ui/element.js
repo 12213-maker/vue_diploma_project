@@ -5,6 +5,7 @@ import {
     Header,
     Aside,
     Main,
+    Card,
     Footer,
     Row,
     Input,
@@ -63,6 +64,7 @@ Vue.use(Slider)
 Vue.use(Progress)
 Vue.use(Drawer)
 Vue.use(Backtop)
+Vue.use(Card)
 
 
 

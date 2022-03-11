@@ -95,12 +95,14 @@ export default {
 }
 
 .el-aside {
+  width: 200px;
   background-color: white;
   color: #333;
   text-align: left;
   line-height: 200px;
   overflow: hidden;
   height: calc(100vh-60px);
+  min-width: 200px;
 }
 
 .el-main {
@@ -126,6 +128,5 @@ body > .el-container {
   width: 200px;
   min-height: 400px;
 }
-.all{
-}
+
 </style>
