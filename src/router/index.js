@@ -7,10 +7,10 @@ Vue.use(VueRouter)
 const routes = [
   
     /* 重定向 这里重定向要定到login , 但是我们先定到home */
-    {path:'/',redirect:'/home'},
+    {path:'/',redirect:'/login'},
     /* 登录 */
     {
-      path:'/login',component:()=>import('../views/Login')
+      path:'/login',component:()=>import('../components/login/Login')
     },
     /* home以及子组件 */
     {

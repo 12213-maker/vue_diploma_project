@@ -8,7 +8,7 @@
     <!-- 页面主体区域 -->
     <el-container class="all">
       <!-- 侧边栏 (可以做一个折叠的效果)-->
-      <el-aside width="13.5vw">
+      <el-aside width="13vw">
         <el-row class="tac">
           <el-col :span="12">
             <el-menu
@@ -91,7 +91,7 @@ export default {
   background-color: #b3c0d1;
   color: #333;
   text-align: center;
-  line-height: 60px;
+  line-height: 9vh;
 }
 
 .el-aside {
@@ -101,6 +101,7 @@ export default {
   line-height: 200px;
   overflow: hidden;
   height: calc(100vh-60px);
+  min-height: 41px;
 }
 
 .el-main {
