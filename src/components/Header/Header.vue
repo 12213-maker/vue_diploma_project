@@ -14,20 +14,6 @@
       <el-button v-else type="danger" @click="handle_quit">退出</el-button>
     </div>
 
-    <!-- 退出确认弹框 -->
-    <!-- <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
-      <span>是否确认退出?</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleClose"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog> -->
   </div>
 </template>
 
@@ -43,6 +29,7 @@ export default {
   methods: {
     handle_login(){
       /* 点击登录跳转到登录页面 */
+      if(this.$route.path=='/login')return 
       this.$router.push('/login')
     },
     /* 点击退出 */
@@ -60,8 +47,10 @@ export default {
         }
       ).catch(err=>err)
       if(res === 'confirm'){
-        this.$store.commit("changeLogin");
+        this.$store.commit("changeLogin",false);
+        this.isLogin = this.$store.state.isLogin
         this.$message.success('退出成功')
+        window.sessionStorage.setItem('login',false)
         this.$router.push('/login')
       }else{
         this.$message.info('已取消')
@@ -71,8 +60,16 @@ export default {
     },
   },
   created() {
-    this.isLogin = this.$store.state.isLogin;
+    console.log(this.$store.state.isLogin);
+    this.isLogin = this.$store.state.isLogin
+    
   },
+  // watch:{
+  //   isLogin(){
+  //     this.isLogin = window.sessionStorage.getItem('login')
+  //     console.log(this.isLogin);
+  //   }
+  // }
 };
 </script>
 
