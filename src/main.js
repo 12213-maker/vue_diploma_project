@@ -11,7 +11,8 @@ import '../src/assets/css/global.css'
 
 
 //echarts
-// import '../src/assets/echarts.min'
+import * as echarts from "echarts"
+Vue.prototype.$echarts = echarts 
 
 
 //还要引入iconfont

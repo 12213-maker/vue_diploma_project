@@ -37,10 +37,10 @@ const routes = [
       {
         path:'/home/data',
         component:()=>import('../views/Enterprise_sewage/Data'),
-        redirect:'/home/data/test1',
+        redirect:'/home/data/echarts',
         children:[
-          {path:'/home/data/test1',component:()=>import('../components/Tested/Test1')},
-          {path:'/home/data/test2',component:()=>import('../components/Tested/Test2')}
+          {path:'/home/data/echarts',component:()=>import('../components/data-show/Echarts')},
+          {path:'/home/data/test2',component:()=>import('../components/data-show/Test2')}
         ]
       },
       {

@@ -113,12 +113,14 @@ export default {
   min-height: 41px;
 }
 
+
 .el-main {
   background-color: #e9eef3;
   color: #333;
   text-align: center;
   line-height: 160px;
   padding: 0;
+  overflow: hidden;
 }
 
 body > .el-container {
@@ -137,6 +139,5 @@ body > .el-container {
   width: 200px;
   min-height: 400px;
 }
-.all{
-}
+
 </style>

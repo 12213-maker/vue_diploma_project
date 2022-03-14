@@ -30,7 +30,11 @@ import {
     Progress,
     Drawer,
     Backtop,
-    MessageBox
+    MessageBox,
+    Select,
+    Option,
+    Descriptions,
+    DescriptionsItem
 }
     from 'element-ui'
 
@@ -64,6 +68,10 @@ Vue.use(Slider)
 Vue.use(Progress)
 Vue.use(Drawer)
 Vue.use(Backtop)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Descriptions)
+Vue.use(DescriptionsItem)
 
 
 
