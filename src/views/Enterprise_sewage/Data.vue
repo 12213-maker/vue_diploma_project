@@ -1,7 +1,6 @@
 <template>
   <div>
     <NavBar :list="list"/>
-      我是企业排污数据
       <router-view></router-view>
   </div>
 </template>
@@ -14,8 +13,8 @@ export default {
     data() {
       return {
         list:[
-            {index:0,path:'/test1',name:'测试一',parent:'/home/data'},
-            {index:1,path:'/test2',name:'测试二',parent:'/home/data'}
+            {index:0,path:'/echarts',name:'企业排污',parent:'/home/data'},
+            {index:1,path:'/test2',name:'企业信息',parent:'/home/data'}
         ]
       }
     },

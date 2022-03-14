@@ -60,7 +60,7 @@ export default {
     },
   },
   created() {
-    console.log(this.$store.state.isLogin);
+    // console.log(this.$store.state.isLogin);
     this.isLogin = this.$store.state.isLogin
     
   },
@@ -76,7 +76,7 @@ export default {
 <style scoped>
 .all {
   /* background-color: aquamarine; */
-  background-color: #b3c0d1;
+  /* background-color: #b3c0d1; */
   width: 100%;
   height: 9vh;
   position: relative;
@@ -84,7 +84,7 @@ export default {
   flex-direction: row; */
 }
 .left {
-  background-color: #b3c0d1;
+  /* background-color: #b3c0d1; */
   position: absolute;
   left: 0;
   height: 9vh;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="all">
       我是企业排污收藏
   </div>
 </template>
@@ -10,6 +10,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.all{
+  background-color: aqua;
+}
 </style>
