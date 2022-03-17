@@ -27,6 +27,8 @@
         企业名
       </template>
       酷诺有限公司
+      <i v-if="!iscollect" @click="handletap(1)" class=" i1 el-icon-star-off"></i>
+      <i v-else @click="handletap(0)" class=" i1 el-icon-star-on"></i>
     </el-descriptions-item>
     <el-descriptions-item>
       <template slot="label">
@@ -356,6 +358,10 @@ display: -webkit-box;
   background-color: white;
   line-height: 0;
   width: 100%;
+}
+.i1{
+  font-size: 24px;
+  /* background-color: pink; */
 }
 </style>
 <style>
