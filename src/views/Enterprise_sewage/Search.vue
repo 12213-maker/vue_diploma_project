@@ -1,32 +1,27 @@
 <template>
   <div class="all">
     <div class="btns">
-      <el-select v-model="value" placeholder="地区">
-        <el-option
-          v-for="item in cities"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-          <span style="float: left">{{ item.label }}</span>
-          <span style="float: right; color: #8492a6; font-size: 13px">{{
-            item.value
-          }}</span>
-        </el-option>
-      </el-select>
-      <el-select v-model="value" placeholder="城市">
-        <el-option
-          v-for="item in cities"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-          <span style="float: left">{{ item.label }}</span>
-          <span style="float: right; color: #8492a6; font-size: 13px">{{
-            item.value
-          }}</span>
-        </el-option>
-      </el-select>
+
+      <!-- <div data-toggle="distpicker">
+        <select data-province="浙江省"></select>
+        <select data-city="杭州市"></select>
+        <select data-district="西湖区"></select>
+      </div> -->
+
+    <a-form-item 
+    label="所属辖区" 
+    :label-col="{ span: 4 }" 
+    :wrapper-col="{ span: 16 }">
+	<v-distpicker 
+	:province="city.sheng"
+	:city="city.shi" 
+	:area="city.xian"
+	 @selected="selected"
+   @province="onChangeProvince"
+   @city="onChangeCity"
+   @area="onChangeArea"
+	 ></v-distpicker>
+</a-form-item>
 
       <el-input
         placeholder="公司名称"
@@ -35,49 +30,66 @@
         clearable
         @clear="recovertabledata"
       ></el-input>
-      <el-button type="success" plain @click="handlesearch">查找</el-button>
+      <el-button type="success" plain  @click="handlesearch">查找</el-button>
+      <el-button type="success" plain @click="recovertabledata" >返回全部数据</el-button>
     </div>
 
     <el-table
-    :header-cell-style="{background:'#F3F4F7',color:'#555',fontSize:'17px'}"
-      :data="tableData.slice((this.currentPage-1)*this.pageSize,currentPage*pageSize)"
+      :header-cell-style="{
+        background: '#F3F4F7',
+        color: '#555',
+        fontSize: '17px',
+      }"
+      :data="
+        tableData.slice(
+          (this.currentPage - 1) * this.pageSize,
+          currentPage * pageSize
+        )
+      "
       border
       max-height="550"
       ref="table"
-      style="width: 100%;overflow-y: auto;"
+      style="width: 100%; overflow-y: auto"
     >
-      <el-table-column type="index" align="center" label="序号" width="100"> </el-table-column>
+      <el-table-column type="index" align="center" label="序号" width="100">
+      </el-table-column>
 
-      <el-table-column prop="name" label="姓名" width="120" align="center"> </el-table-column>
-      <el-table-column prop="date" label="日期" width="150" align="center"> </el-table-column>
+      <el-table-column prop="name" label="姓名" width="120" align="center">
+      </el-table-column>
+      <el-table-column prop="date" label="日期" width="150" align="center">
+      </el-table-column>
       <el-table-column prop="province" label="省份" width="120" align="center">
       </el-table-column>
-      <el-table-column prop="city" label="市区" width="120" align="center"> </el-table-column>
+      <el-table-column prop="city" label="市区" width="120" align="center">
+      </el-table-column>
       <el-table-column prop="address" label="地址" width="300" align="center">
-      </el-table-column> 
-      <el-table-column prop="zip" label="邮编" width="135" align="center">  </el-table-column>
+      </el-table-column>
+      <el-table-column prop="zip" label="邮编" width="135" align="center">
+      </el-table-column>
       <el-table-column class="showmore" label="操作" width="150" align="center">
         <span class="showmoremore" @click="routerpush">查看更多</span>
       </el-table-column>
     </el-table>
 
-    <el-pagination 
-    background 
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
-    :current-page="currentPage"
-    :page-sizes="[ 10, 15, 20]"
-    :page-size="pageSize"
-    layout="total, sizes, prev, pager, next, jumper"
-    :total="tableData.length"
+    <el-pagination
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10, 15, 20]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="tableData.length"
     >
     </el-pagination>
   </div>
 </template>
 
 <script>
+import VDistpicker from 'v-distpicker'
 export default {
   name: "Search",
+  components: { VDistpicker },
   mounted() {
     this.$nextTick(() => {
       this.tableHeight = window.innerHeight - 400;
@@ -86,6 +98,12 @@ export default {
   },
   data() {
     return {
+      city:{
+      sheng: '四川省',
+      shi: '成都市',
+      xian: '新都区',
+      },
+      
       /* 公司名称 */
       input: "",
       tableHeight: 0,
@@ -446,45 +464,78 @@ export default {
         },
       ],
       value: "",
-      currentPage:1,
-      pageSize:10,
-
+      currentPage: 1,
+      pageSize: 10,
     };
   },
   methods: {
-
     handleClick(row) {
       console.log(row);
     },
     /* 每页多少条 */
-    handleSizeChange(val){
-      this.pageSize = val
+    handleSizeChange(val) {
+      this.pageSize = val;
     },
     /* 当前页改变的时候 */
-    handleCurrentChange(val){
-      this.currentPage = val
+    handleCurrentChange(val) {
+      this.currentPage = val;
     },
     /* 处理搜索点击事件 */
-    handlesearch(){
-      this.tableData = this.tableData.filter((item)=>
-      {
-        if(item.name.indexOf(this.input)!=-1||item.name===this.input)
-        return item
-      })
+    handlesearch() {
+      //判断公司名字和地区
+
+      if(this.input!=''&&this.city.shi==''){
+      this.tableData = this.tableData.filter((item) => {
+        if (item.name.indexOf(this.input) != -1 || item.name === this.input)
+          return item;
+      });
+      }else if(this.input==''&&this.city.shi!=''){
+        this.tableData = this.tableData.filter(item=>{
+          if(this.city.shi.indexOf(item.province)!=-1||item.province===this.city.shi)
+          return   item
+        })
+      }else{
+        this.tableData = this.tableData.filter(item=>{
+          if((this.city.shi.indexOf(item.province)!=-1||item.province===this.city.shi)&&(item.name.indexOf(this.input) != -1 || item.name === this.input))
+          return   item
+        })
+      }
+
     },
     /* 清除搜索框里面的内容的时候恢复tableData */
-    recovertabledata(){
-      this.tableData = this.$store.state.TableData
+    recovertabledata() {
+      this.tableData = this.$store.state.TableData;
+      this.city={
+        sheng: '',
+      shi: '',
+      xian: '',
+      },
+      this.input=''
     },
     /* 点击查看更多跳转页面 */
-    routerpush(){
-      this.$router.push('/home/data/echarts')
+    routerpush() {
+      this.$router.push("/home/data/echarts");
+    },
+    /* 城市选择器 */
+    selected(data){
+      this.city.sheng = data.province.value
+      this.city.shi = data.city.value
+      this.xian = data.area.value
+    },
+    onChangeProvince(value){
+      this.city.sheng = value.value
+    },
+    onChangeCity(value){
+      this.city.shi = value.value
+    },
+    onChangeArea(value){
+      this.xian = value.value
     }
   },
-  created(){
+  created() {
     /* 拿到公司数据的时候保存到vuex中 */
-    this.$store.commit('changeTableData',this.tableData)
-  }
+    this.$store.commit("changeTableData", this.tableData);
+  },
 };
 </script>
 
@@ -509,7 +560,7 @@ export default {
   height: 5vh;
   line-height: 5vh;
   justify-content: space-between;
-  width: 60vw;
+  width: 70vw;
   padding: 0 20px;
   padding-top: 20px;
 }
@@ -521,7 +572,7 @@ export default {
   height: 4vh;
   padding: 0 0 15px 0;
 }
-.showmoremore{
+.showmoremore {
   color: rgb(90, 177, 241);
   font-size: 14px;
   cursor: pointer;
