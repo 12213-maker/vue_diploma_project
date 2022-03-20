@@ -19,18 +19,18 @@ export default {
   },
   methods: {
     async getinfo() {
-      
-      let res = await this.$request('/enterprise/query',this.info)
+      let res = await this.$request('post','/enterprise/query',this.info,0)
       console.log(res);
     },
     async getallinfo(){
-      let res = await this.$request('/enterprise/queryAll')
+      let res = await this.$request('post','/enterprise/queryAll','',0)
       console.log(res);
     }
 
   },
   created(){
     this.getallinfo()
+    this.getinfo()
   }
 };
 </script>

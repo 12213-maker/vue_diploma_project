@@ -3,8 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-// import axios from 'axios'
-// Vue.prototype.$axios = axios
+import axios from 'axios'
+Vue.prototype.$axios = axios
+
+
 import request from './request/index'
 Vue.prototype.$request = request
 
