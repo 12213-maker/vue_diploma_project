@@ -25,9 +25,10 @@
                   <span>企业排污数据</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="/data">查看数据</el-menu-item>
-                  <el-menu-item index="/search">搜索数据</el-menu-item>
-                  <el-menu-item index="/collect">收藏数据</el-menu-item>
+                  <el-menu-item index="/home/data">查看数据</el-menu-item>
+                  <el-menu-item index="/home/search">搜索数据</el-menu-item>
+                  <el-menu-item index="/home/collect">收藏
+                  数据</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
               <el-submenu index="2">

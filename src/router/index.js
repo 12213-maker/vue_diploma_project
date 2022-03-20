@@ -16,7 +16,7 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: ()=>import('../views/Home'),
-    redirect:'/data',
+    redirect:'/home/data',
     children:[
       /* 数据分析 */
       {
@@ -32,14 +32,15 @@ const routes = [
       {
         path:'/administartor',
         component:()=>import('../views/User_Center/Administrator'),
+        redirect:'/administartor/myhome',
         children:[
           {
-            path:'',
+            path:'/administartor/myhome',
             component:()=>import('../views/User_Center/MyHome'),
           },
           {
             path:'/administartor/unfinished',
-            component:()=>('../views/User_Center/Unfinished'),
+            component:()=>import('../views/User_Center/Unfinished'),
           },
           {
             path:'/administartor/finished',
@@ -49,15 +50,15 @@ const routes = [
       },
       /* 企业排污 */
       {
-        path:'/data',
+        path:'/home/data',
         component:()=>import('../views/Enterprise_sewage/Data')
       },
       {
-        path:'/collect',
+        path:'/home/collect',
         component:()=>import('../views/Enterprise_sewage/Collect')
       },
       {
-        path:'/search',
+        path:'/home/search',
         component:()=>import('../views/Enterprise_sewage/Search')
       },
     ]

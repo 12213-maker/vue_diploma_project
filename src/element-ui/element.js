@@ -10,6 +10,7 @@ import {
     Row,
     Input,
     Dialog,
+    Upload,
     Message,
     Popover,
     Menu,
@@ -27,14 +28,25 @@ import {
     TabPane,
     Table,
     TableColumn,
+    Tag,
     Slider,
     Progress,
     Drawer,
-    Backtop
+    Backtop,
+    Badge, 
+    Divider,
+    RadioGroup,
+    Radio,
+    Avatar,
+    InputNumber,
+    
 }
     from 'element-ui'
-
-
+Vue.use(InputNumber)
+Vue.use(RadioGroup)
+Vue.use(Avatar)
+Vue.use(Radio)
+Vue.use(Divider)
 Vue.use(Button)
 Vue.use(Container)
 Vue.use(Header)
@@ -65,6 +77,9 @@ Vue.use(Progress)
 Vue.use(Drawer)
 Vue.use(Backtop)
 Vue.use(Card)
+Vue.use(Badge)
+Vue.use(Tag)
+Vue.use(Upload)
 
 
 
