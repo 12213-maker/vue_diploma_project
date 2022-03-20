@@ -2,16 +2,7 @@
   <div class="all">
     <div class="Enterprise_sewage">
       <div class="img"><img src="../../../public/img/3N3VLY0K31YM8@CSQ_JZSQ5.jpg" alt=""></div>
-      <!-- <div class="Introduction">
-        <div class="name">酷诺团队出品
-          <span v-if="!iscollect" @click="handletap(1)"><i class="el-icon-star-off" ></i></span>
-          <span v-else @click="handletap(0)"><i class="el-icon-star-on" ></i></span>
-          
-        </div>
-        <div class="address">地址 : 成都</div>
-        <div class="time">创建时间 : 2000年00月00日</div>
-        <div class="describe">公司简介 : 母爱是一滴甘露，亲吻干涸的泥土，它用细雨的温情，用钻石的坚毅，期待着闪着碎光的泥土的肥沃；母爱不是人生中的一个凝固点，而是一条流动的河，这条河造就了我们生命中美丽的情感之景。我们要珍惜生命,每个不曾起舞的日子,都是对生命的辜负母爱是一滴甘露，亲吻干涸的泥土，它用细雨的温情，用钻石的坚毅，期待着闪着碎光的泥土的肥沃；母爱不是人生中的一个凝固点，而是一条流动的河，这条河造就了我们生命中美丽的情感之景。我们要珍惜生命,每个不曾起舞的日子,都是对生命的辜负母爱是一滴甘露，亲吻干涸的泥土，它用细雨的温情，用钻石的坚毅，期待着闪着碎光的泥土的肥沃；母爱不是人生中的一个凝固点，而是一条流动的河，这条河造就了我们生命中美丽的情感之景。我们要珍惜生命,每个不曾起舞的日子,都是对生命的辜负</div>
-      </div> -->
+
     
   <el-descriptions  
   class="margin-top" 
