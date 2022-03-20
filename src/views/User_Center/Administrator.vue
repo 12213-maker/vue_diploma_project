@@ -22,7 +22,6 @@
   @select="handleSelect"
 
   router>
-  <el-menu-item index="myhome">我的</el-menu-item>
   <el-submenu index="2">
     <template slot="title">权限审批</template>
     <el-menu-item index="finished">已通过</el-menu-item>

@@ -8,16 +8,17 @@
     <!-- 页面主体区域 -->
     <el-container class="all">
       <!-- 侧边栏 (可以做一个折叠的效果)-->
-      <el-aside width="13.5vw">
+      <el-aside width="13vw">
         <el-row class="tac">
           <el-col :span="12">
             <el-menu
               background-color="white"
               text-color="#666"
               active-text-color="#409EFF"
-              :default-active="$route.path"
+              :default-active="this.parentRoute"
               class="el-menu-vertical-demo"
               router
+              unique-opened
             >
               <el-submenu index="1">
                 <template slot="title">
@@ -25,10 +26,9 @@
                   <span>企业排污数据</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="/home/data">查看数据</el-menu-item>
-                  <el-menu-item index="/home/search">搜索数据</el-menu-item>
-                  <el-menu-item index="/home/collect">收藏
-                  数据</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/data')" index="/home/data">查看数据</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/search')" index="/home/search">搜索数据</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/collect')" index="/home/collect">收藏数据</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
               <el-submenu index="2">
@@ -37,8 +37,8 @@
                   <span>用户中心</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="/administartor">管理员-权限审批</el-menu-item>
-                  <el-menu-item index="/user">用户-我的</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/administartor')" index="/home/administartor">管理员-权限审批</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/user')" index="/home/user">用户-我的</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
               <el-submenu index="3">
@@ -47,11 +47,11 @@
                   <span>企业信息</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="/home">企业信息查看</el-menu-item>
-                  <el-menu-item index="/home">企业信息管理</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/data')" index="/home">企业信息查看</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/data')" index="/home">企业信息管理</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
-              <el-menu-item index="/analysis">
+              <el-menu-item @click="handleclick('/home/analysis')" index="/home/analysis">
                 <i class="el-icon-setting"></i>
                 <span slot="title">数据分析</span>
               </el-menu-item>
@@ -75,11 +75,19 @@ export default {
   data() {
     return {
       // isCollapse: true,
+      // defaultActive:'',
+      parentRoute:'/home/data',
     };
   },
   methods: {
-
+    handleclick(path){
+      this.parentRoute = path
+      window.sessionStorage.setItem('path',path)
+    }
   },
+  created(){
+    this.parentRoute = window.sessionStorage.getItem('path')
+  }
 };
 </script>
 
@@ -92,25 +100,27 @@ export default {
   background-color: #b3c0d1;
   color: #333;
   text-align: center;
-  line-height: 60px;
+  line-height: 9vh;
 }
 
 .el-aside {
-  width: 200px;
   background-color: white;
   color: #333;
   text-align: left;
   line-height: 200px;
   overflow: hidden;
   height: calc(100vh-60px);
-  min-width: 200px;
+  min-height: 41px;
 }
+
 
 .el-main {
   background-color: #e9eef3;
   color: #333;
   text-align: center;
   line-height: 160px;
+  padding: 0;
+  overflow: hidden;
 }
 
 body > .el-container {

@@ -1,15 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+
 Vue.use(VueRouter)
 
 const routes = [
   
     /* 重定向 这里重定向要定到login , 但是我们先定到home */
-    {path:'/',redirect:'/home'},
+    {path:'/',redirect:'/login'},
     /* 登录 */
     {
-      path:'/login',component:()=>import('../views/Login')
+      path:'/login',component:()=>import('../components/login/Login')
     },
     /* home以及子组件 */
     {
@@ -20,30 +21,26 @@ const routes = [
     children:[
       /* 数据分析 */
       {
-        path:'/analysis',
+        path:'/home/analysis',
         component:()=>import('../views/data_analysis/Analytics')
       },
       /* 用户页面 */
       {
-        path:'/user',
+        path:'/home/user',
         component:()=>import('../views/User_Center/User')
       },
       /*管理员页面*/
       {
-        path:'/administartor',
+        path:'/home/administartor',
         component:()=>import('../views/User_Center/Administrator'),
-        redirect:'/administartor/myhome',
+        redirect:'/home/administartor/unfinished',
         children:[
           {
-            path:'/administartor/myhome',
-            component:()=>import('../views/User_Center/MyHome'),
-          },
-          {
-            path:'/administartor/unfinished',
+            path:'/home/administartor/unfinished',
             component:()=>import('../views/User_Center/Unfinished'),
           },
           {
-            path:'/administartor/finished',
+            path:'/home/administartor/finished',
             component:()=>import('../views/User_Center/Finished')
           }
         ]
@@ -51,7 +48,12 @@ const routes = [
       /* 企业排污 */
       {
         path:'/home/data',
-        component:()=>import('../views/Enterprise_sewage/Data')
+        component:()=>import('../views/Enterprise_sewage/Data'),
+        redirect:'/home/data/echarts',
+        children:[
+          {path:'/home/data/echarts',component:()=>import('../components/data-show/Echarts')},
+          {path:'/home/data/test2',component:()=>import('../components/data-show/Test2')}
+        ]
       },
       {
         path:'/home/collect',
