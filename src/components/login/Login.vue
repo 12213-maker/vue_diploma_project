@@ -2,11 +2,11 @@
   <!-- 登录成功之后要将token保存到sessionStorage -->
   <div class="all">
     <el-container>
-      <el-header><Header /></el-header>
+      <!-- <el-header><Header /></el-header> -->
       <el-main>
         <!-- 左边的描述 -->
         <div class="describe">
-          <div class="title">生命的总结</div>
+          <div class="title">企业污水检测系统</div>
           <div>
             母爱是一滴甘露，亲吻干涸的泥土，它用细雨的温情，用钻石的坚毅，期待着闪着碎光的泥土的肥沃；母爱不是人生中的一个凝固点，而是一条流动的河，这条河造就了我们生命中美丽的情感之景。我们要珍惜生命,每个不曾起舞的日子,都是对生命的辜负
           </div>
@@ -248,7 +248,7 @@ export default {
   background: url(../../../public/img/v2-ffa9e49d90506f5d1f71e8b228821edc_r.jpg)
     no-repeat;
   background-size: cover;
-  height: 91vh;
+  height: 100vh;
   display: flex;
   flex: row;
   justify-content: space-around;
@@ -259,6 +259,7 @@ export default {
 body > .el-container {
   margin-bottom: 40px;
 }
+
 
 .describe {
   /* background-color: rgb(62, 126, 102); */
@@ -271,11 +272,12 @@ body > .el-container {
   color: white;
   font-size: 17px;
   font-weight: 600;
+  padding-top: 100px;
 }
 .title {
   font-size: 26px;
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .login_form {
   display: absolute;
@@ -306,7 +308,7 @@ body > .el-container {
 }
 .contan_title {
   position: absolute;
-  top: 0;
+  top: 45px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 24px;
@@ -318,6 +320,7 @@ body > .el-container {
 .contain {
   position: relative;
   /* background-color: rgb(175, 33, 33); */
+  padding-top: 100px;
 }
 .footer {
   position: absolute;

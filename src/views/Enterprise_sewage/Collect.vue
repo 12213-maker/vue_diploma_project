@@ -1,7 +1,11 @@
 <template>
   <!-- 可以在这里实现懒加载 -->
   <div class="all">
-      <div class="item" v-for="(item,index) in collectlist" :key="index">
+
+      <el-input placeholder="哈哈哈" width='300' suffix-icon="el-icon-date"></el-input>
+
+      <div class="Item">
+        <div class="item" v-for="(item,index) in collectlist" :key="index">
         
         <div class="top">
           <div class="img"><img src="../../../public/img/3N3VLY0K31YM8@CSQ_JZSQ5.jpg" alt=""></div>
@@ -16,6 +20,7 @@
           <i v-if="!iscollect" @click="handletap(1)" class=" i1 el-icon-star-off"></i>
           <i v-else @click="handletap(0)" class=" i1 el-icon-star-on"></i>
         </div>
+      </div>
       </div>
     
       
@@ -57,30 +62,35 @@ export default {
 
 <style scoped>
 .all{
-  background-color: rgb(232, 241, 238);
+  /* background-color: rgb(170, 119, 119); */
+}
+.Item{
+  /* background-color: rgb(240, 242, 245); */
+  /* background-color: #666; */
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 5px;
-  /* justify-content: center; */
-  padding-left: 13px;
+  width: 100%;
+  justify-content: center;
+  padding-top: 35px;
 }
 .item{
-  background-color: white;
-  /* flex: 1; */
-  width: 20vw;
+  width: 20%;
+  margin: 15px;
   height: 250px;
   line-height: 50px;
-  border: 1px solid rgb(131, 129, 129);
-  margin: 0.5vw;
+  /* border: 1px solid rgb(131, 129, 129); */
   box-sizing: border-box;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px 6px rgba(167, 98, 20, 0.06);
 }
 .item:hover{
   transform: translate(-3px,-3px);
-  box-shadow: 3px 3px 10px rgb(131, 129, 129);
+  transition-duration: 0.4s;
+  box-shadow: 3px 3px 10px rgb(192, 190, 190);
 }
 .i1{
   font-size: 24px;
@@ -91,9 +101,12 @@ background-color: pink;
 flex: 5;
 display: flex;
 flex-direction: row;
-
+border-start-end-radius: 10px;
+border-start-start-radius: 10px;
 }
 .bottom{
+  border-end-end-radius: 10px;
+  border-end-start-radius: 10px;
 background: #bfa;
 /* flex: 2; */
 border-top: 1px solid #666;
@@ -106,9 +119,11 @@ height: 20%;
 }
 .img{
   width: 50%;
+  border-radius: 10px;
 }
 img{
   width: 100%;
+  border-radius: 10px;
   }
 
 .title{
