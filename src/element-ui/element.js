@@ -34,7 +34,13 @@ import {
     Select,
     Option,
     Descriptions,
-    DescriptionsItem
+    DescriptionsItem,
+    Badge, 
+    Divider,
+    RadioGroup,
+    Radio,
+    Avatar,
+    InputNumber,
 }
     from 'element-ui'
 
@@ -72,7 +78,12 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Descriptions)
 Vue.use(DescriptionsItem)
-
+Vue.use(InputNumber)
+Vue.use(RadioGroup)
+Vue.use(Avatar)
+Vue.use(Radio)
+Vue.use(Divider)
+Vue.use(Badge)
 
 
 Vue.prototype.$message = Message

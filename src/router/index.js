@@ -36,18 +36,14 @@ const routes = [
       {
         path:'/home/administartor',
         component:()=>import('../views/User_Center/Administrator'),
-        redirect:'/administartor/myhome',
+        redirect:'/home/administartor/unfinished',
         children:[
           {
-            path:'/administartor/myhome',
-            component:()=>import('../views/User_Center/MyHome'),
-          },
-          {
-            path:'/administartor/unfinished',
+            path:'/home/administartor/unfinished',
             component:()=>import('../views/User_Center/Unfinished'),
           },
           {
-            path:'/administartor/finished',
+            path:'/home/administartor/finished',
             component:()=>import('../views/User_Center/Finished')
           }
         ]
