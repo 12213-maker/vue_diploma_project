@@ -28,7 +28,6 @@ Vue.component('v-distpicker', VDistpicker);
 //还要引入iconfont
 
 
-
 //还要引入封装的axios
 
 

@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import request from '@/request'
 export default {
     name:'Administrator',
     data(){
@@ -45,6 +46,10 @@ export default {
     },
     methods:{
       handleSelect(){}
+    },
+    mounted(){
+      request('post','/enterprise/query',{eName:'17365575658',eId:1,provinceId:1,cityId:1,pageNum:1}).then( res=>console.log(res)
+      );
     }
 }
 </script>
@@ -56,5 +61,6 @@ export default {
     color: #333;
     /* text-align: left; */
     line-height: 0%;
+    height:100%
   }
 </style>
