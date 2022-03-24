@@ -2,17 +2,19 @@
   <div class="all">
     <!-- 左边 -->
     <div class="left">
-      <div class="imgcontain">
+
+      
+      <div class="imgcontain" @click="routelogin">
         <img src="../../../public/img/3N3VLY0K31YM8@CSQ_JZSQ5.jpg" alt="" />
       </div>
-      <div class="title">企业污染排放违法行为时实风险评估系统</div>
+      <div class="title">企业风险评估系统</div>
     </div>
 
     <!-- 登录/退出 -->
-    <div class="right">
+    <!-- <div class="right">
       <el-button v-if="!isLogin" type="primary" @click="handle_login">登录</el-button>
       <el-button v-else type="danger" @click="handle_quit">退出</el-button>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -27,6 +29,9 @@ export default {
     };
   },
   methods: {
+    routelogin(){
+      this.$router.push('/1login2')
+    },
     handle_login(){
       /* 点击登录跳转到登录页面 */
       if(this.$route.path=='/login')return 
@@ -78,7 +83,7 @@ export default {
   /* background-color: aquamarine; */
   /* background-color: #b3c0d1; */
   width: 100%;
-  height: 9vh;
+  height: 8vh;
   position: relative;
   /* display: flex;
   flex-direction: row; */
@@ -87,20 +92,21 @@ export default {
   /* background-color: #b3c0d1; */
   position: absolute;
   left: 0;
-  height: 9vh;
+  height: 8vh;
   display: flex;
   flex-direction: row;
 }
 .imgcontain {
-  width: 9vw;
-  height: 9vh;
+  cursor: pointer;
+  /* width: 9vw; */
+  height: 8vh;
 }
 img {
   height: 100%;
   border-radius: 50%;
 }
 .title {
-  color: white;
+  color: rgb(74, 94, 117);
   font-size: 20px;
   font-weight: 600;
   overflow: hidden;

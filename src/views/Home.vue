@@ -1,17 +1,14 @@
 <template>
   <el-container class="home_class">
-    <!-- 头部区域 -->
-    <el-header style="height: 9vh;width: 100%;">
-      <!-- 这里面可以放一个小图标加上我们项目的名称以及登录退出选项 -->
-      <Header />
-    </el-header>
-    <!-- 页面主体区域 -->
-    <el-container class="all">
-      <!-- 侧边栏 (可以做一个折叠的效果)-->
-      <el-aside width="13vw">
+    <el-aside>
+        <div class="toggle-button"  @click="isCollapse=!isCollapse">
+          <i v-if="isCollapse" class="el-icon-s-unfold"></i>
+          <i v-else class="el-icon-s-fold"></i>
+          </div>
         <el-row class="tac">
           <el-col :span="12">
             <el-menu
+              :collapse="isCollapse"
               background-color="white"
               text-color="#666"
               active-text-color="#409EFF"
@@ -22,23 +19,23 @@
             >
               <el-submenu index="1">
                 <template slot="title">
-                  <i class="el-icon-location"></i>
+                  <i class="el-icon-document-copy"></i>
                   <span>企业排污数据</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item @click="handleclick('/home/data')" index="/home/data">查看数据</el-menu-item>
-                  <el-menu-item @click="handleclick('/home/search')" index="/home/search">搜索数据</el-menu-item>
-                  <el-menu-item @click="handleclick('/home/collect')" index="/home/collect">收藏数据</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/data')" index="/home/data"><i class="el-icon-tickets"></i>查看数据</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/search')" index="/home/search"><i class="el-icon-zoom-in"></i>搜索数据</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/collect')" index="/home/collect"><i class="el-icon-star-off"></i>收藏数据</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
               <el-submenu index="2">
                 <template slot="title">
-                  <i class="el-icon-location"></i>
+                  <i class="el-icon-user-solid"></i>
                   <span>用户中心</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item @click="handleclick('/home/administartor')" index="/home/administartor">管理员-权限审批</el-menu-item>
-                  <el-menu-item @click="handleclick('/home/user')" index="/home/user">用户-我的</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/administartor')" index="/home/administartor"> <i class="el-icon-s-check"></i> 管理员-权限审批</el-menu-item>
+                  <el-menu-item @click="handleclick('/home/user')" index="/home/user"><i class="el-icon-user"></i>用户-我的</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
               <el-submenu index="3">
@@ -59,6 +56,19 @@
           </el-col>
         </el-row>
       </el-aside>
+     
+      
+    <!-- 页面主体区域 -->
+    <el-container class="all">
+      <!-- 头部区域 -->
+    <el-header style="height: 8vh;width: 100%;">
+      <!-- 这里面可以放一个小图标加上我们项目的名称以及登录退出选项 -->
+      <Header />
+    </el-header>
+     
+
+    
+    
       <!-- 右侧内容区域 -->
       <el-main>
         <router-view></router-view>
@@ -74,9 +84,14 @@ export default {
   components: { Header },
   data() {
     return {
+      // //如果是第一次访问
+      // first:0,
+
+
       // isCollapse: true,
       // defaultActive:'',
       parentRoute:'/home/data',
+      isCollapse:false
     };
   },
   methods: {
@@ -87,6 +102,9 @@ export default {
   },
   created(){
     this.parentRoute = window.sessionStorage.getItem('path')
+
+    // //修改state中的登录次数
+    // this.$store.commit('changeIsFirst',this.first++)
   }
 };
 </script>
@@ -97,30 +115,47 @@ export default {
   height: 100%;
 }
 .el-header{
-  background-color: #b3c0d1;
+  background-color: white;
   color: #333;
   text-align: center;
-  line-height: 9vh;
+  line-height: 8vh;
 }
 
 .el-aside {
-  background-color: white;
+  background-color: rgb(48, 65, 86);
   color: #333;
   text-align: left;
   line-height: 200px;
   overflow: hidden;
   height: calc(100vh-60px);
-  min-height: 41px;
+  width: auto !important;
+
+  /* min-height: 41px; */
+}
+.el-aside[data-v-fae5bece]{
+  line-height: 30px;
+}
+
+.toggle-button{
+  color: rgb(191, 203, 217);
+  text-align: center;
+  cursor: pointer;
+}
+
+.el-menu ,.el-menu-item{
+  background-color: rgb(48, 65, 86) !important;
+  border-right: none;
+  /* color: rgb(191, 203, 217); */
 }
 
 
 .el-main {
-  background-color: #e9eef3;
+  background-color: rgb(240, 242, 245);
   color: #333;
   text-align: center;
   line-height: 160px;
   padding: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 body > .el-container {
@@ -139,5 +174,14 @@ body > .el-container {
   width: 200px;
   min-height: 400px;
 }
+.is-active{
+  color:rgb(57, 132, 209) !important;
+}
 
+</style>
+<style>
+.el-submenu__title,.el-menu-item-group__title,.el-menu-item{
+background-color: rgb(48, 65, 86) !important;
+color: rgb(191, 203, 217) !important;
+  }
 </style>

@@ -4,6 +4,7 @@ html,body,#app{
     padding:0;
     min-width: 50vw;
     min-height: 50vh;
+    overflow: hidden;
 }
 
 .el-breadcrumb{
@@ -34,4 +35,8 @@ html,body,#app{
 .ql-editor
 {
 min-height: 300px;
+}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
 }

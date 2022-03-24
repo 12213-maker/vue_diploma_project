@@ -7,6 +7,8 @@ import axios from 'axios'
 Vue.prototype.$axios = axios
 
 
+
+
 import request from './request/index'
 Vue.prototype.$request = request
 
