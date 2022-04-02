@@ -1,14 +1,14 @@
 <template>
   <el-container class="home_class">
     <el-aside>
-        <div class="toggle-button"  @click="isCollapse=!isCollapse">
-          <i v-if="isCollapse" class="el-icon-s-unfold"></i>
-          <i v-else class="el-icon-s-fold"></i>
+        <div class="toggle-button">
+          <i v-if="this.$store.state.isCollapse" @click="changeisCollapse(false)" style="width:100%;" class="el-icon-d-arrow-right"></i>
+          <i v-else class="el-icon-d-arrow-left" @click="changeisCollapse(true)" style="width:100%;"></i>
           </div>
         <el-row class="tac">
           <el-col :span="12">
             <el-menu
-              :collapse="isCollapse"
+              :collapse="this.$store.state.isCollapse"
               background-color="white"
               text-color="#666"
               active-text-color="#409EFF"
@@ -38,16 +38,10 @@
                   <el-menu-item @click="handleclick('/home/user')" index="/home/user"><i class="el-icon-user"></i>用户-我的</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
-              <el-submenu index="3">
-                <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>企业信息</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item @click="handleclick('/home/data')" index="/home">企业信息查看</el-menu-item>
-                  <el-menu-item @click="handleclick('/home/data')" index="/home">企业信息管理</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
+              <el-menu-item @click="handleclick('/home/enterprise_information')" index="/home/enterprise_information">
+                <i class="el-icon-office-building"></i>
+                <span slot="title">企业信息</span>
+              </el-menu-item>
               <el-menu-item @click="handleclick('/home/analysis')" index="/home/analysis">
                 <i class="el-icon-setting"></i>
                 <span slot="title">数据分析</span>
@@ -91,13 +85,17 @@ export default {
       // isCollapse: true,
       // defaultActive:'',
       parentRoute:'/home/data',
-      isCollapse:false
+      // isCollapse:false
     };
   },
   methods: {
     handleclick(path){
       this.parentRoute = path
       window.sessionStorage.setItem('path',path)
+    },
+    /* 改变vuex中的折叠状态 */
+    changeisCollapse(value){
+      this.$store.commit('changeIsCollapse',value)
     }
   },
   created(){
@@ -153,7 +151,7 @@ export default {
   background-color: rgb(240, 242, 245);
   color: #333;
   text-align: center;
-  line-height: 160px;
+  /* line-height: 160px; */
   padding: 0;
   /* overflow: hidden; */
 }

@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 
 import axios from 'axios'
+axios.defaults.baseURL = '/api2'
+axios.defaults.headers.common['token'] = window.sessionStorage.getItem('token')
 Vue.prototype.$axios = axios
 
 

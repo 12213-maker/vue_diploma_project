@@ -34,7 +34,11 @@ import {
     Select,
     Option,
     Descriptions,
-    DescriptionsItem
+    DescriptionsItem,
+    Tag,
+    Popconfirm,
+    DatePicker,
+    TimePicker
 }
     from 'element-ui'
 
@@ -72,6 +76,10 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Descriptions)
 Vue.use(DescriptionsItem)
+Vue.use(Tag)
+Vue.use(Popconfirm)
+Vue.use(DatePicker)
+Vue.use(TimePicker)
 
 
 
