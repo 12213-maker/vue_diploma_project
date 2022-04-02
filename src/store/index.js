@@ -13,6 +13,13 @@ export default new Vuex.Store({
         /* 是否登录 */
         isLogin: window.sessionStorage.getItem('login') || false,
 
+        // search是否跳转到data
+        flag:0,
+
+        //折叠框是否展开
+        isCollapse:false,
+
+
         /* 是否收藏企业 */
         isCollect: false,
         collectList: [
@@ -218,6 +225,16 @@ export default new Vuex.Store({
 
     // 共同的方法(第一个参数是state,第二个参数是用户传进来的值)
     mutations: {
+
+        //修改折叠状态
+        changeIsCollapse(state,flag){
+            state.isCollapse = flag
+        },
+
+        // 修改跳转状态
+        changeflag(state){
+            state.flag=1
+        },
 
         //修改data页面冻结状态
         changeFreeze(state){
