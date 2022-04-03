@@ -2,16 +2,11 @@
   <div class="all">
     <!--小图标-->
     <div class="icon">
-      <el-badge :value="12" class="item">
-        <el-button size="small">紧急</el-button>
-      </el-badge>
-      <el-badge :value="1" class="item" type="primary">
-        <el-button size="small">其他</el-button>
-      </el-badge>
+      <span class="remind">需要搜索的用户：</span>
       <span class="select" display="line－block" style="margin-to: 20px">
         <el-input
-          v-model="tableDataName"
-          placeholder="请输入账号"
+          v-model.trim="tableDataName"
+          placeholder="请输入电话号码"
           style="width: 240px; overflow: right"
           @keyup.native.enter="doFilter"
         ></el-input>
@@ -32,6 +27,7 @@
         :header-cell-style="{ textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
+        <!-- 下拉框 -->
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
@@ -66,13 +62,15 @@
             <span style="margin-left: 10px">{{ scope.row.date }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="账号" width="180px">
+        <el-table-column prop="phone" label="电话" width="180px">
         </el-table-column>
-        <el-table-column prop="address" sortable label="编号" width="180px">
+        <el-table-column prop="id" sortable label="ID" width="180px">
+        </el-table-column>
+        <el-table-column prop="city" label="城市" width="180px">
         </el-table-column>
 
         <!-- 筛选 -->
-        <el-table-column
+        <!-- <el-table-column
           prop="tag"
           label="类型"
           width="180"
@@ -90,20 +88,64 @@
               >{{ scope.row.tag }}</el-tag
             >
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <!-- 操作 -->
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button
               size="mini"
               slot="reference"
+              style="width: 40%"
               @click="check(scope.$index, scope.row)"
-              >查看</el-button
+              >查看详情</el-button
             >
+            <el-dialog :visible.sync="dialogFormVisible" height="100px">
+              <div class="content">
+                <div>
+                  <span
+                    >申请人：<el-divider
+                      direction="vertical"
+                    ></el-divider> </span
+                  ><span>{{}}</span>
+                  <el-divider></el-divider>
+                  <div>
+                    <span
+                      >电话:<el-divider
+                        direction="vertical"
+                      ></el-divider> </span
+                    ><span>{{}}</span>
+                  </div>
+                  <el-divider></el-divider>
+                  <div>
+                    <span
+                      >城市：<el-divider
+                        direction="vertical"
+                      ></el-divider> </span
+                    ><span>{{}}</span>
+                  </div>
+                  <el-divider></el-divider>
+                  <div>
+                    <span
+                      >理由：<el-divider
+                        direction="vertical"
+                      ></el-divider> </span
+                    ><span>{{}}</span>
+                  </div>
+                </div>
+              </div>
+              <div slot="footer">
+                <el-button @click="dialogFormVisible = false">驳回</el-button>
+                <el-button
+                  type="primary"
+                  @click="createData(scope, scope.row)"
+                  >通过</el-button
+                >
+              </div>
+            </el-dialog>
           </template>
         </el-table-column>
       </el-table>
-      <!-- 分页 -->
+      <!-- 分页  current-change为当前在第几页-->
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -115,35 +157,6 @@
       >
       </el-pagination>
     </div>
-
-    <!-- 弹出层 -->
-    <el-dialog :visible.sync="dialogFormVisible" height="100px">
-      <div class="content">
-        <div>
-          <span>申请人：<el-divider direction="vertical"></el-divider> </span
-          ><span>{{}}</span>
-          <el-divider></el-divider>
-          <div>
-            <span>电话:<el-divider direction="vertical"></el-divider> </span
-            ><span>{{}}</span>
-          </div>
-          <el-divider></el-divider>
-          <div>
-            <span>城市：<el-divider direction="vertical"></el-divider> </span
-            ><span>{{}}</span>
-          </div>
-          <el-divider></el-divider>
-          <div>
-            <span>理由：<el-divider direction="vertical"></el-divider> </span
-            ><span>{{}}</span>
-          </div>
-        </div>
-      </div>
-      <div slot="footer">
-        <el-button @click="dialogFormVisible = false">驳回</el-button>
-        <el-button type="primary" @click="createData()">通过</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -152,77 +165,84 @@ export default {
   name: "Unfinished",
   data() {
     return {
-      phone:11222,
       dialogFormVisible: false,
       tableDataName: "",
       tableDataEnd: [],
+
       currentPage: 1,
       pageSize: 4,
       totalItems: 0,
       filterTableDataEnd: [],
       flag: false,
-
+      more: {},
+      // tableDataBegin:[],
       tableDataBegin: [
         {
           date: "2016-05-01",
-          name: "11037402",
-          manager: "王小一",
-          address: 1,
-          tag: "紧急",
+          phone: "11037402",
+          id: "1",
+          city: "成都",
+          sha: "dafaefsfegf",
         },
         {
           date: "2016-05-02",
-          manager: "李小二",
-          name: "11037402",
-          address: 2,
-          tag: "紧急",
+          phone: "11402",
+          id: "2",
+          city: "成都",
         },
         {
           date: "2016-05-03",
-          name: "1124",
-          manager: "赵小三",
-          address: 3,
-          tag: "普通",
+          phone: "17402",
+          id: "3",
+          city: "成都",
         },
         {
           date: "2016-05-04",
-          name: "037402",
-          manager: "陈小四",
-          address: 4,
-          tag: "普通",
+          phone: "037402",
+          id: "4",
+          city: "成都",
         },
         {
           date: "2016-05-05",
-          name: "118824",
-          manager: "周小五",
-          address: 5,
-          tag: "紧急",
+          phone: "1037402",
+          id: "5",
+          city: "成都",
         },
         {
           date: "2016-05-06",
-          name: "0248",
-          manager: "秦小六",
-          address: 6,
-          tag: "紧急",
+          phone: "037402",
+          id: "6",
+          city: "成都",
         },
         {
           date: "2016-05-07",
-          name: "1233",
-          manager: "朱小八",
-          address: 7,
-          tag: "紧急",
+          phone: "7402",
+          id: "7",
+          city: "成都",
         },
         {
-          managerdate: "2016-05-08",
-          name: "54654",
-          manager: "张小九",
-          address: 8,
-          tag: "紧急",
+          date: "2016-05-08",
+          phone: "7402",
+          id: "8",
+          city: "成都",
         },
       ],
     };
   },
-  created() {
+  async mounted() {
+
+    let res546 = await this.$axios({
+      url: "/user/application/applications",
+      method: "get",
+      params: {
+        pageNum: 1,
+      },
+    });
+    console.log(res546, "我是用户");
+
+
+    // 获取初始内容
+    console.log("我是mounted");
     //页面初始化时让分页的总条数等于数据的总条数
     this.totalItems = this.tableDataBegin.length;
     //如果分页的页数等于当页要展示的条数
@@ -239,6 +259,8 @@ export default {
   methods: {
     //前端搜索功能需要区分是否检索,因为对应的字段的索引不同
     //用两个变量接收currentChangePage函数的参数
+
+    // 搜索筛选
     doFilter() {
       if (this.tableDataName == "") {
         this.$message.warning("查询条件不能为空！");
@@ -247,9 +269,10 @@ export default {
       this.tableDataEnd = [];
       //每次手动将数据置空,因为会出现多次点击搜索情况
       this.filterTableDataEnd = [];
+
       this.tableDataBegin.forEach((value, index) => {
-        if (value.name) {
-          if (value.name.indexOf(this.tableDataName) >= 0) {
+        if (value.phone) {
+          if (value.phone.indexOf(this.tableDataName) >= 0) {
             this.filterTableDataEnd.push(value);
           }
         }
@@ -296,13 +319,27 @@ export default {
     filterTag(value, row) {
       return row.tag === value;
     },
+    // 点击展示详情
     check(index, row) {
       console.log(index, row);
       this.dialogFormVisible = true;
+      console.log(this);
+      this.more=row;//很重要！！
+      console.log('more',this.more);
     },
-    async createData() {
-      const params = this.questionForm;
-      alert(JSON.stringify(params));
+    createData(index, row) {
+      // const params = this.questionForm;
+      // alert(JSON.stringify(params));
+      console.log('这是弹出框里的东西')
+      console.log('这是index',index)
+      console.log("这是row", row);
+      this.tableDataBegin=[{
+          date: "2016-05-01",
+          phone: "11037402",
+          id: "1",
+          city: "成都",
+          sha: "dafaefsfegf",
+        }]
     },
   },
 };
@@ -310,7 +347,12 @@ export default {
 
 <style scope>
 .icon {
-  text-align: left;
+  margin-left: -10%;
+}
+.remind {
+  color: rgb(64, 158, 255);
+  font-family: NSimSun;
+  font-weight: bold;
 }
 .item {
   margin-right: 40px;
@@ -333,7 +375,7 @@ export default {
   margin-bottom: 0;
   width: 50%;
 }
-.content{
+.content {
   /* height: 100px; */
   font-size: 18px;
 }
