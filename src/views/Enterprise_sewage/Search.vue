@@ -118,8 +118,8 @@
       </el-table-column>
       <el-table-column prop="state" label="状态" width="100" align="center">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.state == 1">安全</el-tag>
-          <el-tag type="warning" v-else-if="scope.row.state == 2"
+          <el-tag type="success" v-if="scope.row.state == '安全'">安全</el-tag>
+          <el-tag type="warning" v-else-if="scope.row.state == '数据伪造'"
             >数据伪造</el-tag
           >
           <el-tag type="danger" v-else>软件生成数据</el-tag>
@@ -400,14 +400,14 @@ export default {
       //添加公司对话框和表单
       dialogFormVisible_add: false,
       addForm: {
-        eName: "测试公司",
-        eNumber: "12138",
-        provinceId: 1,
-        introduction: "我是一只羊",
-        outputNum: "12138",
-        eContact: "18980530858",
-        state: "良好",
-        cityId: 1,
+        eName: "",
+        eNumber: "",
+        provinceId: '',
+        introduction: "",
+        outputNum: "",
+        eContact: "",
+        state: "",
+        cityId: '',
         creatTime: "",
       },
       //控制宽度
@@ -582,7 +582,7 @@ export default {
       }-${this.timeForm.date1.getDate()}`;
       let time = `${this.timeForm.date2.getHours()}:${this.timeForm.date2.getMinutes()}:${this.timeForm.date2.getSeconds()}`;
       let alltime = `${year} ${time}`;
-      console.log(alltime);
+      // console.log(alltime,'我是时间');
 
       // 赋值给editForm
       this.editForm.creatTime = alltime;
@@ -625,94 +625,76 @@ export default {
 
     //管理员添加企业
     async add() {
-      // if (
-      //   this.addForm.eName == "" ||
-      //   this.addForm.eNumber == "" ||
-      //   //  this.addForm.provinceId==""||
-      //   this.addForm.introduction == "" ||
-      //   this.addForm.outputNum == "" ||
-      //   this.addForm.eContact == "" ||
-      //   this.addForm.state == "" ||
-      //   //  this.addForm.cityId==""||
-      //   this.addForm.eContact.length != 11 ||
-      //   this.timeForm.date1 == "" ||
-      //   this.timeForm.date2 == ""
-      // ) {
-      //   this.$message.warning("请填写所有信息并保证信息正确 !");
-      //   return;
-      // }
-      // // console.log(this.timeForm);
+      if (
+        this.addForm.eName == "" ||
+        this.addForm.eNumber == "" ||
+        //  this.addForm.provinceId==""||
+        this.addForm.introduction == "" ||
+        this.addForm.outputNum == "" ||
+        this.addForm.eContact == "" ||
+        this.addForm.state == "" ||
+        //  this.addForm.cityId==""||
+        this.addForm.eContact.length != 11 ||
+        this.timeForm.date1 == "" ||
+        this.timeForm.date2 == ""
+      ) {
+        this.$message.warning("请填写所有信息并保证信息正确 !");
+        return;
+      }
+      // console.log(this.timeForm);
 
-      // let year = `${this.timeForm.date1.getFullYear()}-${
-      //   this.timeForm.date1.getMonth() + 1
-      // }-${this.timeForm.date1.getDate()}`;
-      // let time = `${this.timeForm.date2.getHours()}:${this.timeForm.date2.getMinutes()}:${this.timeForm.date2.getSeconds()}`;
-      // let alltime = `${year} ${time}`;
-      // console.log(alltime);
-      // this.addForm.creatTime = alltime;
+      let year = `${this.timeForm.date1.getFullYear()}-${
+        this.timeForm.date1.getMonth() + 1
+      }-${this.timeForm.date1.getDate()}`;
+      let time = `${this.timeForm.date2.getHours()}:${this.timeForm.date2.getMinutes()}:${this.timeForm.date2.getSeconds()}`;
+      let alltime = `${year} ${time}`;
+      console.log(alltime);
+      this.addForm.creatTime = alltime;
 
-      // // console.log(this.addForm);
+      // console.log(this.addForm);
 
-      // let {
-      //   eName,
-      //   eNumber,
-      //   provinceId,
-      //   introduction,
-      //   outputNum,
-      //   eContact,
-      //   state,
-      //   cityId,
-      //   creatTime,
-      // } = this.addForm;
+      let {
+        eName,
+        eNumber,
+        provinceId,
+        introduction,
+        outputNum,
+        eContact,
+        state,
+        cityId,
+        creatTime,
+      } = this.addForm;
 
-      // console.log(
-      //   'eName',eName,
-      //   "eNumber",eNumber,
-      //   "provinceId",provinceId,
-      //   'introduction',introduction,
-      //   'outputNum',outputNum,
-      //   'eContact',eContact,
-      //   'state',state,
-      //   'cityId',cityId,
-      //   'creatTime',creatTime,);
+      console.log(
+        'eName',eName,
+        "eNumber",eNumber,
+        "provinceId",provinceId,
+        'introduction',introduction,
+        'outputNum',outputNum,
+        'eContact',eContact,
+        'state',state,
+        'cityId',cityId,
+        'creatTime',creatTime,);
 
-      // this.dialogFormVisible_add = false;
-      // let res = await this.$request(
-      //   "post",
-      //   "/enterprise/add/add",
-      //   {
-      //     eName,
-      //     eNumber,
-      //     provinceId,
-      //     introduction,
-      //     outputNum,
-      //     eContact,
-      //     state,
-      //     cityId,
-      //     creatTime,
-      //   },
-      //   0
-      // );
-      // console.log(res);
-
+      this.dialogFormVisible_add = false;
       let res = await this.$request(
         "post",
-        "/enterprise/add/add",
+        "/enterprise/add",
         {
-          eName: "测试有限公司",
-          eNumber: 5,
-          eNumber: "20203109",
-          provinceId: 1002,
-          introduction: "普通公司",
-          outputNum: "2000",
-          eContact: "22222222222",
-          state: "良好",
-          cityId: 2001,
-          creatTime: "2022-03-14 19:14:00",
+          eName,
+          eNumber,
+          provinceId,
+          introduction,
+          outputNum,
+          eContact,
+          state,
+          cityId,
+          creatTime,
         },
         0
       );
       console.log(res);
+      this.reload()
     },
 
     //管理员删除企业
