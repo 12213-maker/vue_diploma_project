@@ -2,12 +2,6 @@
   <div class="all">
     <!--小图标-->
     <div class="icon">
-      <el-badge :value="12" class="item">
-        <el-button size="small">紧急</el-button>
-      </el-badge>
-      <el-badge :value="1" class="item" type="primary">
-        <el-button size="small">其他</el-button>
-      </el-badge>
       <span class="select" display="line－block" style="margin-to: 20px">
         <el-input
           v-model="tableDataName"

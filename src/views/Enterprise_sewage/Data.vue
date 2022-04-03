@@ -1089,6 +1089,14 @@ circle:nth-child(6) {
   --s: #0005;
   transition: none;
 }
-
+.has-gutter,
+.el-table__header-wrapper,
+.el-dialog__header,
+.el-table_3_column_12,
+.is-leaf, 
+.el-table__cell
+{
+  line-height: 0 !important;
+}
 </style>
  

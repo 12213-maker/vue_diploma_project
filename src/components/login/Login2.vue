@@ -162,29 +162,15 @@ export default {
         this.$message.error("请输入正确的手机号");
 
       let res = await this.$request("post", "/user/login", this.loginForm, 1);
-      console.log(res);
+      // res = await this.$request("post", "/user/login", this.loginForm, 0);
+      console.log(res,'我是保存token的地方');
       //将token保存到sessionStorage
-      window.sessionStorage.setItem("token", res.data.data);
+      window.sessionStorage.setItem("token", res.data.data.token);
 
       this.$router.push("/home");
       this.$message.success("登录成功");
       this.$store.commit("changeLogin", true);
       window.sessionStorage.setItem("login", true);
-
-      // this.$axios({
-      //   method: "post",
-      //   baseURL: "/api2",
-      //   url: "/user/login",
-      //   data: {
-      //     phoneNumber: "17365575658",
-      //     password: "ppp",
-      //   },
-      //    headers:{
-      //       'Content-Type': 'application/json'
-      // }
-      // }).then((value) => {
-      //   console.log(value);
-      // });
     },
     //清空按钮
     resetLoginForm() {

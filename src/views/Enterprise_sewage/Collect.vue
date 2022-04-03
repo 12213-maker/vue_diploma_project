@@ -21,8 +21,8 @@
           <i v-else @click="handletap(0)" class=" i1 el-icon-star-on"></i>
         </div>
       </div>
-      </div>
-    
+
+      </div>    
       
   </div>
 </template>
@@ -48,7 +48,7 @@ export default {
         this.$store.commit('changeIsCollect',true)
       }
       else {
-         this.iscollect = false
+        this.iscollect = false
         this.$message.info('取消收藏')
         this.$store.commit('changeIsCollect',false)
       }

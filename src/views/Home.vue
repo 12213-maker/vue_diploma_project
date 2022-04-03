@@ -153,7 +153,7 @@ export default {
   background-color: rgb(240, 242, 245);
   color: #333;
   text-align: center;
-  line-height: 160px;
+  /* line-height: 160px; */
   padding: 0;
   /* overflow: hidden; */
 }
