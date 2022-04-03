@@ -4,11 +4,9 @@ import router from './router'
 import store from './store'
 
 import axios from 'axios'
-axios.defaults.baseURL = '/api2'
+axios.defaults.baseURL = '/api'
 axios.defaults.headers.common['token'] = window.sessionStorage.getItem('token')
 Vue.prototype.$axios = axios
-
-
 
 
 import request from './request/index'
@@ -30,10 +28,6 @@ import VDistpicker from 'v-distpicker'
 Vue.component('v-distpicker', VDistpicker);
 
 //还要引入iconfont
-
-
-
-//还要引入封装的axios
 
 
 

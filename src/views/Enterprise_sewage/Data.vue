@@ -159,6 +159,18 @@
       </div>
       <div class="classitem class_2">
         <div id="box" class="contain"></div>
+        <div class="time_picker">
+          <el-date-picker
+          size="mini"
+            v-model="chosetime"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            @change="timepickerchange"
+          >
+          </el-date-picker>
+        </div>
       </div>
       <div class="classitem class_4">
         <div class="record">
@@ -300,11 +312,31 @@ export default {
       All_sewage: {},
       All_sewage_data: [],
       All_sewage_name: [],
+
       Echarts_1_serieslist: [],
+
+      //第一张表上的选择时间
+      chosetime:'',
+
+
+      //下面三张表
+      Echarts_show_1:{
+        name:'',
+        data:[],
+      },
+      Echarts_show_2:{
+        name:'',
+        data:[],
+      },
+      Echarts_show_3:{},
+      name:'',
+      data:[],
+
+
     };
   },
-  mounted() {
-    this.Echarts();
+  async mounted() {
+    // this.Echarts();
     this.Echarts1();
     this.Echarts2();
     this.Echarts3();
@@ -325,60 +357,42 @@ export default {
     Echarts() {
       /* 创建一个echarts实例 */
       this.mycharts = this.$echarts.init(document.getElementById("box"));
-      /* 设置配置项 */
-      const option = {
+      let option = {
         title: {
-          text: "真实排污数据",
+          text: "真实污数据",
         },
         tooltip: {
           trigger: "axis",
         },
         legend: {
-          right: "0%",
+          data: this.All_sewage_name,
         },
         grid: {
-          top: "50px",
-          left: "50px",
-          right: "15px",
-          bottom: "50px",
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
         },
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["-4", "-3", "-2", "-1", "today", "1", "2", "3", "4", "5"],
-          axisLabel: {
-            color: "rgb(72, 171, 219)",
-          },
-          axisTick: {
-            show: false,
-          },
+          data: [
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun",
+            "Sun",
+            "Sun",
+            "Sun",
+          ],
         },
         yAxis: {
           type: "value",
-          axisLabel: {
-            // formatter: "{value} °C",
-            color: "rgb(72, 171, 219)",
-          },
-          axisLine: {
-            show: true,
-            color: "rgb(72, 171, 219)",
-          },
         },
-        series: [
-          {
-            name: "real",
-            type: "line",
-            data: this.real,
-          },
-          {
-            name: "forecast",
-            type: "line",
-            data: this.forecast,
-            // markPoint: {
-            //   data: [{ name: "周最低", value: -2, xAxis: 1, yAxis: -1.5 }],
-            // },
-          },
-        ],
+        series: this.Echarts_1_serieslist,
       };
 
       /* 将配置项设置给echarts实例对象 */
@@ -388,13 +402,16 @@ export default {
     Echarts1() {
       this.mycharts1 = this.$echarts.init(document.getElementById("echarts1"));
       let option = {
-        legend: {
-          top: "bottom",
+        title:{
+          text:this.Echarts_show_1.name,
         },
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)",
-        },
+        // legend: {
+        //   top: "bottom",
+        // },
+        // tooltip: {
+        //   trigger: "item",
+        //   formatter: "{a} <br/>{b} : {c} ({d}%)",
+        // },
         series: [
           {
             name: "Nightingale Chart",
@@ -719,34 +736,73 @@ export default {
         0
       );
 
+      
+
       this.All_sewage = res4.data.data;
+
+      console.log(this.All_sewage, "我是全部数据");
+      console.log(Object.keys(this.All_sewage), "我是全部数据的属性名");
+      //我只需要前三个属性名
+      let attr1 = Object.keys(this.All_sewage)[0]
+      let attr2 = Object.keys(this.All_sewage)[1]
+      let attr3 = Object.keys(this.All_sewage)[2]
+
+      this.Echarts_show_1.data = this.All_sewage[Object.keys(this.All_sewage)[0]]
+      this.Echarts_show_1.name = Object.keys(this.All_sewage)[0]
+
+      this.Echarts_show_2.data = this.All_sewage[Object.keys(this.All_sewage)[1]]
+      this.Echarts_show_2.name = Object.keys(this.All_sewage)[1]
+
+      this.Echarts_show_3.data = this.All_sewage[Object.keys(this.All_sewage)[2]]
+      this.Echarts_show_3.name = Object.keys(this.All_sewage)[2]
+
+    
+
+      console.log(this.Echarts_show_1,'表一');
+      console.log(this.Echarts_show_2,'表二');
+      console.log(this.Echarts_show_3,'表三');
+
       for (let i in this.All_sewage) {
         this.All_sewage_name.push(i);
         this.All_sewage_data.push(this.All_sewage[i]);
       }
-      console.log(this.All_sewage, "我是污水数据");
-      console.log(this.All_sewage_name, "我是污水名字");
-      console.log(this.All_sewage_data, "我是污水列表数据");
 
-      //获取全部数据的时候处理一下展示全部数据的series
-      // let series = this.All_sewage.filter((item) => {
-      //   return {
-      //     name: item.keys,
-      //     type: "line",
-      //     data:this.All_sewage[item.keys]
-      //   };
-      // });
-      // console.log(series , '我是处理过的');
+      let len = this.All_sewage_data.length;
+      for (let i = 0; i < len; i++) {
+        let that = this;
+        this.Echarts_1_serieslist.push({
+          name: that.All_sewage_name[i],
+          type: "line",
+          data: that.All_sewage_data[i],
+        });
+      }
+    },
+    //第一张表选择时间改变的时候触发
+    async timepickerchange(value){
+
+      let startTime = `${value[0].getFullYear()}-${value[0].getMonth()+1}-${value[0].getDate()} ${value[0].getHours()}:${value[0].getMinutes()}:${value[0].getSeconds()}`
+      let endTime = `${value[1].getFullYear()}-${value[1].getMonth()+1}-${value[1].getDate()} ${value[1].getHours()}:${value[1].getMinutes()}:${value[1].getSeconds()}`
+      let res = await this.$request(
+        "post",
+        "/data/query/getContaminantData",
+        {
+          eNumber: 273,
+          startTime,
+          endTime,
+        },
+        0
+      );
+
+      console.log(res);
+
 
     },
   },
-  created() {
+  async created() {
     /* 从search跳转过来 , searchInfo保存路由信息 */
     this.searchinfo = this.$route.query.companyInfo;
-    // console.log(this.searchinfo , '我是searchinfo');
-
-    this.getContaminantData();
-
+    await this.getContaminantData();
+    this.Echarts();
     this.getallinfo();
     this.searchinfo1();
     this.iscollect121138();
@@ -944,6 +1000,17 @@ export default {
 }
 .class_2 {
   box-shadow: 0 3px 8px 6px rgba(167, 98, 20, 0.06);
+  position: relative;
+  /* background-color: pink; */
+}
+.time_picker{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+.el-date-picker{
+  cursor: pointer;
 }
 
 .class_3 {
@@ -1387,6 +1454,15 @@ circle:nth-child(6) {
 .butn321:active {
   --s: #0005;
   transition: none;
+}
+.has-gutter,
+.el-table__header-wrapper,
+.el-dialog__header,
+.el-table_3_column_12,
+.is-leaf, 
+.el-table__cell
+{
+  line-height: 0 !important;
 }
 </style>
  
