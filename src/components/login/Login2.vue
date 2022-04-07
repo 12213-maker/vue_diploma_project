@@ -169,7 +169,7 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="logoncancle">取 消</el-button>
         <el-button type="primary" @click="logon">确 定</el-button>
       </div>
     </el-dialog>
@@ -196,13 +196,13 @@ export default {
       isLogin: false,
       //注册信息
       registerinfo: {
-        userName: "一十四洲",
-        phoneNumber: "18980530858",
-        password2: "12138",
-        password1: "12138",
-        role: 1,
-        city: 1,
-        resolution: "测试",
+        userName: "",
+        phoneNumber: "",
+        password2: "",
+        password1: "",
+        role: '',
+        city: '',
+        resolution: "",
       },
 
       //这是登录的数据
@@ -218,7 +218,7 @@ export default {
       //保存所有的城市list
       city:[],
       //选择的城市id
-      cityId:0,
+      cityId:'',
     };
   },
   methods: {
@@ -230,8 +230,15 @@ export default {
       let res = await this.$request("post", "/user/login", this.loginForm, 1);
       res = await this.$request("post", "/user/login", this.loginForm, 0);
       console.log(res, "我是登录");
+
+      
+
       //将token保存到sessionStorage
       window.sessionStorage.setItem("token", res.data.data.token);
+      //将userid保存到sessionStorage
+      window.sessionStorage.setItem("userId", res.data.data.userId);
+      window.sessionStorage.setItem("userName", res.data.data.userName);
+      
 
       //将登录人员的种类登记在vuex中
       let role = res.data.data.role;
@@ -252,6 +259,21 @@ export default {
       this.loginForm = {};
     },
     async logon() {
+      if(this.registerinfo.phoneNumber==''||
+      this.registerinfo.userName==''||
+      this.registerinfo.password2==''||
+      this.registerinfo.password1==''||
+      this.registerinfo.resolution==''||
+      this.registerinfo.role==''||
+      this.cityId==''||
+      this.selectprovinceid==''
+      )
+      {
+        this.$message.info('请填写完整信息')
+        return
+      }
+      
+
       if (this.registerinfo.phoneNumber.length != 11) {
         this.$message.error("请输入正确的手机号");
         return;
@@ -261,25 +283,16 @@ export default {
         this.$message.error("密码不一致!");
         return;
       }
+      if (this.registerinfo.role!=1&&this.registerinfo.role!=2) {
+        this.$message.error("用户角色不正确!");
+        return;
+      }
 
       let {userName,phoneNumber,password2:password,role,resolution} = this.registerinfo
       let city = this.cityId
 
-      // 这里要发送登录的请求
+
       let res = await this.$request(
-        "post",
-        "/user/logon",
-        {
-          userName: "一十四洲",
-        phoneNumber: "18980530858",
-        password: "12138",
-        role: 1,
-        city: 1,
-        resolution: "测试"
-        },
-        1
-      );
-      res = await this.$request(
         "post",
         "/user/logon",
         {
@@ -294,9 +307,27 @@ export default {
       );
       console.log(res);
 
+      console.log(res.data.code,'我是code');
+
+
+
       this.dialogFormVisible = false;
-      this.loginForm = {};
+      this.registerinfo = {};
+      this.loginForm={}
+
+      this.cityId=''
+      this.selectprovinceid=''
+      if(res.data.code==200)
       this.$message.success("请重新登录");
+      else
+      this.$message.warning('该手机号已经注册')
+
+    },
+
+    logoncancle(){
+      this.dialogFormVisible = false;
+      this.registerinfo = {};
+      this.loginForm={}
     },
 
     //申请省份
@@ -322,6 +353,7 @@ export default {
         provinceId:this.selectprovinceid
       },0)
       nextPage = res.data.data.nextPage
+      this.city = []
       this.city.push(res.data.data.list)
       }
     }

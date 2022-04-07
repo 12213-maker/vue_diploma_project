@@ -11,10 +11,11 @@
     </div>
 
     <!-- 登录/退出 -->
-    <!-- <div class="right">
-      <el-button v-if="!isLogin" type="primary" @click="handle_login">登录</el-button>
-      <el-button v-else type="danger" @click="handle_quit">退出</el-button>
-    </div> -->
+    <div class="right" @click="quit">
+      <el-tooltip class="item" effect="dark" content="退出登录" placement="bottom">
+      <span>{{this.userinfo}}</span>
+    </el-tooltip>
+    </div>
 
   </div>
 </template>
@@ -26,6 +27,7 @@ export default {
     return {
       isLogin: false,
       // dialogVisible : false,
+      username:''
     };
   },
   methods: {
@@ -63,10 +65,17 @@ export default {
 
 
     },
+    //退出登录
+    quit(){
+      window.sessionStorage.clear()
+      //跳转到登录页面
+      this.$router.push('/login2')
+    }
   },
   created() {
     // console.log(this.$store.state.isLogin);
     this.isLogin = this.$store.state.isLogin
+    this.userinfo = window.sessionStorage.getItem('userName')
     
   },
   // watch:{
@@ -115,5 +124,6 @@ img {
   position: absolute;
   right: 50px;
   height: 9vh;
+  cursor: pointer;
 }
 </style>

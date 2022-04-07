@@ -161,7 +161,7 @@
         <div id="box" class="contain"></div>
         <div class="time_picker">
           <el-date-picker
-          size="mini"
+            size="mini"
             v-model="chosetime"
             type="datetimerange"
             range-separator="至"
@@ -316,40 +316,20 @@ export default {
       Echarts_1_serieslist: [],
 
       //第一张表上的选择时间
-      chosetime:'',
-
+      chosetime: "",
 
       //下面三张表
-      Echarts_show_1:{
-        name:'',
-        data:[],
+      Echarts_show_1: {
+        name: "",
+        data: [],
       },
-      Echarts_show_2:{
-        name:'',
-        data:[],
+      Echarts_show_2: {
+        name: "",
+        data: [],
       },
-      Echarts_show_3:{},
-      name:'',
-      data:[],
-
-
-    };
-  },
-  async mounted() {
-    // this.Echarts();
-    this.Echarts1();
-    this.Echarts2();
-    this.Echarts3();
-    this.Echarts4();
-
-    /* 图表响应式 */
-    let _this = this;
-    window.onresize = function () {
-      _this.mycharts.resize();
-      _this.mycharts1.resize();
-      _this.mycharts2.resize();
-      _this.mycharts3.resize();
-      _this.mycharts4.resize();
+      Echarts_show_3: {},
+      name: "",
+      data: [],
     };
   },
   methods: {
@@ -359,7 +339,7 @@ export default {
       this.mycharts = this.$echarts.init(document.getElementById("box"));
       let option = {
         title: {
-          text: "真实污数据",
+          text: "真实排污数据",
         },
         tooltip: {
           trigger: "axis",
@@ -376,18 +356,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: [
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-            "Sun",
-            "Sun",
-            "Sun",
-            "Sun",
-          ],
+          data: ["-5", "-4", "-3", "-2", "-1", "today", "1", "2", "3", "4"],
         },
         yAxis: {
           type: "value",
@@ -402,36 +371,27 @@ export default {
     Echarts1() {
       this.mycharts1 = this.$echarts.init(document.getElementById("echarts1"));
       let option = {
-        title:{
-          text:this.Echarts_show_1.name,
+        title: {
+          text: this.Echarts_show_1.name||'暂无数据',
+          textStyle: {
+            color: "white",
+          },
         },
-        // legend: {
-        //   top: "bottom",
-        // },
-        // tooltip: {
-        //   trigger: "item",
-        //   formatter: "{a} <br/>{b} : {c} ({d}%)",
-        // },
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)",
+        },
         series: [
           {
-            name: "Nightingale Chart",
+            name: this.Echarts_show_1.name,
             type: "pie",
-            radius: [20, 100],
+            radius: [20, 120],
             center: ["50%", "45%"],
             roseType: "area",
             itemStyle: {
               borderRadius: 8,
             },
-            data: [
-              { value: 40, name: "rose 1" },
-              { value: 38, name: "rose 2" },
-              { value: 32, name: "rose 3" },
-              { value: 30, name: "rose 4" },
-              { value: 28, name: "rose 5" },
-              { value: 26, name: "rose 6" },
-              { value: 22, name: "rose 7" },
-              { value: 18, name: "rose 8" },
-            ],
+            data: this.Echarts_show_1.data,
           },
         ],
       };
@@ -441,6 +401,12 @@ export default {
     Echarts2() {
       this.mycharts2 = this.$echarts.init(document.getElementById("echarts2"));
       let option = {
+        title: {
+          text: this.Echarts_show_2.name||'暂无数据',
+          textStyle: {
+            color: "white",
+          },
+        },
         tooltip: {
           trigger: "axis",
         },
@@ -460,14 +426,9 @@ export default {
         ],
         series: [
           {
-            name: "real",
+            name: this.Echarts_show_2.name,
             type: "bar",
-            data: this.real,
-          },
-          {
-            name: "forecast",
-            type: "bar",
-            data: this.forecast,
+            data: this.Echarts_show_2.data,
           },
         ],
       };
@@ -477,15 +438,24 @@ export default {
     Echarts3() {
       this.mycharts3 = this.$echarts.init(document.getElementById("echarts3"));
       let option = {
+        title: {
+          text: this.Echarts_show_3.name||'暂无数据',
+          textStyle: {
+            color: "white",
+          },
+        },
         radar: {
-          // shape: 'circle',
           indicator: [
-            { name: "Sales", max: 6500 },
-            { name: "Administration", max: 16000 },
-            { name: "Information Technology", max: 30000 },
-            { name: "Customer Support", max: 38000 },
-            { name: "Development", max: 52000 },
-            { name: "Marketing", max: 25000 },
+            {name:-5},
+            {name:-4},
+            {name:-3},
+            {name:-2},
+            {name:-1},
+            {name:'today'},
+            {name:1},
+            {name:2},
+            {name:3},
+            {name:4}
           ],
         },
         series: [
@@ -494,12 +464,8 @@ export default {
             type: "radar",
             data: [
               {
-                value: [4200, 3000, 20000, 35000, 50000, 18000],
+                value: this.Echarts_show_3.data||null,
                 name: "Allocated Budget",
-              },
-              {
-                value: [5000, 14000, 28000, 26000, 42000, 21000],
-                name: "Actual Spending",
               },
             ],
           },
@@ -599,7 +565,7 @@ export default {
             "post",
             "/collection/add",
             {
-              userId: 1,
+              userId: window.sessionStorage.getItem("userId"),
               eId: this.searchinfo.eId,
             },
             0
@@ -610,7 +576,7 @@ export default {
             "post",
             "/collection/add",
             {
-              userId: 1,
+              userId: window.sessionStorage.getItem("userId"),
               eId: this.first_companies.eId,
             },
             0
@@ -632,7 +598,7 @@ export default {
             "post",
             "/collection/cancel",
             {
-              userId: 1,
+              userId: window.sessionStorage.getItem("userId"),
               eId: this.searchinfo.eId,
             },
             0
@@ -643,7 +609,7 @@ export default {
             "post",
             "/collection/cancel",
             {
-              userId: 1,
+              userId: window.sessionStorage.getItem("userId"),
               eId: this.first_companies.eId,
             },
             0
@@ -670,7 +636,6 @@ export default {
         { pageNum: 1 },
         0
       );
-      // console.log(res);
       this.all_companies = res.data.data.list;
       this.first_companies = this.all_companies[0];
 
@@ -708,7 +673,7 @@ export default {
         "post",
         "/collection/isCollected",
         {
-          userId: 1,
+          userId: window.sessionStorage.getItem("userId"),
           eId,
         },
         0
@@ -725,6 +690,20 @@ export default {
 
     //先暂时获取一段时间的污染物的数据
     async getContaminantData() {
+      let data = new Date();
+      let left_time = `${data.getFullYear()}-${data.getMonth() + 1}-${
+        data.getDate() - 5
+      } ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`;
+
+      console.log(left_time, "我是左边的时间");
+
+      let right_time = `${data.getFullYear()}-${data.getMonth() + 1}-${
+        data.getDate() + 4
+      } ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`;
+
+      console.log(right_time, "我是右边的时间");
+
+      //请求的时候使用左边的时间left_time和右边的时间right_time来
       let res4 = await this.$request(
         "post",
         "/data/query/getContaminantData",
@@ -736,31 +715,40 @@ export default {
         0
       );
 
-      
-
       this.All_sewage = res4.data.data;
 
       console.log(this.All_sewage, "我是全部数据");
       console.log(Object.keys(this.All_sewage), "我是全部数据的属性名");
       //我只需要前三个属性名
-      let attr1 = Object.keys(this.All_sewage)[0]
-      let attr2 = Object.keys(this.All_sewage)[1]
-      let attr3 = Object.keys(this.All_sewage)[2]
+      let attr1 = Object.keys(this.All_sewage)[0];
+      let attr2 = Object.keys(this.All_sewage)[1];
+      let attr3 = Object.keys(this.All_sewage)[2];
 
-      this.Echarts_show_1.data = this.All_sewage[Object.keys(this.All_sewage)[0]]
-      this.Echarts_show_1.name = Object.keys(this.All_sewage)[0]
 
-      this.Echarts_show_2.data = this.All_sewage[Object.keys(this.All_sewage)[1]]
-      this.Echarts_show_2.name = Object.keys(this.All_sewage)[1]
+      //这是表一的数据
+      this.Echarts_show_1.data =
+        this.All_sewage[Object.keys(this.All_sewage)[0]];
+      this.Echarts_show_1.name = Object.keys(this.All_sewage)[0];
+      //处理表一的数据
+      this.Echarts_show_1.data = this.Echarts_show_1.data.map((item, index) => {
+        return { value: item, name: index+1 };
+      });
 
-      this.Echarts_show_3.data = this.All_sewage[Object.keys(this.All_sewage)[2]]
-      this.Echarts_show_3.name = Object.keys(this.All_sewage)[2]
 
-    
+      //表二的数据
+      this.Echarts_show_2.data =
+        this.All_sewage[Object.keys(this.All_sewage)[1]];
+      this.Echarts_show_2.name = Object.keys(this.All_sewage)[1];
 
-      console.log(this.Echarts_show_1,'表一');
-      console.log(this.Echarts_show_2,'表二');
-      console.log(this.Echarts_show_3,'表三');
+
+      //表三的数据
+      this.Echarts_show_3.data =
+        this.All_sewage[Object.keys(this.All_sewage)[2]];
+      this.Echarts_show_3.name = Object.keys(this.All_sewage)[2];
+
+      console.log(this.Echarts_show_1, "表一");
+      console.log(this.Echarts_show_2, "表二");
+      console.log(this.Echarts_show_3, "表三");
 
       for (let i in this.All_sewage) {
         this.All_sewage_name.push(i);
@@ -778,10 +766,13 @@ export default {
       }
     },
     //第一张表选择时间改变的时候触发
-    async timepickerchange(value){
-
-      let startTime = `${value[0].getFullYear()}-${value[0].getMonth()+1}-${value[0].getDate()} ${value[0].getHours()}:${value[0].getMinutes()}:${value[0].getSeconds()}`
-      let endTime = `${value[1].getFullYear()}-${value[1].getMonth()+1}-${value[1].getDate()} ${value[1].getHours()}:${value[1].getMinutes()}:${value[1].getSeconds()}`
+    async timepickerchange(value) {
+      let startTime = `${value[0].getFullYear()}-${
+        value[0].getMonth() + 1
+      }-${value[0].getDate()} ${value[0].getHours()}:${value[0].getMinutes()}:${value[0].getSeconds()}`;
+      let endTime = `${value[1].getFullYear()}-${
+        value[1].getMonth() + 1
+      }-${value[1].getDate()} ${value[1].getHours()}:${value[1].getMinutes()}:${value[1].getSeconds()}`;
       let res = await this.$request(
         "post",
         "/data/query/getContaminantData",
@@ -794,15 +785,28 @@ export default {
       );
 
       console.log(res);
-
-
     },
+  },
+  async mounted() {
+    /* 图表响应式 */
+    let _this = this;
+    window.onresize = function () {
+      _this.mycharts.resize();
+      _this.mycharts1.resize();
+      _this.mycharts2.resize();
+      _this.mycharts3.resize();
+      _this.mycharts4.resize();
+    };
   },
   async created() {
     /* 从search跳转过来 , searchInfo保存路由信息 */
     this.searchinfo = this.$route.query.companyInfo;
     await this.getContaminantData();
     this.Echarts();
+    this.Echarts1();
+    this.Echarts2();
+    this.Echarts3();
+    this.Echarts4();
     this.getallinfo();
     this.searchinfo1();
     this.iscollect121138();
@@ -1003,13 +1007,13 @@ export default {
   position: relative;
   /* background-color: pink; */
 }
-.time_picker{
+.time_picker {
   position: absolute;
   right: 10px;
   top: 10px;
   cursor: pointer;
 }
-.el-date-picker{
+.el-date-picker {
   cursor: pointer;
 }
 
@@ -1143,6 +1147,9 @@ img {
 }
 </style>
 <style>
+.el-table th.el-table__cell,.el-table__fixed-right-patch{
+background-color: rgb(243, 244, 247) !important;
+}
 .item_3_span,
 label {
   text-align: left;
@@ -1459,9 +1466,8 @@ circle:nth-child(6) {
 .el-table__header-wrapper,
 .el-dialog__header,
 .el-table_3_column_12,
-.is-leaf, 
-.el-table__cell
-{
+.is-leaf,
+.el-table__cell {
   line-height: 0 !important;
 }
 </style>

@@ -6,6 +6,7 @@ import {
     Aside,
     Main,
     Footer,
+    Avatar,
     Row,
     Input,
     Dialog,
@@ -38,7 +39,9 @@ import {
     Tag,
     Popconfirm,
     DatePicker,
-    TimePicker
+    TimePicker,
+    Tooltip,
+
 }
     from 'element-ui'
 
@@ -80,6 +83,9 @@ Vue.use(Tag)
 Vue.use(Popconfirm)
 Vue.use(DatePicker)
 Vue.use(TimePicker)
+Vue.use(Avatar)
+Vue.use(Tooltip)
+
 
 
 

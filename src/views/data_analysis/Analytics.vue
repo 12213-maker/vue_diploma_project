@@ -1,26 +1,77 @@
 <template>
   <div class="all">
-    <div
-      ref="box"
-      style="width: 1000px; height: 650px; backgroundcolor: pink"
-    ></div>
-    <div class="btns">
-      <el-button
-        size="mini"
-        type="success"
-        plain
-        round
-        @click="changeshow('today')"
-        >today</el-button
+    <div class="top" id="box" ></div>
+    <div class="bottom">
+      <!-- 显示的table表 -->
+      <el-table
+        :header-cell-style="{
+          background: '#F3F4F7',
+          color: '#555',
+          fontSize: '17px',
+          }"
+        :data="allcompanyInfo"
+        border
+        max-height="550"
+        ref="table"
+        style="width: 100%; overflow-y: auto"
       >
-      <el-button
-        size="mini"
-        type="info"
-        plain
-        round
-        @click="changeshow('tomorrow')"
-        >tomorrow</el-button
-      >
+        <el-table-column
+          type="index"
+          :index="(this.currentPage - 1) * this.pageSize + 1"
+          align="center"
+          label="序号"
+          width="91"
+        >
+        </el-table-column>
+
+        <el-table-column
+          prop="eName"
+          label="企业名称"
+          width="100"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="creatTime"
+          label="创建时间"
+          width="150"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="provinceName"
+          label="省份"
+          width="120"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="cityName"
+          label="市区"
+          width="100"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="eContact"
+          label="联系方式"
+          width="150"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column prop="state" label="状态" width="100" align="center">
+          <template slot-scope="scope">
+            <el-tag type="success" v-if="scope.row.state == '安全'"
+              >安全</el-tag
+            >
+            <el-tag type="warning" v-else-if="scope.row.state == '数据伪造'"
+              >数据伪造</el-tag
+            >
+            <el-tag type="danger" v-else>软件生成数据</el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+
     </div>
   </div>
 </template>
@@ -29,159 +80,188 @@
 export default {
   data() {
     return {
-      legendDate: [
-        "Email",
-        "Union Ads",
-        "Video Ads",
-        "Direct",
-        "Search Engine",
-      ],
-      xAisData: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-      //从接口那边获取到的数据
-      randomdata1: [
-        { o2: [820, 932, 901, 934, 1290, 1330, 1320] },
-        { so2: [320, 332, 301, 334, 390, 330, 320] },
-        { co2: [150, 232, 201, 154, 190, 330, 410] },
-        { h2o: [220, 182, 191, 234, 290, 330, 310] },
-      ],
-      randomdata2: {
-        o2: [820, 932, 901, 934, 1290, 1330, 1320],
-        so2: [320, 332, 301, 334, 390, 330, 320],
-        co2: [150, 232, 201, 154, 190, 330, 410],
-        h2o: [220, 182, 191, 234, 290, 330, 310],
-        hhh: [320, 332, 301, 334, 390, 330, 320],
-        fff: [150, 232, 201, 154, 190, 330, 410],
-        www: [220, 182, 191, 234, 290, 330, 310],
-      },
-      data: [
-        { value: [820, 932, 901, 934, 1290, 1330, 1320], name: "o2" },
-        { value: [320, 332, 301, 334, 390, 330, 320], name: "so2" },
-        { value: [150, 232, 201, 154, 190, 330, 410], name: "co2" },
-        { value: [220, 182, 191, 234, 290, 330, 310], name: "h2o" },
-        { value: [320, 332, 301, 334, 390, 330, 320], name: "hhh" },
-      ],
-      day1: {
-        o2: 1,
-        so2: 2,
-        co2: 3,
-        h2o: 5,
-      },
-      day2: {
-        o2: 1,
-        so2: 2,
-        co2: 3,
-        h2o: 5,
-      },
-      day3: {
-        o2: 1,
-        so2: 2,
-        co2: 3,
-        h2o: 5,
-      },
-      info: [
-        {
-          name: "Email",
-          type: "line",
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-        },
-        {
-          name: "1234",
-          type: "line",
-          data: [82, 93, 91, 93, 129, 130, 120],
-        },
-      ],
+      mycharts: {},
+      allcompanyInfo: [],
+      copyinfo: [],
+      currentPage: 1,
+      pageSize: 10,
     };
   },
   methods: {
+    /* 每页多少条 */
+    handleSizeChange(val) {
+      this.pageSize = val;
+    },
+    /* 当前页改变的时候 */
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    },
     Echarts() {
-      let mycharts = this.$echarts.init(this.$refs.box);
+      this.mycharts = this.$echarts.init(document.getElementById("box"));
+      // prettier-ignore
+      let data = [22, 18, 19, 23, 29, 33, 31, 12, 44, 32];
+      let yMax = 500;
+      let dataShadow = [];
+      for (let i = 0; i < data.length; i++) {
+        dataShadow.push(yMax);
+      }
       let option = {
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "4%",
+          containLabel: true,
+        },
         title: {
-          text: "Stacked Line",
+          text: "近十天企业违规显示",
         },
         tooltip: {
           trigger: "axis",
         },
-        grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "3%",
-          containLabel: true,
-        },
         xAxis: {
-          type: "category",
-          boundaryGap: false,
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: ["-4", "-3", "-2", "-1", "today", "1", "2", "3", "4", "5"],
+          axisLabel: {
+            color: "#fff",
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLine: {
+            show: false,
+          },
+          // splitLine:{show:  false },
+          z: 10,
         },
         yAxis: {
-          type: "value",
+          axisLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            color: "white",
+          },
+          splitLine:{show:  false },
         },
-        series: this.info,
+        dataZoom: [
+          {
+            type: "inside",
+          },
+        ],
+        series: [
+          {
+            type: "bar",
+            showBackground: true,
+            barWidth:40,
+            itemStyle: {
+              color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: "#83bff6" },
+                { offset: 0.5, color: "#188df0" },
+                { offset: 1, color: "#188df0" },
+              ]),
+            },
+            emphasis: {
+              itemStyle: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "#2378f7" },
+                  { offset: 0.7, color: "#2378f7" },
+                  { offset: 1, color: "#83bff6" },
+                ]),
+              },
+            },
+            data: data,
+          },
+        ],
       };
-      mycharts.setOption(option);
-      mycharts.resize();
+      const zoomSize = 6;
+      this.mycharts.on("click", function (params) {
+        console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+        this.mycharts.dispatchAction({
+          type: "dataZoom",
+          startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+          endValue:
+            dataAxis[
+              Math.min(params.dataIndex + zoomSize / 2, data.length - 1)
+            ],
+        });
+      });
+      this.mycharts.setOption(option);
     },
-    changeshow(value) {
-      if (value == "today") {
-        this.Echarts(this.option);
-        this.$message.success("today");
-      } else {
-        this.Echarts(this.optioncopy);
-        this.$message.success("tomorrow");
+
+    //获取公司的所有数据
+    async allInfo() {
+      let num = 1;
+      let nextpage = 2;
+      while (nextpage != 0) {
+        let res = await this.$request(
+          "post",
+          "/enterprise/queryAll",
+          { pageNum: num++ },
+          0
+        );
+        nextpage = res.data.data.nextPage;
+        this.allcompanyInfo.push(...res.data.data.list);
+        this.copyinfo.push(...res.data.data.list);
       }
     },
   },
-
-  async created() {
-
-    let res546 = await this.$axios({
-      url:"/user/application/applications",
-      method:'get',
-      params:{
-        pageNum:1
-      }
-    })
-    console.log(res546 , '我是查看所有用户注册申请');
-
-
-    let res1222 = await this.$axios({
-      url:"/user/application/query",
-      method:'get',
-      params:{
-        userId:1
-      }
-    })
-    console.log(res1222 , '我是查看用户申请详情');
-
-    let res = await this.$axios({
-        url:"/user/application/offer",
-        method:'get',
-        params:{
-          userId:40
-        }
-      })
-    console.log(res,'我是同意注册');
-
-
-    let res111 = await this.$axios({
-        url:"/user/application/reject",
-        method:'delete',
-        params:{
-          userId:31
-        }
-      })
-      console.log(res111,'我是不同意注册');
+  created() {},
+  mounted() {
+    this.Echarts();
+    this.allInfo();
+    let that = this
+    window.onresize = function(){
+      that.mycharts.resize();
+    }
   },
 };
 </script>
 
 <style scoped>
 .all {
-  position: relative;
+  /* background-color: pink; */
+  width: 100%;
+  overflow-x: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  box-sizing: border-box;
 }
-.btns {
-  position: absolute;
-  top: 0;
-  right: 400px;
+.top {
+  border-radius: 15px;
+  box-shadow: 0 3px 8px 6px rgba(167, 98, 20, 0.06);
+  width: 100%;
+  height:85%;
+  background-color: rgb(255, 255, 255);
+  background: linear-gradient(rgb(155, 158, 202), rgb(78, 100, 128));
+  margin-bottom: 35px;
+}
+.bottom {
+  background-color: rgb(240, 242, 245);
+  width: 100%;
+  padding-bottom: 30px;
+}
+.el-table {
+  background-color: rgb(240, 242, 245);
+  border-radius: 15px;
+  box-shadow: 0 3px 8px 6px rgba(167, 98, 20, 0.06);
+}
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
+}
+</style>
+<style>
+.el-table th.el-table__cell{
+background-color: rgb(243, 244, 247) !important;
+}
+.el-table__header,
+.el-table__body {
+  width: 100% !important;
 }
 </style>
