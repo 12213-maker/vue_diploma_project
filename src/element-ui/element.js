@@ -36,11 +36,21 @@ import {
     Option,
     Descriptions,
     DescriptionsItem,
+
     Tag,
     Popconfirm,
     DatePicker,
+
     TimePicker,
     Tooltip,
+
+    Badge, 
+    Divider,
+    RadioGroup,
+    Radio,
+    Avatar,
+    InputNumber,
+
 
 }
     from 'element-ui'
@@ -79,6 +89,7 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Descriptions)
 Vue.use(DescriptionsItem)
+
 Vue.use(Tag)
 Vue.use(Popconfirm)
 Vue.use(DatePicker)
@@ -86,6 +97,14 @@ Vue.use(TimePicker)
 Vue.use(Avatar)
 Vue.use(Tooltip)
 
+
+
+Vue.use(InputNumber)
+Vue.use(RadioGroup)
+Vue.use(Avatar)
+Vue.use(Radio)
+Vue.use(Divider)
+Vue.use(Badge)
 
 
 

@@ -228,7 +228,7 @@ export default {
         this.$message.error("请输入正确的手机号");
 
       let res = await this.$request("post", "/user/login", this.loginForm, 1);
-      res = await this.$request("post", "/user/login", this.loginForm, 0);
+      // res = await this.$request("post", "/user/login", this.loginForm, 0);
       console.log(res, "我是登录");
 
       

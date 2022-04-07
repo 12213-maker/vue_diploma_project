@@ -205,22 +205,110 @@ export default new Vuex.Store({
         /* 所有公司的数据 */
         TableData: [],
         /* 所用用户数据 */
-        user: {
-            /* 用户账户 */
-            account: '',
-            /* 用户昵称 */
-            name: '',
-            /* 用户年龄 */
-            age: 0,
-            /* 用户性别 */
-            sex: '',
+        // user: {
+            
+        //     /* 用户账户 */
+        //     account: '',
+        //     /* 用户昵称 */
+        //     name: '',
+        //     /* 用户年龄 */
+        //     age: 0,
+        //     /* 用户性别 */
+        //     sex: '',
+        // },
+
+        // 用户数据
+        user:{
+            phoneNumber:'11111',
+            userName:'account',
+            password:'abc',
+            city:'绵阳',
         },
+        userList:[
+            {
+                phone:'12221221',
+                account:'234234',
+                name:"wuwuuw",
+                city:"绵阳",
+                age:21,
+                sex:'男'
+            },
+            {
+                phone:'12221221',
+                account:'234234',
+                name:"wuwuuw",
+                city:"绵阳",
+                age:21,
+                sex:'男'
+            },
+            {
+                phone:'12221221',
+                account:'234234',
+                name:"wuwuuw",
+                city:"绵阳",
+                age:21,
+                sex:'男'
+            },
+            {
+                phone:'12221221',
+                account:'234234',
+                name:"wuwuuw",
+                city:"绵阳",
+                age:21,
+                sex:'男'
+            },
+            {
+                phone:'12221221',
+                account:'234234',
+                name:"wuwuuw",
+                city:"绵阳",
+                age:21,
+                sex:'男'
+            },
+            {
+                phone:'12221221',
+                account:'234234',
+                name:"wuwuuw",
+                city:"绵阳",
+                age:21,
+                sex:'男'
+            },
+            {
+                phone:'12221221',
+                account:'234234',
+                name:"wuwuuw",
+                city:"绵阳",
+                age:21,
+                sex:'男'
+            },
+        ]
     },
     // 共同的action
     actions: {
-        doUpdateUser(context, userInfo) {
-            context.commit("SET_ALL", userInfo)
-        }
+        // 拉取用户信息 需要传api
+          pullUserInfo({ commit }) {
+            return new Promise((resolve, reject) => {
+              this.$request().then(resp => {
+                let data = resp.data
+                commit("SET_PHONE", data.phoneNumber)
+                commit("SET_NAME", data.userName)
+                commit("SET_PASSWORD", data.password)
+                commit("SET_CITY", data.city)
+                return resolve(data)
+              }).catch(err => {
+                return reject(err)
+              })
+            })
+          },
+        // 更新用户信息
+        doUpdateUser({ commit }, userInfo) {
+            return new Promise(resolve => {
+              commit(SET_ALL, userInfo)
+              setTimeout(() => {
+                resolve()
+              }, 1000)
+            })
+          }
     },
 
 
@@ -237,6 +325,7 @@ export default new Vuex.Store({
         changeflag(state){
             state.flag=1
         },
+
 
         //修改data页面冻结状态
         changeFreeze(state){
@@ -270,23 +359,29 @@ export default new Vuex.Store({
         changeTableData(state, value) {
             state.TableData = value
         },
-        /* 修改账户--电话 */
-        SET_ACCOUNT(state, account) {
-            state.user.account = account
-        },
-        SET_NAME(state, name) {
-            state.user.name = name
-        },
-        SET_AGE(state, age) {
-            state.user.age = age
-        },
-        SET_SEX(state, sex) {
-            state.user.sex = sex
-        },
+
+        /* 用户信息模块 */
+
+    //   更新用户信息
         SET_ALL(state, userInfo) {
             state.user = Object.assign(state.user, userInfo)
         },
-
+        // 设置手机
+        SET_PHONE(state,phoneNumber) {
+            state.user.phoneNumber = phoneNumber
+          },
+        //   设置用户名
+        SET_NAME(state, userName) {
+            state.user.userName = userName
+          },
+        //   设置密码
+        SET_PASSWORD(state,password){
+            state.user.password=password
+        },
+        // 设置城市
+        SET_CITY(state,city){
+            state.user.city=city
+        },
 
     },
 

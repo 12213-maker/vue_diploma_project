@@ -8,7 +8,6 @@ axios.defaults.baseURL = '/api'
 axios.defaults.headers.common['token'] = window.sessionStorage.getItem('token')
 Vue.prototype.$axios = axios
 
-
 import request from './request/index'
 Vue.prototype.$request = request
 
@@ -28,6 +27,10 @@ import VDistpicker from 'v-distpicker'
 Vue.component('v-distpicker', VDistpicker);
 
 //还要引入iconfont
+
+
+
+//还要引入封装的axios
 
 
 
