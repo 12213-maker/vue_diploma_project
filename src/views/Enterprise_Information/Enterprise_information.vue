@@ -173,14 +173,15 @@
         <span>Sewage data : {{ this.testinfo.state }}</span>
         <span>sewage outfall : {{ this.testinfo.outputNum }}</span>
       </marquee>
-      <div class="blog-right-title-container">
-        <div class="blog-right-title">Featured Articles</div>
-        <div class="blog-menu rounded">See All</div>
-      </div>
+      
+      <!-- 下面展示各种污染物的东西 -->
       <div class="blog-right">
-        <div class="blog-right-container">
+        <div class="blog-right-container" 
+        v-for="(item,index) in All_sewage"
+        :key="index"
+        >
           <div class="blog-title-date">
-            <div class="blog-right-page">1</div>
+            <div class="blog-right-page">{{item}}</div>
             <div class="date">12.06.2021</div>
           </div>
           <div class="blog-right-page-title">Blonde - Widespread Acclaim</div>
@@ -189,9 +190,12 @@
             introspective lyrics and the album's
           </div>
         </div>
+
+
+
         <div class="blog-right-container">
           <div class="blog-title-date">
-            <div class="blog-right-page">2</div>
+            <div class="blog-right-page">上面是循环的部分</div>
             <div class="date">12.06.2021</div>
           </div>
           <div class="blog-right-page-title">
@@ -202,65 +206,11 @@
             because hotels would
           </div>
         </div>
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">3</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">
-            The Language Of Gris: Comples Beauty Of Monochrome
-          </div>
-          <div class="blog-right-page-subtitle">
-            The interior concept was conceived of by Dutch archtitect Studio
-            Anne Holtrop who cleverly emulated
-          </div>
-        </div>
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">4</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">
-            A24 IS LAUNCHING ITS OWN BEAUTY BRAND
-          </div>
-          <div class="blog-right-page-subtitle">
-            Blonde received widespread acclaim, with critics praising Ocean's
-            introspective lyrics and the album's
-          </div>
-        </div>
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">5</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">
-            Elon Musk's SpaceX is launching a moon satellite
-          </div>
-          <div class="blog-right-page-subtitle">
-            The interior concept was conceived of by Dutch archtitect Studio
-            Anne Holtrop who cleverly emulated
-          </div>
-        </div>
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">6</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">
-            What Happens When You Leave Your Old life Behind
-          </div>
-          <div class="blog-right-page-subtitle">
-            The interior concept was conceived of by Dutch archtitect Studio
-            Anne Holtrop who cleverly emulated
-          </div>
-        </div>
         <div class="circle">
-          <div class="circle-title">Leave Your Old Life Behind</div>
+          <div class="circle-title">THE END</div>
           <div class="circle-subtitle">
-            Don't try to be like someone else, be yourself. Be secure with
-            yourself.
+            The company's sewage data has been shown
           </div>
-          <div class="circle-footer">Explore</div>
         </div>
       </div>
     </div>
@@ -279,6 +229,9 @@ export default {
         img1: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic_source%2Fe2%2Fbb%2F96%2Fe2bb96f4f5a3d5618c6481a3044f8917.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1650782449&t=bf5e7941bbbd599def4d0db883121d60",
         img2: "https://img1.baidu.com/it/u=2838359103,4082675852&fm=253&fmt=auto&app=120&f=JPEG?w=889&h=500",
       },
+
+      //这个公司的污染数据
+      All_sewage:{},
     };
   },
   methods: {
@@ -305,6 +258,7 @@ export default {
       let eId = window.sessionStorage.getItem("eId");
       let default_eId = window.sessionStorage.getItem("default_eid");
       if (eId) {
+        console.log('我是eid');
         let res = await this.$request(
           "post",
           "/enterprise/query",
@@ -314,6 +268,7 @@ export default {
           },
           0
         );
+        console.log(res,'我是eid');
         this.testinfo = res.data.data.list[0];
       } else {
         let res = await this.$request(
@@ -325,11 +280,91 @@ export default {
           },
           0
         );
+        console.log(res,'我是defaultid');
         this.testinfo = res.data.data.list[0];
       }
     },
+    //获取这个公司的污染数据
+    //先暂时获取一段时间的污染物的数据
+    async getContaminantData() {
+      let data = new Date();
+      let left_time = `${data.getFullYear()}-${data.getMonth() + 1}-${
+        data.getDate() - 5
+      } ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`;
+
+      console.log(left_time, "我是左边的时间");
+
+      let right_time = `${data.getFullYear()}-${data.getMonth() + 1}-${
+        data.getDate() + 4
+      } ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`;
+
+      console.log(right_time, "我是右边的时间");
+
+      //请求的时候使用左边的时间left_time和右边的时间right_time来
+      let res4 = await this.$request(
+        "post",
+        "/data/query/getContaminantData",
+        {
+          eNumber: 273,
+          startTime: "2021-01-20 00:00:00",
+          endTime: "2021-01-30 00:00:00",
+        },
+        0
+      );
+
+      this.All_sewage = res4.data.data;
+
+      console.log(this.All_sewage, "我是全部数据");
+      // console.log(Object.keys(this.All_sewage), "我是全部数据的属性名");
+      // //我只需要前三个属性名
+      // let attr1 = Object.keys(this.All_sewage)[0];
+      // let attr2 = Object.keys(this.All_sewage)[1];
+      // let attr3 = Object.keys(this.All_sewage)[2];
+
+
+      // //这是表一的数据
+      // this.Echarts_show_1.data =
+      //   this.All_sewage[Object.keys(this.All_sewage)[0]];
+      // this.Echarts_show_1.name = Object.keys(this.All_sewage)[0];
+      // //处理表一的数据
+      // this.Echarts_show_1.data = this.Echarts_show_1.data.map((item, index) => {
+      //   return { value: item, name: index+1 };
+      // });
+
+
+      // //表二的数据
+      // this.Echarts_show_2.data =
+      //   this.All_sewage[Object.keys(this.All_sewage)[1]];
+      // this.Echarts_show_2.name = Object.keys(this.All_sewage)[1];
+
+
+      // //表三的数据
+      // this.Echarts_show_3.data =
+      //   this.All_sewage[Object.keys(this.All_sewage)[2]];
+      // this.Echarts_show_3.name = Object.keys(this.All_sewage)[2];
+
+      // console.log(this.Echarts_show_1, "表一");
+      // console.log(this.Echarts_show_2, "表二");
+      // console.log(this.Echarts_show_3, "表三");
+
+      // for (let i in this.All_sewage) {
+      //   this.All_sewage_name.push(i);
+      //   this.All_sewage_data.push(this.All_sewage[i]);
+      // }
+
+      // let len = this.All_sewage_data.length;
+      // for (let i = 0; i < len; i++) {
+      //   let that = this;
+      //   this.Echarts_1_serieslist.push({
+      //     name: that.All_sewage_name[i],
+      //     type: "line",
+      //     data: that.All_sewage_data[i],
+      //   });
+      // }
+    },
   },
   created() {
+    this.getContaminantData()
     /* 加载页面的时候就关闭折叠框 */
     this.$store.commit("changeIsCollapse", true);
     this.getinfo();

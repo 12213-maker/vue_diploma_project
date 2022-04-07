@@ -43,8 +43,8 @@
                 <span slot="title">企业信息</span>
               </el-menu-item>
               <el-menu-item @click="handleclick('/home/analysis')" index="/home/analysis">
-                <i class="el-icon-setting"></i>
-                <span slot="title">数据分析</span>
+                <i class="el-icon-s-order"></i>
+                <span slot="title">违规公司记录</span>
               </el-menu-item>
             </el-menu>
           </el-col>
