@@ -8,6 +8,12 @@ axios.defaults.baseURL = '/api'
 axios.defaults.headers.common['token'] = window.sessionStorage.getItem('token')
 Vue.prototype.$axios = axios
 
+import infiniteScroll from 'vue-infinite-scroll'
+Vue.use(infiniteScroll)
+//在table里面要使用el-table-infinite-scroll
+import elTableInfiniteScroll from 'el-table-infinite-scroll';
+Vue.use(elTableInfiniteScroll);
+
 
 import request from './request/index'
 Vue.prototype.$request = request
@@ -23,9 +29,9 @@ import * as echarts from "echarts"
 Vue.prototype.$echarts = echarts 
 
 //引入城市选择器的插件
-import distpicker from 'distpicker'
-import VDistpicker from 'v-distpicker'
-Vue.component('v-distpicker', VDistpicker);
+// import distpicker from 'distpicker'
+// import VDistpicker from 'v-distpicker'
+// Vue.component('v-distpicker', VDistpicker);
 
 //还要引入iconfont
 

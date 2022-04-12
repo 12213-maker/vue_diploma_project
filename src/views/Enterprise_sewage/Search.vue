@@ -180,9 +180,6 @@
         <el-form-item label="企业名称" :label-width="formLabelWidth">
           <el-input v-model="editForm.eName" autocomplete="off"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="企业id" :label-width="formLabelWidth">
-          <el-input v-model="editForm.eId" autocomplete="off"></el-input>
-        </el-form-item> -->
         <el-form-item label="省份" style="position: relative; left: 0px">
           <el-select
             v-model="editForm.provinceId"
@@ -385,16 +382,6 @@ export default {
       //修改公司对话框和表单
       dialogFormVisible: false,
       editForm: {
-        // eName: "测试公司",
-        // eNumber: "12138",
-        // provinceId: 1,
-        // introduction: "我是一只羊",
-        // outputNum: "12138",
-        // eContact: "18980530858",
-        // state: "良好",
-        // cityId: 1,
-        // creatTime: "2022-03-08 8:35:23",
-        // eId: 1,
       },
       editcopyform: {},
       //添加公司对话框和表单
@@ -779,6 +766,7 @@ export default {
 
     //获取公司的所有数据
     async allInfo() {
+      
       let num = 1;
       let nextpage = 2;
       while (nextpage != 0) {

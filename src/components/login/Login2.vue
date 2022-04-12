@@ -4,12 +4,11 @@
       <!-- <div class="cover"></div> -->
 
       <div class="info">
-        <h1 class="glowIn" style="color: rgb(3, 233, 244)">Hello World</h1>
-        <p class="glowIn">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Mattis
-          pellentesque id nibh tortor. Suspendisse ultrices gravida dictum fusce
-          ut placerat orci nulla. A lacus vestibulum sed arcu.
+        <h2 class="glowIn" style="color: rgb(3, 233, 244)">
+          企业污染排放违法行为实时风险评估系统设计与实现
+        </h2>
+        <p style="fontsize: 18px" class="glowIn">
+          利用企业排污评估算，对企业污染排放违法行为进行实时风险评估法，精准、有效管控企业污染排放。通过算法获得的企业排污行为结果分析，系统将模型分析的结果实时展示，方便实时监控与管理，引导对具体范围、企业的精准执法。并且以移动软件的形式，实现对企业排污行为的实时监控与报警。
         </p>
       </div>
 
@@ -65,14 +64,15 @@
         label-width="100px"
         style="color: black"
         ref="logonFormRef"
+        :rules="rules"
       >
-        <el-form-item prop="name" label="用户名">
+        <el-form-item prop="userName" label="用户名">
           <el-input
             v-model="registerinfo.userName"
             placeholder="请输入用户名"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="phone" label="手机号">
+        <el-form-item prop="phoneNumber" label="手机号">
           <el-input
             v-model="registerinfo.phoneNumber"
             placeholder="请输入手机号"
@@ -98,27 +98,11 @@
             placeholder="普通用户:1 管理员:2"
           ></el-input>
         </el-form-item>
-
-        <!-- <el-form-item prop="cityid" label="城市id">
-          <el-input
-            v-model="registerinfo.city"
-            placeholder="请输入城市id"
-          ></el-input>
-        </el-form-item> -->
-
-
-
-
-
-
-
-
-
-
-
-
-        <el-form-item label="省份" 
-        style="position: relative; left: 0px">
+        <el-form-item
+          label="省份"
+          prop="provinceId"
+          style="position: relative; left: 0px"
+        >
           <el-select
             v-model="selectprovinceid"
             style="left: 0px; position: absolute; width: 620px"
@@ -126,7 +110,7 @@
             @change="cityid"
           >
             <el-option
-              v-for="(item,index) in province[0]"
+              v-for="(item, index) in province[0]"
               :key="index"
               :label="item.provinceName"
               :value="item.provinceId"
@@ -134,8 +118,11 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="城市" 
-        style="position: relative; left: 0px">
+        <el-form-item
+          label="城市"
+          prop="cityId"
+          style="position: relative; left: 0px"
+        >
           <el-select
             v-model="cityId"
             style="left: 0px; position: absolute; width: 620px"
@@ -150,17 +137,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-
-
-
-
-
-
-
-
-
-
-        <el-form-item prop="reason" label="申请理由">
+        <el-form-item prop="resolution" label="申请理由">
           <el-input
             v-model="registerinfo.resolution"
             placeholder="请输入申请理由"
@@ -190,6 +167,60 @@ export default {
         glowInText.append(span);
       });
     });
+
+    //用户角色的验证
+    var validateRole = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请选择角色"));
+      } else {
+        if (value != 2 && value != 1) {
+          return callback(new Error("请在 1 和 2 之间选择"));
+        }
+        callback();
+      }
+    };
+    //密码的验证
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.registerinfo.password2 !== "") {
+          this.$refs.logonFormRef.validateField("checkPass");
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.registerinfo.password2) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
+    var checkPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("手机号不能为空"));
+      } else {
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/;
+        console.log(reg.test(value));
+        if (reg.test(value)) {
+          callback();
+        } else {
+          return callback(new Error("请输入正确的手机号"));
+        }
+      }
+    };
+
+    var validateuserName = (rule, value, callback) => {
+      if (!value || value.trim() == "") {
+        return callback(new Error("用户名不能为空"));
+      } else if (value.length < 1 || value.length > 7) {
+        return callback(new Error("用户名长度为 1 - 7"));
+      } else callback();
+    };
+
     return {
       /* 注册弹框 */
       dialogFormVisible: false,
@@ -200,9 +231,34 @@ export default {
         phoneNumber: "",
         password2: "",
         password1: "",
-        role: '',
-        city: '',
+        role: "",
+        city: "",
         resolution: "",
+      },
+
+      rules: {
+        phoneNumber: [
+          { required: true, validator: checkPhone, trigger: "blur" },
+        ],
+        password2: [
+          { required: true, validator: validatePass, trigger: "blur" },
+        ],
+        password1: [
+          { required: true, validator: validatePass2, trigger: "blur" },
+        ],
+        resolution: [
+          { required: true, message: "请输入申请理由", trigger: "blur" },
+        ],
+        role: [
+          {
+            required: true,
+            validator: validateRole,
+            trigger: "blur",
+          },
+        ],
+        userName: [
+          { required: true, validator: validateuserName, trigger: "blur" },
+        ],
       },
 
       //这是登录的数据
@@ -212,13 +268,13 @@ export default {
       },
 
       //保存所有省份的id
-      province:[],
+      province: [],
       //选择的省份id
-      selectprovinceid:'',
+      selectprovinceid: "",
       //保存所有的城市list
-      city:[],
+      city: [],
       //选择的城市id
-      cityId:'',
+      cityId: "",
     };
   },
   methods: {
@@ -231,14 +287,11 @@ export default {
       res = await this.$request("post", "/user/login", this.loginForm, 0);
       console.log(res, "我是登录");
 
-      
-
       //将token保存到sessionStorage
       window.sessionStorage.setItem("token", res.data.data.token);
       //将userid保存到sessionStorage
       window.sessionStorage.setItem("userId", res.data.data.userId);
       window.sessionStorage.setItem("userName", res.data.data.userName);
-      
 
       //将登录人员的种类登记在vuex中
       let role = res.data.data.role;
@@ -252,121 +305,123 @@ export default {
       // this.$message.success("登录成功");
       this.$store.commit("changeLogin", true);
       window.sessionStorage.setItem("login", true);
-
     },
     //清空按钮
     resetLoginForm() {
       this.loginForm = {};
     },
-    async logon() {
-      if(this.registerinfo.phoneNumber==''||
-      this.registerinfo.userName==''||
-      this.registerinfo.password2==''||
-      this.registerinfo.password1==''||
-      this.registerinfo.resolution==''||
-      this.registerinfo.role==''||
-      this.cityId==''||
-      this.selectprovinceid==''
-      )
-      {
-        this.$message.info('请填写完整信息')
-        return
-      }
-      
+    logon() {
+      //进行表单验证
+      this.$refs.logonFormRef.validate(async (valid) => {
+        if (valid) {
+          if (this.cityId == "" || this.selectprovinceid == "") {
+            this.$message.info("请填写完整信息");
+            return;
+          }
 
-      if (this.registerinfo.phoneNumber.length != 11) {
-        this.$message.error("请输入正确的手机号");
-        return;
-      }
+          let {
+            userName,
+            phoneNumber,
+            password2: password,
+            role,
+            resolution,
+          } = this.registerinfo;
+          let city = this.cityId;
 
-      if (this.registerinfo.password2 != this.registerinfo.password1) {
-        this.$message.error("密码不一致!");
-        return;
-      }
-      if (this.registerinfo.role!=1&&this.registerinfo.role!=2) {
-        this.$message.error("用户角色不正确!");
-        return;
-      }
+          let res = await this.$request(
+            "post",
+            "/user/logon",
+            {
+              userName,
+              phoneNumber,
+              password,
+              role,
+              city,
+              resolution,
+            },
+            0
+          );
+          console.log(res);
 
-      let {userName,phoneNumber,password2:password,role,resolution} = this.registerinfo
-      let city = this.cityId
+          console.log(res.data.code, "我是code");
 
+          this.dialogFormVisible = false;
+          this.registerinfo = {};
+          this.loginForm = {};
 
-      let res = await this.$request(
-        "post",
-        "/user/logon",
-        {
-        userName,
-        phoneNumber,
-        password,
-        role,
-        city,
-        resolution
-        },
-        0
-      );
-      console.log(res);
-
-      console.log(res.data.code,'我是code');
-
-
-
-      this.dialogFormVisible = false;
-      this.registerinfo = {};
-      this.loginForm={}
-
-      this.cityId=''
-      this.selectprovinceid=''
-      if(res.data.code==200)
-      this.$message.success("请重新登录");
-      else
-      this.$message.warning('该手机号已经注册')
-
+          this.cityId = "";
+          this.selectprovinceid = "";
+          if (res.data.code == 200) this.$message.success("请重新登录");
+          else this.$message.warning("该手机号已经注册");
+        } else {
+          this.message.error("请仔细检查所填写信息是否正确");
+          return;
+        }
+      });
     },
 
-    logoncancle(){
+    logoncancle() {
       this.dialogFormVisible = false;
-      this.registerinfo = {};
-      this.loginForm={}
+      (this.registerinfo = {
+        userName: "",
+        phoneNumber: "",
+        password2: "",
+        password1: "",
+        role: "",
+        city: "",
+        resolution: "",
+      }),
+        (this.loginForm = {});
     },
 
     //申请省份
-    async sheng(){
-      let num = 1
-      let nextPage = 2
-      while(nextPage!=0){
-      let res = await this.$request('post','/province/query',{pageNum:num++},0)
-      nextPage = res.data.data.nextPage
-      this.province.push(res.data.data.list)
+    async sheng() {
+      let num = 1;
+      let nextPage = 2;
+      while (nextPage != 0) {
+        let res = await this.$request(
+          "post",
+          "/province/query",
+          { pageNum: num++ },
+          0
+        );
+        nextPage = res.data.data.nextPage;
+        this.province.push(res.data.data.list);
       }
-      
+
+      this.$store.commit("changeprovence", this.province);
     },
     //根据省份选择城市
-    async cityid(){
-      console.log('我被触发了');
+    async cityid() {
+      console.log("我被触发了");
 
-      let num = 1
-      let nextPage = 2
-      while(nextPage!=0){
-        let res = await this.$request('post','/city/query',{
-        pageNum:num++,
-        provinceId:this.selectprovinceid
-      },0)
-      nextPage = res.data.data.nextPage
-      this.city = []
-      this.city.push(res.data.data.list)
+      let num = 1;
+      let nextPage = 2;
+      while (nextPage != 0) {
+        let res = await this.$request(
+          "post",
+          "/city/query",
+          {
+            pageNum: num++,
+            provinceId: this.selectprovinceid,
+          },
+          0
+        );
+        nextPage = res.data.data.nextPage;
+        this.city = [];
+        this.city.push(res.data.data.list);
       }
-    }
+    },
+
+    
   },
-  created(){
-    this.sheng()
-  }
+  created() {
+    this.sheng();
+  },
 };
 </script>
 
 <style lang="less" scoped>
-@import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700");
-
 body {
   display: flex;
   flex-direction: column;
@@ -590,10 +645,6 @@ video {
   min-height: 100%;
   height: auto;
   width: auto;
-  /*加滤镜*/
-  // filter: blur(15px); //背景模糊设置
-  // -webkit-filter: grayscale(100%);
-  // filter:grayscale(100%); //背景灰度设置
   z-index: -11;
   object-fit: fill;
 }
