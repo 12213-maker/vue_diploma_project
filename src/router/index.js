@@ -27,6 +27,11 @@ const routes = [
         path:'/home/analysis',
         component:()=>import('../views/data_analysis/Analytics')
       },
+      /* 企业信息 */
+      {
+        path:'/home/enterprise_information',
+        component:()=>import('../views/Enterprise_Information/Enterprise_information')
+      },
       /* 用户页面 */
       {
         path:'/home/user',
@@ -42,20 +47,15 @@ const routes = [
             path:'/home/administartor/unfinished',
             component:()=>import('../views/User_Center/Unfinished'),
           },
-          {
-            path:'/home/administartor/finished',
-            component:()=>import('../views/User_Center/Finished')
-          }
         ]
       },
       /* 企业排污 */
       {
         path:'/home/data',
         component:()=>import('../views/Enterprise_sewage/Data'),
-        // redirect:'/home/data/echarts',
+        redirect:'/home/data/echarts',
         children:[
           {path:'/home/data/echarts',component:()=>import('../components/data-show/Echarts')},
-          {path:'/home/data/test2',component:()=>import('../components/data-show/Test2')}
         ]
       },
       {
@@ -75,17 +75,19 @@ const router = new VueRouter({
   routes
 })
 
+const vm = new Vue()
 
 //添加路由守卫
-// router.beforeEach((to,from,next)=>{
-//   if(to.path === '/1login2')return next()
+router.beforeEach((to,from,next)=>{
+  if(to.path === '/1login2')return next()
 
-//   const token = window.sessionStorage.getItem('token')
-//   if(!token){
-//   return next('/1login2') 
-//   }
-//   next()
+  const token = window.sessionStorage.getItem('token')
+  if(!token){
+  vm.$message.info('请先登录')
+  return next('/1login2') 
+  }
+  next()
   
-// })
+})
 
 export default router

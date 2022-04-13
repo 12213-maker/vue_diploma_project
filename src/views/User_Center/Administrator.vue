@@ -24,7 +24,7 @@
     >
       <el-submenu index="2">
         <template slot="title">权限审批</template>
-        <el-menu-item index="finished">已通过</el-menu-item>
+        <!-- <el-menu-item index="finished">已通过</el-menu-item> -->
         <el-menu-item index="unfinished">未通过</el-menu-item>
       </el-submenu>
     </el-menu>
@@ -47,18 +47,43 @@ export default {
     handleSelect() {},
   },
   async created() {
-    // request('get','/application/applications',{
-    //   pageNum:1
-    // },1).then( res=>console.log(res));
-    // let res = await this.$request('get','/user/application/applications',params:{pageNum:1},1);
-    let res546 = await this.$axios({
-      url: "/user/application/applications",
-      method: "get",
-      params: {
-        pageNum: '1',
-      },
-    });
-    console.log(res546, "我是用户");
+       let res546 = await this.$axios({
+      url:"/user/application/applications",
+      method:'get',
+      params:{
+        pageNum:1
+      }
+    })
+    console.log(res546 , '我是查看所有用户注册申请');
+
+
+    let res1222 = await this.$axios({
+      url:"/user/application/query",
+      method:'get',
+      params:{
+        userId:1
+      }
+    })
+    console.log(res1222 , '我是查看用户申请详情');
+
+    let res = await this.$axios({
+        url:"/user/application/offer",
+        method:'get',
+        params:{
+          userId:40
+        }
+      })
+    console.log(res,'我是同意注册');
+
+
+    let res111 = await this.$axios({
+        url:"/user/application/reject",
+        method:'delete',
+        params:{
+          userId:31
+        }
+      })
+      console.log(res111,'我是不同意注册');
   },
 };
 </script>

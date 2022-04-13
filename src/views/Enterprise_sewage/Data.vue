@@ -25,7 +25,31 @@
   <div v-else>
     <div class="all">
       <div class="classitem class_0">
-        <div class="item_item item_0">
+        <div class="item_item item_0" @click="changepath">
+          <div class="item_0_info" v-if="this.$store.state.flag === 1">
+            <div class="imgshow">
+              <img class="img321" :src="this.searchinfo.imgurl" alt="" />
+            </div>
+            <div class="right">
+              <div class="item_0_name">{{ this.searchinfo.eName }}</div>
+              <div class="item_0_time">
+                创建时间: {{ this.searchinfo.creatTime }}
+              </div>
+            </div>
+          </div>
+          <div class="item_0_info" v-else>
+            <div class="imgshow">
+              <img :src="this.first_companies.imgurl" class="img321" alt="" />
+            </div>
+            <div class="right">
+              <div class="item_0_name">{{ this.first_companies.eName }}</div>
+              <div class="item_0_time">
+                创建时间: {{ this.first_companies.creatTime }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item_item item_1" @click="changepath">
           <svg id="graph" class="graphclass" viewBox="0 0 100 100">
             <g class="background">
               <circle cx="50" cy="50" r="47" pathLength="100" />
@@ -45,81 +69,108 @@
               <circle cx="50" cy="50" r="17" pathLength="100" class="six" />
             </g>
           </svg>
+          <div class="item_1_info" v-if="this.$store.state.flag === 1">
+            <div class="item_0_contact">
+              联系方式: {{ this.searchinfo.eContact }}
+            </div>
+            <div class="item_0_address">
+              地址:
+              {{ this.searchinfo.provinceName + this.searchinfo.cityName }}
+            </div>
+          </div>
+          <div class="item_1_info" v-else>
+            <div class="item_0_contact">
+              联系方式: {{ this.first_companies.eContact }}
+            </div>
+            <div class="item_0_address">
+              地址:
+              {{
+                this.first_companies.provinceName +
+                this.first_companies.cityName
+              }}
+            </div>
+          </div>
         </div>
-        <div class="item_item item_1"></div>
-        <div class="item_item item_2"></div>
+        <div class="item_item item_1" @click="changepath">
+          <svg id="graph" class="graphclass" viewBox="0 0 100 100">
+            <g class="background">
+              <circle cx="50" cy="50" r="47" pathLength="100" />
+              <circle cx="50" cy="50" r="41" pathLength="100" />
+              <circle cx="50" cy="50" r="35" pathLength="100" />
+              <circle cx="50" cy="50" r="29" pathLength="100" />
+              <circle cx="50" cy="50" r="23" pathLength="100" />
+              <circle cx="50" cy="50" r="17" pathLength="100" />
+            </g>
+
+            <g class="graph">
+              <circle cx="50" cy="50" r="47" pathLength="100" class="one" />
+              <circle cx="50" cy="50" r="41" pathLength="100" class="two" />
+              <circle cx="50" cy="50" r="35" pathLength="100" class="three" />
+              <circle cx="50" cy="50" r="29" pathLength="100" class="four" />
+              <circle cx="50" cy="50" r="23" pathLength="100" class="five" />
+              <circle cx="50" cy="50" r="17" pathLength="100" class="six" />
+            </g>
+          </svg>
+          <div class="item_1_info" v-if="this.$store.state.flag === 1">
+            <div class="item_0_contact">
+              排污口: {{ this.searchinfo.outputNum }}
+            </div>
+            <div class="item_0_address">
+              状态:
+              {{ this.searchinfo.state }}
+            </div>
+            <div class="item_0_address">
+              收藏:
+              <i
+                :class="
+                  judgecollect == 0 ? 'el-icon-star-off' : 'el-icon-star-on'
+                "
+              ></i>
+            </div>
+          </div>
+          <div class="item_1_info" v-else>
+            <div class="item_0_contact">
+              排污口: {{ this.first_companies.outputNum }}
+            </div>
+            <div class="item_0_address">
+              状态:
+              {{ this.first_companies.state }}
+            </div>
+            <div class="item_0_address">
+              收藏:
+              <i
+                :class="
+                  judgecollect == 0 ? 'el-icon-star-off' : 'el-icon-star-on'
+                "
+              ></i>
+            </div>
+          </div>
+        </div>
         <div class="item_item item_3">
           <button class="butn321" @click="handletap(1)">Collect</button>
-          <button class="butn321" @click="handletap(0)" style="--color: #f3738a; ">
+          <button
+            class="butn321"
+            @click="handletap(0)"
+            style="--color: #f3738a"
+          >
             Cancel
           </button>
         </div>
       </div>
-      <!-- <div class="classitem class_1">
-        <div class="img">
-          <img src="../../../public/img/3N3VLY0K31YM8@CSQ_JZSQ5.jpg" alt="" />
-        </div>
-
-        <el-descriptions
-          class="margin-top"
-          :column="3"
-          border
-          size="small"
-          labelStyle="width:1vw;height:13vh;textAlign:center;"
-          contentStyle="width:15%;textAlign:center;"
-        >
-          <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-user"></i>
-              企业名
-            </template>
-            酷诺有限公司
-            <i
-              v-if="!iscollect"
-              @click="handletap(1)"
-              class="i1 el-icon-star-off"
-            ></i>
-            <i v-else @click="handletap(0)" class="i1 el-icon-star-on"></i>
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-mobile-phone"></i>
-              手机号
-            </template>
-            18100000000
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-location-outline"></i>
-              地址
-            </template>
-            成都市
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-tickets"></i>
-              创建时间
-            </template>
-            <el-tag size="small">2000年00月00日</el-tag>
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template slot="label">
-              <i class="el-icon-office-building"></i>
-              公司简介
-            </template>
-            <span class="describe"
-              >母爱是一滴甘露，亲吻干涸的泥土，它用细雨的温情，用钻石的坚毅，期待着闪着碎光的泥土的肥沃；母爱不是人生中的一个凝固点，而是一条流动的河，这条河造就了我们生命中美丽的情感之景。我们要珍惜生命,每个不曾起舞的日子,都是对生命的辜负母爱是一滴甘露，亲吻干涸的泥土，它用细雨的温情，用钻石的坚毅，期待着闪着碎光的泥土的肥沃；母爱不是人生中的一个凝固点，而是一条流动的河，这条河造就了我们生命中美丽的情感之景。我们要珍惜生命,每个不曾起舞的日子,都是对生命的辜负母爱是一滴甘露，亲吻干涸的泥土，它用细雨的温情，用钻石的坚毅，期待着闪着碎光的泥土的肥沃；母爱不是人生中的一个凝固点，而是一条流动的河，这条河造就了我们生命中美丽的情感之景。我们要珍惜生命,每个不曾起舞的日子,都是对生命的辜负</span
-            >
-          </el-descriptions-item>
-        </el-descriptions>
-      </div> -->
       <div class="classitem class_2">
         <div id="box" class="contain"></div>
-      </div>
-      <div class="classitem class_3">
-        <div class="item3_item item3_0" id="echarts1"></div>
-        <div class="item3_item item3_1" id="echarts2"></div>
-        <div class="item3_item item3_2" id="echarts3"></div>
+        <div class="time_picker">
+          <el-date-picker
+          size="mini"
+            v-model="chosetime"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            @change="timepickerchange"
+          >
+          </el-date-picker>
+        </div>
       </div>
       <div class="classitem class_4">
         <div class="record">
@@ -167,43 +218,18 @@
             </el-table-column>
           </el-table>
         </div>
+        <div class="both_right" id="echarts4"></div>
       </div>
-
-      <!-- dialog -->
-      <!-- <el-dialog
-        title="预警记录"
-        :visible.sync="dialogTableVisible"
-        width="600px"
-        center
-      >
-        <el-table :data="tableData" style="overflow-y: auto">
-          <el-table-column
-            label="序号"
-            type="index"
-            width="150"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            property="name"
-            label="日期"
-            align="center"
-            width="200"
-          ></el-table-column>
-          <el-table-column
-            property="date"
-            label="姓名"
-            align="center"
-            width="200"
-          ></el-table-column>
-        </el-table>
-      </el-dialog> -->
+      <div class="classitem class_3">
+        <div class="item3_item item3_0" id="echarts1"></div>
+        <div class="item3_item item3_1" id="echarts2"></div>
+        <div class="item3_item item3_2" id="echarts3"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-// import LoginVue from '../../components/login/Login.vue';
-// import NavBar from '../../components/NavBar/NavBar'
 export default {
   //注入刷新依赖provide/inject
   inject: ["reload"],
@@ -211,6 +237,12 @@ export default {
   // components:{NavBar},
   data() {
     return {
+      mycharts: {},
+      mycharts1: {},
+      mycharts2: {},
+      mycharts3: {},
+      mycharts4: {},
+
       //item4中污染物的浓度是否超标
       isOOS: false,
       dialogTableVisible: false,
@@ -271,13 +303,44 @@ export default {
 
       /* 是否收藏 */
       iscollect: false,
+      // 判断这个公司是否被用户收藏
+      judgecollect: false,
+      /* 从search跳转过来 , 保存路由信息 , 这个页面里面的公司的所有数据*/
+      searchinfo: {},
+
+      //下面是污水数据模块
+      All_sewage: {},
+      All_sewage_data: [],
+      All_sewage_name: [],
+
+      Echarts_1_serieslist: [],
+
+      //第一张表上的选择时间
+      chosetime:'',
+
+
+      //下面三张表
+      Echarts_show_1:{
+        name:'',
+        data:[],
+      },
+      Echarts_show_2:{
+        name:'',
+        data:[],
+      },
+      Echarts_show_3:{},
+      name:'',
+      data:[],
+
+
     };
   },
-  mounted() {
-    this.Echarts();
+  async mounted() {
+    // this.Echarts();
     this.Echarts1();
     this.Echarts2();
     this.Echarts3();
+    this.Echarts4();
 
     /* 图表响应式 */
     let _this = this;
@@ -286,6 +349,7 @@ export default {
       _this.mycharts1.resize();
       _this.mycharts2.resize();
       _this.mycharts3.resize();
+      _this.mycharts4.resize();
     };
   },
   methods: {
@@ -293,60 +357,42 @@ export default {
     Echarts() {
       /* 创建一个echarts实例 */
       this.mycharts = this.$echarts.init(document.getElementById("box"));
-      /* 设置配置项 */
-      const option = {
+      let option = {
         title: {
-          text: "排污数据",
+          text: "真实污数据",
         },
         tooltip: {
           trigger: "axis",
         },
         legend: {
-          right: "0%",
+          data: this.All_sewage_name,
         },
         grid: {
-          top: "50px",
-          left: "50px",
-          right: "15px",
-          bottom: "50px",
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
         },
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["-4", "-3", "-2", "-1", "today", "1", "2", "3", "4", "5"],
-          axisLabel: {
-            color: "rgb(72, 171, 219)",
-          },
-          axisTick: {
-            show: false,
-          },
+          data: [
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun",
+            "Sun",
+            "Sun",
+            "Sun",
+          ],
         },
         yAxis: {
           type: "value",
-          axisLabel: {
-            // formatter: "{value} °C",
-            color: "rgb(72, 171, 219)",
-          },
-          axisLine: {
-            show: true,
-            color: "rgb(72, 171, 219)",
-          },
         },
-        series: [
-          {
-            name: "real",
-            type: "line",
-            data: this.real,
-          },
-          {
-            name: "forecast",
-            type: "line",
-            data: this.forecast,
-            markPoint: {
-              data: [{ name: "周最低", value: -2, xAxis: 1, yAxis: -1.5 }],
-            },
-          },
-        ],
+        series: this.Echarts_1_serieslist,
       };
 
       /* 将配置项设置给echarts实例对象 */
@@ -356,13 +402,16 @@ export default {
     Echarts1() {
       this.mycharts1 = this.$echarts.init(document.getElementById("echarts1"));
       let option = {
-        legend: {
-          top: "bottom",
+        title:{
+          text:this.Echarts_show_1.name,
         },
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)",
-        },
+        // legend: {
+        //   top: "bottom",
+        // },
+        // tooltip: {
+        //   trigger: "item",
+        //   formatter: "{a} <br/>{b} : {c} ({d}%)",
+        // },
         series: [
           {
             name: "Nightingale Chart",
@@ -459,6 +508,65 @@ export default {
       this.mycharts3.setOption(option);
     },
 
+    Echarts4() {
+      this.mycharts4 = this.$echarts.init(document.getElementById("echarts4"));
+      const option = {
+        title: {
+          text: "预测排污数据",
+        },
+        tooltip: {
+          trigger: "axis",
+        },
+        legend: {
+          right: "0%",
+        },
+        grid: {
+          top: "50px",
+          left: "50px",
+          right: "15px",
+          bottom: "50px",
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: ["-4", "-3", "-2", "-1", "today", "1", "2", "3", "4", "5"],
+          axisLabel: {
+            color: "rgb(72, 171, 219)",
+          },
+          axisTick: {
+            show: false,
+          },
+        },
+        yAxis: {
+          type: "value",
+          axisLabel: {
+            // formatter: "{value} °C",
+            color: "rgb(72, 171, 219)",
+          },
+          axisLine: {
+            show: true,
+            color: "rgb(72, 171, 219)",
+          },
+        },
+        series: [
+          {
+            name: "real",
+            type: "line",
+            data: this.real,
+          },
+          {
+            name: "forecast",
+            type: "line",
+            data: this.forecast,
+            markPoint: {
+              data: [{ name: "周最低", value: -2, xAxis: 1, yAxis: -1.5 }],
+            },
+          },
+        ],
+      };
+      this.mycharts4.setOption(option);
+    },
+
     //跳转
     routerchange(value) {
       if (value == 1) {
@@ -479,32 +587,79 @@ export default {
     },
 
     //点击收藏
-    handletap(value) {
+    async handletap(value) {
       /* 要判断是否收藏此公司 */
-      console.log(value);
+      // console.log(value);
       if (value) {
+        //判断是不是默认的公司
+        if (this.$store.state.flag === 1) {
+          // console.log(this.searchinfo);
+          // 订阅此企业
+          let res = await this.$request(
+            "post",
+            "/collection/add",
+            {
+              userId: 1,
+              eId: this.searchinfo.eId,
+            },
+            0
+          );
+          // console.log(res,'search');
+        } else {
+          let res = await this.$request(
+            "post",
+            "/collection/add",
+            {
+              userId: 1,
+              eId: this.first_companies.eId,
+            },
+            0
+          );
+          // console.log(res,'默认');
+        }
+
         this.iscollect = true;
         this.$message.success("成功收藏");
         this.$store.commit("changeIsCollect", true);
+        this.judgecollect = 1;
         // console.log(this.iscollect);
       } else {
+        //判断是不是默认的公司
+        if (this.$store.state.flag === 1) {
+          // console.log(this.searchinfo);
+          // 取消订阅此企业
+          let res = await this.$request(
+            "post",
+            "/collection/cancel",
+            {
+              userId: 1,
+              eId: this.searchinfo.eId,
+            },
+            0
+          );
+          // console.log(res,'search');
+        } else {
+          let res = await this.$request(
+            "post",
+            "/collection/cancel",
+            {
+              userId: 1,
+              eId: this.first_companies.eId,
+            },
+            0
+          );
+          // console.log(res,'默认');
+        }
+
         this.iscollect = false;
         this.$message.info("取消收藏");
         this.$store.commit("changeIsCollect", false);
+        this.judgecollect = 0;
       }
-      this.iscollect = !this.iscollect
-      console.log(this.iscollect);
-    },
+      this.iscollect = !this.iscollect;
 
-    /* 第一次搜索页面 */
-    async getSearchinfo(value) {
-      console.log(value);
-      //查找企业
-      // let res = await this.$request('post','/enterprise/query',{
-      //   pageNum:1,
-      //   eid:1
-      // },0)
-      // this.$store.commit('changeIsFirst')
+      // console.log(this.iscollect);
+      // this.reload()
     },
 
     //获取所有企业
@@ -515,10 +670,14 @@ export default {
         { pageNum: 1 },
         0
       );
-      console.log(res);
-      // this.all_companies = res.data.data;
-      // this.first_companies = this.all_companies[0];
-      // console.log(this.first_companies);
+      // console.log(res);
+      this.all_companies = res.data.data.list;
+      this.first_companies = this.all_companies[0];
+
+      // 获取到了之后就传到vuex上去 , 方便公司简介的时候备用
+      // this.$store.commit('change_first_companies',this.first_companies)
+      // 把eid上传到session
+      window.sessionStorage.setItem("default_eid", this.first_companies.eId);
     },
 
     //查询企业的真实排污数据
@@ -527,49 +686,126 @@ export default {
         "post",
         "/data/query",
         {
-          eid: 1,
-          pageNum: 5,
+          eId: 3,
+          pageNum: 1,
         },
         0
       );
-      console.log(res);
-      this.Sewage_data = res.data.list;
-      this.Sewage_data.forEach((item) => {
-        this.show_data.push(item.outputVolume);
-      });
-      console.log(this.show_data);
+      // console.log(res);
+      // this.Sewage_data = res.data.list;
+      // this.Sewage_data.forEach((item) => {
+      //   this.show_data.push(item.outputVolume);
+      // });
+      // console.log(this.show_data,'我是排污数据');
     },
 
-    /* 在这个页面里面 */
+    //查询用户是否收藏该企业
+    async iscollect121138() {
+      let eId =
+        window.sessionStorage.getItem("eId") ||
+        window.sessionStorage.getItem("default_eid");
+      let res = await this.$request(
+        "post",
+        "/collection/isCollected",
+        {
+          userId: 1,
+          eId,
+        },
+        0
+      );
+      // console.log(res);
+      //1 订阅 , 0 未订阅
+      this.judgecollect = res.data.data;
+      // console.log('是否订阅',this.judgecollect==0?'未订阅':"订阅");
+    },
+
+    changepath() {
+      this.$router.push("/home/enterprise_information");
+    },
+
+    //先暂时获取一段时间的污染物的数据
+    async getContaminantData() {
+      let res4 = await this.$request(
+        "post",
+        "/data/query/getContaminantData",
+        {
+          eNumber: 273,
+          startTime: "2021-01-20 00:00:00",
+          endTime: "2021-01-30 00:00:00",
+        },
+        0
+      );
+
+      
+
+      this.All_sewage = res4.data.data;
+
+      console.log(this.All_sewage, "我是全部数据");
+      console.log(Object.keys(this.All_sewage), "我是全部数据的属性名");
+      //我只需要前三个属性名
+      let attr1 = Object.keys(this.All_sewage)[0]
+      let attr2 = Object.keys(this.All_sewage)[1]
+      let attr3 = Object.keys(this.All_sewage)[2]
+
+      this.Echarts_show_1.data = this.All_sewage[Object.keys(this.All_sewage)[0]]
+      this.Echarts_show_1.name = Object.keys(this.All_sewage)[0]
+
+      this.Echarts_show_2.data = this.All_sewage[Object.keys(this.All_sewage)[1]]
+      this.Echarts_show_2.name = Object.keys(this.All_sewage)[1]
+
+      this.Echarts_show_3.data = this.All_sewage[Object.keys(this.All_sewage)[2]]
+      this.Echarts_show_3.name = Object.keys(this.All_sewage)[2]
+
+    
+
+      console.log(this.Echarts_show_1,'表一');
+      console.log(this.Echarts_show_2,'表二');
+      console.log(this.Echarts_show_3,'表三');
+
+      for (let i in this.All_sewage) {
+        this.All_sewage_name.push(i);
+        this.All_sewage_data.push(this.All_sewage[i]);
+      }
+
+      let len = this.All_sewage_data.length;
+      for (let i = 0; i < len; i++) {
+        let that = this;
+        this.Echarts_1_serieslist.push({
+          name: that.All_sewage_name[i],
+          type: "line",
+          data: that.All_sewage_data[i],
+        });
+      }
+    },
+    //第一张表选择时间改变的时候触发
+    async timepickerchange(value){
+
+      let startTime = `${value[0].getFullYear()}-${value[0].getMonth()+1}-${value[0].getDate()} ${value[0].getHours()}:${value[0].getMinutes()}:${value[0].getSeconds()}`
+      let endTime = `${value[1].getFullYear()}-${value[1].getMonth()+1}-${value[1].getDate()} ${value[1].getHours()}:${value[1].getMinutes()}:${value[1].getSeconds()}`
+      let res = await this.$request(
+        "post",
+        "/data/query/getContaminantData",
+        {
+          eNumber: 273,
+          startTime,
+          endTime,
+        },
+        0
+      );
+
+      console.log(res);
+
+
+    },
   },
-  created() {
-    //修改state中的登录次数
-    // this.$store.commit('changeIsFirst')
-    // console.log(this.$store.state.isFirst);
-
-    // console.log(this.$store.state.freeze);
-    // console.log(this.$route.query.companyInfo);
-
-    this.getallinfo()
-    // this.searchinfo1()
-
-
-
-
-
-    /* 以下方式请求全部请求的数据可以申请回来 */
-    // this.$axios({
-    //   method:'post',
-    //   baseURL:'/api',
-    //   url:'/enterprise/queryAll',
-    //   data:{
-    //     pageNum:1,
-    //   },
-    //   headers:{
-    //         'Content-Type': 'application/json'
-    //   }
-    // }).then((value)=>{console.log(value);})
-
+  async created() {
+    /* 从search跳转过来 , searchInfo保存路由信息 */
+    this.searchinfo = this.$route.query.companyInfo;
+    await this.getContaminantData();
+    this.Echarts();
+    this.getallinfo();
+    this.searchinfo1();
+    this.iscollect121138();
   },
 };
 </script>
@@ -633,9 +869,110 @@ export default {
   position: relative;
   flex: 2;
 }
+
+.item_1_info {
+  position: absolute;
+  right: 0;
+  /* background-color: pink; */
+  width: 65%;
+  height: 100%;
+  /* display: flex;
+  flex-direction: column; */
+}
+.item_0_info {
+  position: absolute;
+  /* right: 0; */
+  /* background-color: pink; */
+  width: 100%;
+  height: 100%;
+  /* display: flex;
+  flex-direction: row; */
+}
+.imgshow {
+  width: 45%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.img321 {
+  width: 100%;
+  object-fit: cover;
+}
+.right {
+  width: 50%;
+  position: absolute;
+  right: 0;
+  /* background-color: blue; */
+  top: 0;
+  height: 100%;
+}
+.item_0_name {
+  /* flex: 1; */
+  position: relative;
+  top: 25px;
+  /* margin-bottom: 10px; */
+  /* height: 55%; */
+  line-height: 150%;
+  text-align: left;
+  font-size: 22px;
+  color: rgb(240, 242, 245);
+  font-weight: 600;
+  /* background-color: #37fc62; */
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.item_0_contact {
+  /* width: 100%; */
+  height: 60%;
+  line-height: 600%;
+  text-align: left;
+  font-size: 16px;
+  color: rgb(240, 242, 245);
+  font-weight: 600;
+  /* background-color: #37fc62; */
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.item_0_address {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  /* flex: 1; */
+  font-size: 16px;
+  font-weight: 600;
+  /* height: 50%; */
+  line-height: 150%;
+  text-align: left;
+  color: rgb(240, 242, 245);
+  /* background-color: blue; */
+}
+.item_0_time {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  /* flex: 1; */
+  height: 50%;
+  line-height: 550%;
+  text-align: left;
+  color: rgb(240, 242, 245);
+  position: absolute;
+  bottom: 15px;
+  /* background-color: blue; */
+}
 .item_1 {
   flex: 2;
+  position: relative;
 }
+
 .item_2 {
   flex: 2;
 }
@@ -663,6 +1000,17 @@ export default {
 }
 .class_2 {
   box-shadow: 0 3px 8px 6px rgba(167, 98, 20, 0.06);
+  position: relative;
+  /* background-color: pink; */
+}
+.time_picker{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+.el-date-picker{
+  cursor: pointer;
 }
 
 .class_3 {
@@ -695,15 +1043,30 @@ export default {
   margin-right: 30px;
 }
 .class_4 {
-  box-shadow: 0 3px 8px 6px rgba(167, 98, 20, 0.06);
+  /* box-shadow: 0 3px 8px 6px rgba(167, 98, 20, 0.06); */
+  /* background-color: #37e8fc; */
   height: 70vh;
-  background-color: pink;
+  width: 100%;
+  background-color: rgb(240, 242, 245);
+  display: flex;
+  flex-direction: row;
 }
 
 .record {
+  /* flex: 1; */
+  box-shadow: 0 3px 8px 6px rgba(167, 98, 20, 0.06);
+  margin-right: 30px;
   /* background-color: yellow; */
-  width: 50%;
+  /* width: 50%; */
   height: 70vh;
+  width: 50%;
+}
+.both_right {
+  border-radius: 10px;
+  box-shadow: 0 3px 8px 6px rgba(167, 98, 20, 0.06);
+  height: 100%;
+  /* background-color: #bfa; */
+  width: 50%;
 }
 .btn {
   position: absolute;
@@ -786,7 +1149,10 @@ label {
 }
 .has-gutter,
 .el-table__header-wrapper,
-.el-dialog__header {
+.el-dialog__header,
+.el-table_3_column_12,
+.is-leaf,
+.el-table__cell {
   line-height: 0 !important;
 }
 .el-table,
