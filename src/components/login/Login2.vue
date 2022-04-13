@@ -106,7 +106,18 @@
           ></el-input>
         </el-form-item> -->
 
-        <el-form-item label="省份" style="position: relative; left: 0px">
+
+
+
+
+
+
+
+
+
+        <el-form-item label="省份" 
+        style="position: relative; left: 0px">
+
           <el-select
             v-model="selectprovinceid"
             style="left: 0px; position: absolute; width: 620px"
@@ -114,15 +125,19 @@
             @change="cityid"
           >
             <el-option
-              v-for="(item, index) in province[0]"
+
+              v-for="(item,index) in province[0]"
+
               :key="index"
               :label="item.provinceName"
               :value="item.provinceId"
             ></el-option>
           </el-select>
+
         </el-form-item>
 
-        <el-form-item label="城市" style="position: relative; left: 0px">
+        <el-form-item label="城市" 
+        style="position: relative; left: 0px">
           <el-select
             v-model="cityId"
             style="left: 0px; position: absolute; width: 620px"
@@ -138,6 +153,8 @@
           </el-select>
         </el-form-item>
 
+
+
         <el-form-item prop="reason" label="申请理由">
           <el-input
             v-model="registerinfo.resolution"
@@ -147,7 +164,7 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="logoncancle">取 消</el-button>
         <el-button type="primary" @click="logon">确 定</el-button>
       </div>
     </el-dialog>
@@ -175,13 +192,15 @@ export default {
       isLogin: false,
       //注册信息
       registerinfo: {
-        userName: "一十四洲",
-        phoneNumber: "18980530858",
-        password2: "12138",
-        password1: "12138",
-        role: 1,
-        city: 1,
-        resolution: "测试",
+
+        userName: "",
+        phoneNumber: "",
+        password2: "",
+        password1: "",
+        role: '',
+        city: '',
+        resolution: "",
+
       },
 
       //这是登录的数据
@@ -191,13 +210,15 @@ export default {
       },
 
       //保存所有省份的id
-      province: [],
+
+      province:[],
       //选择的省份id
-      selectprovinceid: "",
+      selectprovinceid:'',
       //保存所有的城市list
-      city: [],
+      city:[],
       //选择的城市id
-      cityId: 0,
+      cityId:'',
+
     };
   },
   computed: {
@@ -209,11 +230,26 @@ export default {
     async login() {
       if (this.loginForm.phoneNumber.length != 11)
         this.$message.error("请输入正确的手机号");
-      // let res = await this.$request("post", "/user/login", this.loginForm, 1);
-      let res = await this.$request("post", "/user/login", this.loginForm, 0);
+
+      let res = await this.$request("post", "/user/login", this.loginForm, 1);
+      res = await this.$request("post", "/user/login", this.loginForm, 0);
       console.log(res, "我是登录");
+
+
       //将token保存到sessionStorage
       window.sessionStorage.setItem("token", res.data.data.token);
+      //将userid保存到sessionStorage
+      window.sessionStorage.setItem("userId", res.data.data.userId);
+      window.sessionStorage.setItem("userName", res.data.data.userName);
+      
+
+      //将登录人员的种类登记在vuex中
+      let role = res.data.data.role;
+      window.sessionStorage.setItem("role", role);
+      if (window.sessionStorage.getItem("role") == 1) {
+        this.$message.success("登录成功");
+      } else this.$message.success("管理员登录成功");
+      console.log(window.sessionStorage.getItem("token"));
 
       //将登录人员的种类登记在vuex中
       // this.pullUserInfo(res)
@@ -251,12 +287,14 @@ export default {
       // this.$message.success("登录成功");
       this.$store.commit("changeLogin", true);
       window.sessionStorage.setItem("login", true);
+
     },
     //清空按钮
     resetLoginForm() {
       this.loginForm = {};
     },
     async logon() {
+
       if (this.registerinfo.phoneNumber.length != 11) {
         this.$message.error("请输入正确的手机号");
         return;
@@ -266,29 +304,30 @@ export default {
         this.$message.error("密码不一致!");
         return;
       }
+      if (this.registerinfo.role!=1&&this.registerinfo.role!=2) {
+        this.$message.error("用户角色不正确!");
+        return;
+      }
 
-      let {
-        userName,
-        phoneNumber,
-        password2: password,
-        role,
-        resolution,
-      } = this.registerinfo;
-      let city = this.cityId;
+      let {userName,phoneNumber,password2:password,role,resolution} = this.registerinfo
+      let city = this.cityId
 
-      // 这里要发送登录的请求
+
+
       let res = await this.$request(
         "post",
         "/user/logon",
         {
-          userName: "一十四洲",
-          phoneNumber: "18980530858",
-          password: "12138",
-          role: 1,
-          city: 1,
-          resolution: "测试",
+
+        userName,
+        phoneNumber,
+        password,
+        role,
+        city,
+        resolution
         },
-        1
+        0
+
       );
       res = await this.$request(
         "post",
@@ -305,10 +344,41 @@ export default {
       );
       console.log(res);
 
+      console.log(res.data.code,'我是code');
+
+
+
       this.dialogFormVisible = false;
-      this.loginForm = {};
+      this.registerinfo = {};
+      this.loginForm={}
+
+      this.cityId=''
+      this.selectprovinceid=''
+      if(res.data.code==200)
       this.$message.success("请重新登录");
+      else
+      this.$message.warning('该手机号已经注册')
+
     },
+
+    logoncancle(){
+      this.dialogFormVisible = false;
+      this.registerinfo = {};
+      this.loginForm={}
+    },
+
+    //申请省份
+    async sheng(){
+      let num = 1
+      let nextPage = 2
+      while(nextPage!=0){
+      let res = await this.$request('post','/province/query',{pageNum:num++},0)
+      nextPage = res.data.data.nextPage
+      this.province.push(res.data.data.list)
+      }
+      
+    },
+
 
     //申请省份
     async sheng() {
@@ -348,7 +418,11 @@ export default {
   },
   created() {
     this.sheng();
+
   },
+  created(){
+    this.sheng()
+  }
 };
 </script>
 

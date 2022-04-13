@@ -15,7 +15,7 @@
         @blur="returninfo(1)"
       >
         <el-option
-          v-for="item in province"
+          v-for="item in province[0]"
           :key="item.value"
           :label="item.provinceName"
           :value="item.provinceId"
@@ -37,10 +37,10 @@
         @change="returninfo(0)"
       >
         <el-option
-          v-for="item in top_search_citylist"
+          v-for="item in top_search_citylist[0]"
           :key="item.value"
           :label="item.cityName"
-          :value="item.cityName"
+          :value="item.cityId"
         >
         </el-option>
       </el-select>
@@ -54,7 +54,11 @@
           @clear="recovertabledata"
         ></el-input>
         <el-button plain round @click="handlesearch">查找</el-button>
-        <el-button plain round @click="dialogFormVisible_add = true" v-if="this.role==2"
+        <el-button
+          plain
+          round
+          @click="dialogFormVisible_add = true"
+          v-if="this.role == 2"
           >添加企业</el-button
         >
         <el-button plain round @click="recovertabledata"
@@ -65,6 +69,8 @@
 
     <!-- 显示的table表 -->
     <el-table
+      v-loading="loading"
+      element-loading-text="信息正在加载中"
       :header-cell-style="{
         background: '#F3F4F7',
         color: '#555',
@@ -91,7 +97,7 @@
       >
       </el-table-column>
 
-      <el-table-column prop="eName" label="企业名称" width="100" align="center">
+      <el-table-column prop="eName" label="企业名称" width="150" align="center">
       </el-table-column>
       <el-table-column
         prop="creatTime"
@@ -103,11 +109,11 @@
       <el-table-column
         prop="provinceName"
         label="省份"
-        width="120"
+        width="80"
         align="center"
       >
       </el-table-column>
-      <el-table-column prop="cityName" label="市区" width="100" align="center">
+      <el-table-column prop="cityName" label="市区" width="80" align="center">
       </el-table-column>
       <el-table-column
         prop="eContact"
@@ -125,14 +131,18 @@
           <el-tag type="danger" v-else>软件生成数据</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" :width="role==2?240:100" align="center">
+      <el-table-column
+        label="操作"
+        :width="role == 2 ? 240 : 100"
+        align="center"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="primary"
             plain
             @click.stop="Edit(scope.$index, scope.row)"
-            v-if="role==2"
+            v-if="role == 2"
             >Edit</el-button
           >
           <el-button
@@ -140,7 +150,7 @@
             type="danger"
             plain
             @click.stop="Delete(scope.$index, scope.row)"
-            v-if="role==2"
+            v-if="role == 2"
             >Delete</el-button
           >
 
@@ -170,9 +180,9 @@
 
     <el-dialog title="修改企业" :visible.sync="dialogFormVisible" top="1vh">
       <el-form :model="editForm">
-        <el-form-item label="企业id" :label-width="formLabelWidth">
+        <el-form-item label="企业编号" :label-width="formLabelWidth">
           <el-input
-            v-model="editForm.eId"
+            v-model="editForm.eNumber"
             disabled
             autocomplete="off"
           ></el-input>
@@ -180,18 +190,15 @@
         <el-form-item label="企业名称" :label-width="formLabelWidth">
           <el-input v-model="editForm.eName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="企业编号" :label-width="formLabelWidth">
-          <el-input v-model="editForm.eNumber" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="所属省id" style="position: relative; left: 80px">
+        <el-form-item label="省份" style="position: relative; left: 0px">
           <el-select
             v-model="editForm.provinceId"
-            style="left: 40px; position: absolute; width: 425px"
+            style="left: 120px; position: absolute; width: 425px"
             placeholder="请选择省份"
             @change="cityid(1)"
           >
             <el-option
-              v-for="(item, index) in province"
+              v-for="(item, index) in province[0]"
               :key="index"
               :label="item.provinceName"
               :value="item.provinceId"
@@ -199,15 +206,15 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="城市" style="position: relative; left: 80px">
+        <el-form-item label="城市" style="position: relative; left: 0px">
           <el-select
             v-model="editForm.cityId"
-            style="left: 40px; position: absolute; width: 425px"
+            style="left: 120px; position: absolute; width: 425px"
             no-data-text="请先选择省份"
             placeholder="请选择城市"
           >
             <el-option
-              v-for="(item, index) in city"
+              v-for="(item, index) in city[0]"
               :key="index"
               :label="item.cityName"
               :value="item.cityId"
@@ -226,10 +233,10 @@
         <el-form-item label="联系方式" :label-width="formLabelWidth">
           <el-input v-model="editForm.eContact" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="状态" style="position: relative; left: 80px">
+        <el-form-item label="状态" style="position: relative; left: 0px">
           <el-select
             v-model="editForm.state"
-            style="left: 40px; position: absolute; width: 425px"
+            style="left: 120px; position: absolute; width: 425px"
             placeholder="请选择公司类别"
           >
             <el-option label="安全" value="安全"></el-option>
@@ -238,8 +245,12 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="成立时间" class="timepicker">
-          <el-col :span="8">
+        <el-form-item
+          label="成立时间"
+          class="timepicker"
+          style="position: relative; left: 0px"
+        >
+          <el-col class="timepickercol" :span="8">
             <el-date-picker
               type="date"
               placeholder="选择日期"
@@ -265,38 +276,46 @@
     </el-dialog>
 
     <el-dialog title="添加企业" :visible.sync="dialogFormVisible_add" top="1vh">
-      <el-form :model="addForm">
-        <el-form-item label="企业名称" :label-width="formLabelWidth">
+      <el-form :model="addForm" ref="addFormRef" :rules="rules">
+        <el-form-item
+          label="企业名称"
+          prop="eName"
+          :label-width="formLabelWidth"
+        >
           <el-input v-model="addForm.eName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="企业编号" :label-width="formLabelWidth">
+        <el-form-item
+          label="企业编号"
+          prop="eNumber"
+          :label-width="formLabelWidth"
+        >
           <el-input v-model="addForm.eNumber" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="省份" style="position: relative; left: 80px">
+        <el-form-item label="省份" style="position: relative; left: 0px">
           <el-select
             v-model="addForm.provinceId"
-            style="left: 40px; position: absolute; width: 425px"
+            style="left: 120px; position: absolute; width: 425px"
             placeholder="请选择省份"
             @change="cityid(0)"
           >
             <el-option
-              v-for="(item, index) in province"
+              v-for="(item, index) in province[0]"
               :key="index"
               :label="item.provinceName"
               :value="item.provinceId"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="城市" style="position: relative; left: 80px">
+        <el-form-item label="城市" style="position: relative; left: 0px">
           <el-select
             v-model="addForm.cityId"
-            style="left: 40px; position: absolute; width: 425px"
+            style="left: 120px; position: absolute; width: 425px"
             no-data-text="请先选择省份"
             placeholder="请选择城市"
           >
             <el-option
-              v-for="(item, index) in city"
+              v-for="(item, index) in city[0]"
               :key="index"
               :label="item.cityName"
               :value="item.cityId"
@@ -304,22 +323,34 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="企业介绍" :label-width="formLabelWidth">
+        <el-form-item
+          label="企业介绍"
+          prop="introduction"
+          :label-width="formLabelWidth"
+        >
           <el-input
             v-model="addForm.introduction"
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item label="排污口" :label-width="formLabelWidth">
+        <el-form-item
+          label="排污口编号"
+          prop="outputNum"
+          :label-width="formLabelWidth"
+        >
           <el-input v-model="addForm.outputNum" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="联系方式" :label-width="formLabelWidth">
+        <el-form-item
+          label="联系方式"
+          prop="eContact"
+          :label-width="formLabelWidth"
+        >
           <el-input v-model="addForm.eContact" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="状态" style="position: relative; left: 80px">
+        <el-form-item label="状态" style="position: relative; left: 0px">
           <el-select
             v-model="addForm.state"
-            style="left: 40px; position: absolute; width: 425px"
+            style="left: 120px; position: absolute; width: 425px"
             placeholder="请选择公司类别"
           >
             <el-option label="安全" value="安全"></el-option>
@@ -328,8 +359,12 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="成立时间" class="timepicker">
-          <el-col :span="8">
+        <el-form-item
+          label="成立时间"
+          class="timepicker"
+          style="position: relative; left: 0px"
+        >
+          <el-col class="timepickercol" :span="8">
             <el-date-picker
               type="date"
               placeholder="选择日期"
@@ -338,7 +373,7 @@
             ></el-date-picker>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-time-picker
               placeholder="选择时间"
               v-model="timeForm.date2"
@@ -348,7 +383,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible_add = false">取 消</el-button>
+        <el-button @click="cancleadd">取 消</el-button>
         <el-button type="primary" @click="add">确 定</el-button>
       </div>
     </el-dialog>
@@ -368,6 +403,26 @@ export default {
     });
   },
   data() {
+    var validateuserName = (rule, value, callback) => {
+      if (!value || value.trim() == "") {
+        return callback(new Error("企业名称不能为空"));
+      } else if (value.length < 1 || value.length > 20) {
+        return callback(new Error("名称长度为 1 - 20"));
+      } else callback();
+    };
+    var checkPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("手机号不能为空"));
+      } else {
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/;
+        console.log(reg.test(value));
+        if (reg.test(value)) {
+          callback();
+        } else {
+          return callback(new Error("请输入正确的手机号"));
+        }
+      }
+    };
     return {
       //获取到的所有公司数据
       allcompanyInfo: [],
@@ -384,30 +439,19 @@ export default {
       },
       //修改公司对话框和表单
       dialogFormVisible: false,
-      editForm: {
-        // eName: "测试公司",
-        // eNumber: "12138",
-        // provinceId: 1,
-        // introduction: "我是一只羊",
-        // outputNum: "12138",
-        // eContact: "18980530858",
-        // state: "良好",
-        // cityId: 1,
-        // creatTime: "2022-03-08 8:35:23",
-        // eId: 1,
-      },
+      editForm: {},
       editcopyform: {},
       //添加公司对话框和表单
       dialogFormVisible_add: false,
       addForm: {
         eName: "",
         eNumber: "",
-        provinceId: '',
+        provinceId: "",
         introduction: "",
         outputNum: "",
         eContact: "",
         state: "",
-        cityId: '',
+        cityId: "",
         creatTime: "",
       },
       //控制宽度
@@ -418,17 +462,28 @@ export default {
       top_search_citylist: [],
       top_search_city: "",
 
-      city: {
-        sheng: "四川省",
-        shi: "成都市",
-        xian: "新都区",
-      },
+      // city: {
+      //   sheng: "四川省",
+      //   shi: "成都市",
+      //   xian: "新都区",
+      // },
       /* 公司名称 */
       input: "",
       tableHeight: 0,
       value: "",
       currentPage: 1,
       pageSize: 10,
+      loading: false,
+
+      searchinfonum: 2,
+      searchnextpage: 2,
+      rules: {
+        eName: [{ required: true, validator: validateuserName, blur }],
+        eNumber: [{ required: true, message: "请输入企业编号", blur }],
+        introduction: [{ required: true, message: "请输入企业介绍", blur }],
+        outputNum: [{ required: true, message: "请输入排污口编号", blur }],
+        eContact: [{ required: true, validator: checkPhone, blur }],
+      },
     };
   },
   methods: {
@@ -440,42 +495,89 @@ export default {
       this.pageSize = val;
     },
     /* 当前页改变的时候 */
-    handleCurrentChange(val) {
+    async handleCurrentChange(val) {
       this.currentPage = val;
+      // this.$message.info('我触发了')
+
+      if (this.searchnextpage == 0) return;
+
+        let res = await this.$request(
+          "post",
+          "/enterprise/queryAll",
+          { pageNum: this.searchinfonum++ },
+          0
+        );
+        this.searchnextpage = res.data.data.nextPage;
+        this.allcompanyInfo.push(...res.data.data.list);
+        this.copyinfo.push(...res.data.data.list);
+      
+      console.log(this.allcompanyInfo, "我是懒加载");
+
+      
     },
     /* 处理搜索点击事件 */
-    handlesearch() {
+    async handlesearch() {
       if (this.top_search_city == "" && this.input == "") {
         this.$message.info("请填写城市或者公司名称");
         return;
       } else if (this.input != "" && this.top_search_city == "") {
-        let arr = this.allcompanyInfo.filter((item) => {
-          if (item.eName.indexOf(this.input) != -1 || item.eName == this.input)
-            return item;
-        });
-        this.allcompanyInfo = arr;
+        this.loading = true;
+        let num = 1;
+        let nextPage = 2;
+        while (nextPage) {
+          let res = await this.$request(
+            "post",
+            "/enterprise/query",
+            {
+              pageNum: num++,
+              eName: this.input,
+            },
+            0
+          );
+          nextPage = res.data.data.nextPage;
+          this.allcompanyInfo = res.data.data.list;
+        }
+        this.loading = false;
       } else if (this.input == "" && this.top_search_city != "") {
-        let arr = this.allcompanyInfo.filter((item) => {
-          if (
-            item.cityName.indexOf(this.top_search_city) != -1 ||
-            item.cityName == this.top_search_city
-          )
-            return item;
-        });
-        this.allcompanyInfo = arr;
+        this.loading = true;
+        let num = 1;
+        let nextPage = 2;
+        while (nextPage) {
+          let res = await this.$request(
+            "post",
+            "/enterprise/query",
+            {
+              pageNum: num++,
+              provinceId: this.top_search_province,
+              cityId: this.top_search_city,
+            },
+            0
+          );
+          nextPage = res.data.data.nextPage;
+          this.allcompanyInfo = res.data.data.list;
+        }
+        this.loading = false;
       } else {
-        let arr = this.allcompanyInfo.filter((item) => {
-          if (item.eName.indexOf(this.input) != -1 || item.eName == this.input)
-            return item;
-        });
-        let arr2 = arr.filter((item) => {
-          if (
-            item.cityName.indexOf(this.top_search_city) != -1 ||
-            item.cityName == this.top_search_city
-          )
-            return item;
-        });
-        this.allcompanyInfo = arr2;
+        //使用全部信息查找
+        this.loading = true;
+        let num = 1;
+        let nextPage = 2;
+        while (nextPage) {
+          let res = await this.$request(
+            "post",
+            "/enterprise/query",
+            {
+              pageNum: num++,
+              provinceId: this.top_search_province,
+              cityId: this.top_search_city,
+              eName: this.input,
+            },
+            0
+          );
+          nextPage = res.data.data.nextPage;
+          this.allcompanyInfo = res.data.data.list;
+        }
+        this.loading = false;
       }
     },
 
@@ -509,63 +611,81 @@ export default {
     },
     editcancel() {
       this.dialogFormVisible = false;
-      this.reload();
     },
 
     //查询city的id
     async cityid(value) {
+      console.log("我看看我到底什么时候输出");
       //每次改变都查询cityId
       if (value == 1) {
-        let res = await this.$request(
-          "post",
-          "/city/query",
-          {
-            provinceId: this.editForm.provinceId,
-            pageNum: 1,
-          },
-          0
-        );
-        console.log(res);
-        this.city = res.data.data.list;
+        let num = 1;
+        let nextpage = 2;
+        while (nextpage != 0) {
+          let res = await this.$request(
+            "post",
+            "/city/query",
+            {
+              provinceId: this.editForm.provinceId,
+              pageNum: num++,
+            },
+            0
+          );
+          nextpage = res.data.data.nextPage;
+          this.city = [];
+          this.city.push(res.data.data.list);
+          console.log(res, "我是城市res");
+        }
       } else if (value == 0) {
-        // console.log('我是添加',this.addForm.provinceId);
-        let res = await this.$request(
-          "post",
-          "/city/query",
-          {
-            provinceId: this.addForm.provinceId,
-            pageNum: 1,
-          },
-          0
-        );
-        console.log(res);
-        this.city = res.data.data.list;
+        let num = 1;
+        let nextpage = 2;
+        while (nextpage != 0) {
+          let res = await this.$request(
+            "post",
+            "/city/query",
+            {
+              provinceId: this.addForm.provinceId,
+              pageNum: num++,
+            },
+            0
+          );
+          nextpage = res.data.data.nextPage;
+          this.city = [];
+          this.city.push(res.data.data.list);
+          console.log(res, "我是城市res");
+        }
       } else {
-        let res = await this.$request(
-          "post",
-          "/city/query",
-          {
-            provinceId: this.top_search_province,
-            pageNum: 1,
-          },
-          0
-        );
-        console.log(res);
-        this.top_search_citylist = res.data.data.list;
+        let num = 1;
+        let nextpage = 2;
+        while (nextpage != 0) {
+          let res = await this.$request(
+            "post",
+            "/city/query",
+            {
+              provinceId: this.top_search_province,
+              pageNum: num++,
+            },
+            0
+          );
+          nextpage = res.data.data.nextPage;
+          this.top_search_citylist = [];
+          this.top_search_citylist.push(res.data.data.list);
+        }
       }
+      console.log(this.city, "我是城市");
     },
 
     //管理员修改企业
     async Editpush() {
+      console.log(this.editForm.provinceId, "我是省id", this.editForm.cityId);
       if (
         this.editForm.eName == "" ||
         this.editForm.eNumber == "" ||
-        //  this.editForm.provinceId==""||
+        this.editForm.provinceId == null ||
         this.editForm.introduction == "" ||
         this.editForm.outputNum == "" ||
         this.editForm.eContact == "" ||
         this.editForm.state == "" ||
-        //  this.editForm.cityId==""||
+        this.editForm.cityId == null ||
         this.editForm.eContact.length != 11 ||
         this.timeForm.date1 == "" ||
         this.timeForm.date2 == ""
@@ -582,7 +702,6 @@ export default {
       }-${this.timeForm.date1.getDate()}`;
       let time = `${this.timeForm.date2.getHours()}:${this.timeForm.date2.getMinutes()}:${this.timeForm.date2.getSeconds()}`;
       let alltime = `${year} ${time}`;
-      // console.log(alltime,'我是时间');
 
       // 赋值给editForm
       this.editForm.creatTime = alltime;
@@ -601,12 +720,12 @@ export default {
         creatTime,
       } = this.editForm;
 
-      // console.log(this.editForm);
+      console.log(this.editForm, "我是number");
       let res = await this.$request(
         "post",
         "/enterprise/update",
         {
-          eNumber:eId,
+          eName,
           eNumber,
           provinceId: Number(provinceId),
           introduction,
@@ -619,99 +738,79 @@ export default {
         0
       );
 
-      console.log(res,'enumber');
+      console.log(res, "enumber");
       this.reload();
     },
 
+    cancleadd() {
+      this.addForm = {};
+      this.dialogFormVisible_add = false;
+    },
     //管理员添加企业
     async add() {
-      if (
-        this.addForm.eName == "" ||
-        this.addForm.eNumber == "" ||
-        //  this.addForm.provinceId==""||
-        this.addForm.introduction == "" ||
-        this.addForm.outputNum == "" ||
-        this.addForm.eContact == "" ||
-        this.addForm.state == "" ||
-        //  this.addForm.cityId==""||
-        this.addForm.eContact.length != 11 ||
-        this.timeForm.date1 == "" ||
-        this.timeForm.date2 == ""
-      ) {
-        this.$message.warning("请填写所有信息并保证信息正确 !");
-        return;
-      }
-      // console.log(this.timeForm);
+      this.$refs.addFormRef.validate(async (valid) => {
+        if (valid) {
+          let year = `${this.timeForm.date1.getFullYear()}-${
+            this.timeForm.date1.getMonth() + 1
+          }-${this.timeForm.date1.getDate()}`;
+          let time = `${this.timeForm.date2.getHours()}:${this.timeForm.date2.getMinutes()}:${this.timeForm.date2.getSeconds()}`;
+          let alltime = `${year} ${time}`;
+          console.log(alltime);
+          this.addForm.creatTime = alltime;
 
-      let year = `${this.timeForm.date1.getFullYear()}-${
-        this.timeForm.date1.getMonth() + 1
-      }-${this.timeForm.date1.getDate()}`;
-      let time = `${this.timeForm.date2.getHours()}:${this.timeForm.date2.getMinutes()}:${this.timeForm.date2.getSeconds()}`;
-      let alltime = `${year} ${time}`;
-      console.log(alltime);
-      this.addForm.creatTime = alltime;
+          let {
+            eName,
+            eNumber,
+            provinceId,
+            introduction,
+            outputNum,
+            eContact,
+            state,
+            cityId,
+            creatTime,
+          } = this.addForm;
 
-      // console.log(this.addForm);
-
-      let {
-        eName,
-        eNumber,
-        provinceId,
-        introduction,
-        outputNum,
-        eContact,
-        state,
-        cityId,
-        creatTime,
-      } = this.addForm;
-
-      console.log(
-        'eName',eName,
-        "eNumber",eNumber,
-        "provinceId",provinceId,
-        'introduction',introduction,
-        'outputNum',outputNum,
-        'eContact',eContact,
-        'state',state,
-        'cityId',cityId,
-        'creatTime',creatTime,);
-
-      this.dialogFormVisible_add = false;
-      let res = await this.$request(
-        "post",
-        "/enterprise/add",
-        {
-          eName,
-          eNumber,
-          provinceId,
-          introduction,
-          outputNum,
-          eContact,
-          state,
-          cityId,
-          creatTime,
-        },
-        0
-      );
-      console.log(res);
-      this.reload()
+          this.dialogFormVisible_add = false;
+          let res = await this.$request(
+            "post",
+            "/enterprise/add",
+            {
+              eName,
+              eNumber,
+              provinceId,
+              introduction,
+              outputNum,
+              eContact,
+              state,
+              cityId,
+              creatTime,
+            },
+            0
+          );
+          // console.log(res);
+          this.reload();
+        } else {
+          this.$message.warning("请填写所有信息并保证信息正确 !");
+          return;
+        }
+      });
     },
 
     //管理员删除企业
     async Delete(index, row) {
       this.$confirm("确认删除?")
         .then(async () => {
-          let { eId } = row;
-          // console.log(eId , '我是eId');
+          let { eNumber } = row;
+          console.log(eId, eNumber, "我是eId");
           let res = await this.$request(
             "post",
             "/enterprise/delete",
             {
-              eNumber:eId,
+              eNumber,
             },
             0
           );
-          console.log(res,'删除enumber');
+          console.log(res, "删除enumber");
           this.$message.success("已删除");
           this.reload();
         })
@@ -725,7 +824,7 @@ export default {
         "post",
         "/collection/add",
         {
-          userId: 1,
+          userId: window.sessionStorage.getItem("userId"),
           eId,
         },
         0
@@ -733,22 +832,6 @@ export default {
       if (res.data.code == 200) this.$message.success("成功收藏");
       else this.$message.info("已收藏该公司");
     },
-
-    /* 城市选择器 */
-    // selected(data) {
-    //   this.city.sheng = data.province.value;
-    //   this.city.shi = data.city.value;
-    //   this.xian = data.area.value;
-    // },
-    // onChangeProvince(value) {
-    //   this.city.sheng = value.value;
-    // },
-    // onChangeCity(value) {
-    //   this.city.shi = value.value;
-    // },
-    // onChangeArea(value) {
-    //   this.xian = value.value;
-    // },
 
     // 单击单元格跳转到相应页面
     clickcell(row) {
@@ -759,6 +842,7 @@ export default {
           companyInfo: row,
         },
       });
+       this.$store.commit('changepath','/home/data')
       this.$store.commit("changeFreeze");
       window.sessionStorage.setItem("freeze", 0);
       // 单击之后flag置为1
@@ -766,55 +850,54 @@ export default {
 
       // 把eid保存到session中
       window.sessionStorage.setItem("eId", row.eId);
+      window.sessionStorage.setItem("eNumber", row.eNumber);
     },
 
     //获取公司的所有数据
     async allInfo() {
-      let num = 1;
-      let nextpage = 2;
-      while (nextpage != 0) {
-        let res = await this.$request(
-          "post",
-          "/enterprise/queryAll",
-          { pageNum: num++ },
-          0
-        );
-        nextpage = res.data.data.nextPage;
-        this.allcompanyInfo.push(...res.data.data.list);
-        this.copyinfo.push(...res.data.data.list);
-        console.log(this.allcompanyInfo);
-        console.log(res);
-      }
-      // console.log(this.allcompanyInfo);
+      let res = await this.$request(
+        "post",
+        "/enterprise/queryAll",
+        { pageNum: 1 },
+        0
+      );
+      this.allcompanyInfo.push(...res.data.data.list);
+      this.copyinfo.push(...res.data.data.list);
+
       // //把返回的数据保存到store中
       this.$store.commit("changeTableData", this.allcompanyInfo);
     },
 
     // 查询省id
     async qwer() {
-      let res = await this.$request(
-        "post",
-        "/province/query",
-        {
-          pageNum: 1,
-        },
-        0
-      );
-      this.province = res.data.data.list;
-      console.log(this.province);
+      let num = 1;
+      let nextpage = 2;
+      while (nextpage != 0) {
+        let res = await this.$request(
+          "post",
+          "/province/query",
+          {
+            pageNum: num++,
+          },
+          0
+        );
+        nextpage = res.data.data.nextPage;
+        this.province.push(res.data.data.list);
+        console.log(res, "我是resid", this.province);
+      }
     },
   },
   created() {
     this.allInfo();
     this.qwer();
 
-    console.log('我是role' , this.role);
+    console.log("我是role", this.role);
   },
-  computed:{
-    role(){
-      return window.sessionStorage.getItem('role')
-    }
-  }
+  computed: {
+    role() {
+      return window.sessionStorage.getItem("role");
+    },
+  },
 };
 </script>
 
@@ -883,9 +966,18 @@ export default {
 }
 </style>
 <style>
+.el-table th.el-table__cell {
+  background-color: rgb(243, 244, 247) !important;
+}
+.timepickercol {
+  margin-left: 50px;
+  /* background-color: aqua; */
+}
+.item_3_span,
+label {
+  text-align: left !important;
+}
 .v-modal {
-  /* background-color: white;
-opacity: 1; */
   display: none;
 }
 .has-gutter,

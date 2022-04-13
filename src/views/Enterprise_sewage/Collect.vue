@@ -70,6 +70,7 @@ export default {
     //点击跳转
     async routerpath(value, eId) {
       if (value == 0) {
+        this.$store.commit("changepath",'/home/data');
           //跳转过去之前 , 要把公司的数据传递给它
           let res =await this.$request("post", "/enterprise/query", {
             eId,
@@ -84,12 +85,19 @@ export default {
             companyInfo:res.data.data.list[0]
           }
         });
+        
       } else if(value==1){
         window.sessionStorage.setItem("eId", eId);
+        this.$store.commit("changepath",'/home/enterprise_information');
         this.$router.push("/home/enterprise_information");
+        
       }
       else
+      {
+      this.$store.commit("changepath",'/home/search');
       this.$router.push('/home/search')
+      
+      }
     },
     //点击删除
     async handletap(type, eId) {
@@ -98,7 +106,7 @@ export default {
           "post",
           "/collection/cancel",
           {
-            userId: 1,
+            userId: window.sessionStorage.getItem('userId'),
             eId,
           },
           0
@@ -113,19 +121,23 @@ export default {
     },
     //请求用户收藏的所有企业
     async getallcollect() {
+      let num = 1;
+      let nextpage = 2;
+      while (nextpage != 0) {
       let res = await this.$request(
         "post",
         "/collection/query",
         {
-          userId: 1,
-          pageNum: 1,
+          userId: window.sessionStorage.getItem('userId'),
+          pageNum: num++,
         },
         0
       );
-      this.allcollectinfo = res.data.data.list;
-      this.allcollectinfocopy = res.data.data.list;
-      this.showinfo = res.data.data.list;
-      console.log(this.allcollectinfo);
+      nextpage = res.data.data.nextPage;
+      this.allcollectinfo.push(...res.data.data.list)
+      this.allcollectinfocopy.push(...res.data.data.list)
+      this.showinfo.push(...res.data.data.list)
+      }
     },
     //搜索功能
     SearchInfo() {

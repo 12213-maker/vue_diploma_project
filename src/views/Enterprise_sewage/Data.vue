@@ -26,9 +26,13 @@
     <div class="all">
       <div class="classitem class_0">
         <div class="item_item item_0" @click="changepath">
-          <div class="item_0_info" v-if="this.$store.state.flag === 1">
+          <div class="item_0_info" v-if="this.falg_id != null">
             <div class="imgshow">
-              <img class="img321" :src="this.searchinfo.imgurl" alt="" />
+              <img
+                class="img321"
+                src="../../../public/img/imgcompany.jpg"
+                alt=""
+              />
             </div>
             <div class="right">
               <div class="item_0_name">{{ this.searchinfo.eName }}</div>
@@ -39,7 +43,11 @@
           </div>
           <div class="item_0_info" v-else>
             <div class="imgshow">
-              <img :src="this.first_companies.imgurl" class="img321" alt="" />
+              <img
+                src="../../../public/img/imgcompany.jpg"
+                class="img321"
+                alt=""
+              />
             </div>
             <div class="right">
               <div class="item_0_name">{{ this.first_companies.eName }}</div>
@@ -69,7 +77,7 @@
               <circle cx="50" cy="50" r="17" pathLength="100" class="six" />
             </g>
           </svg>
-          <div class="item_1_info" v-if="this.$store.state.flag === 1">
+          <div class="item_1_info" v-if="this.falg_id != null">
             <div class="item_0_contact">
               联系方式: {{ this.searchinfo.eContact }}
             </div>
@@ -111,7 +119,7 @@
               <circle cx="50" cy="50" r="17" pathLength="100" class="six" />
             </g>
           </svg>
-          <div class="item_1_info" v-if="this.$store.state.flag === 1">
+          <div class="item_1_info" v-if="this.falg_id != null">
             <div class="item_0_contact">
               排污口: {{ this.searchinfo.outputNum }}
             </div>
@@ -159,9 +167,9 @@
       </div>
       <div class="classitem class_2">
         <div id="box" class="contain"></div>
-        <div class="time_picker">
+        <div class="time_picker" @click="infoToUser">
           <el-date-picker
-          size="mini"
+            size="mini"
             v-model="chosetime"
             type="datetimerange"
             range-separator="至"
@@ -173,8 +181,18 @@
         </div>
       </div>
       <div class="classitem class_4">
-        <div class="record">
-          <el-table :data="Sewage_data" style="width: 100%" height="70vh">
+        <div class="record" style="display: relative">
+          <div
+            class="lookmore"
+            style="display: absolute; top: 0; right: 0"
+            
+          >
+            <div @click="changepath" class="lookmore2">
+              查看更多<i class="el-icon-caret-right"></i>
+            </div>
+          </div>
+
+          <el-table :data="Violation_record" style="width: 100%" height="70vh">
             <el-table-column
               type="index"
               align="center"
@@ -183,39 +201,46 @@
             >
             </el-table-column>
             <el-table-column
-              prop="outputVolume"
-              label="SO2浓度"
+              prop="createTime"
+              label="违规日期"
               align="center"
-              width="100"
+              width="230"
             >
             </el-table-column>
             <el-table-column
-              prop="date"
-              label="日期"
+              prop="state"
+              fixed="right"
+              label="状态"
               align="center"
-              width="200"
+              width="230"
             >
-            </el-table-column>
-            <el-table-column fixed="right" label="状态" width="150">
-              <template>
+              <template slot-scope="scope">
                 <el-button
                   class="item_btn"
-                  v-if="!isOOS"
-                  type="success"
-                  size="mini"
+                  v-if="scope.row.state == 1"
+                  type="warning"
+                  size="small"
                   plain
-                  >浓度正常</el-button
+                  >软件伪造数据</el-button
                 >
                 <el-button
                   class="item_btn"
                   v-else
                   type="danger"
-                  size="mini"
                   plain
-                  >浓度超标</el-button
+                  size="small"
+                  >数据伪造</el-button
                 >
               </template>
             </el-table-column>
+            <!-- <div
+              class="lookmore"
+              @click="changepath"
+              slot="append"
+              style="height: 30px; lineheight: 30px;"
+            >
+              <div @click="changepath">查看更多<i class="el-icon-caret-right"></i></div>
+            </div> -->
           </el-table>
         </div>
         <div class="both_right" id="echarts4"></div>
@@ -247,59 +272,31 @@ export default {
       isOOS: false,
       dialogTableVisible: false,
 
-      forecast: [10, 11, 13, 11, 12, 12, 9, 13, 10, 14],
-      real: [13, 15, 19, 16, 14, 15, 14, 16, 15, 12],
+      // forecast: [10, 11, 13, 11, 12, 12, 9, 13, 10, 14],
+      // real: [13, 15, 19, 16, 14, 15, 14, 16, 15, 12],
 
-      //真实排污查询data(calss_4中左边的数据)
-      Sewage_data: [
-        {
-          date: "2016-05-02",
-          outputVolume: 2,
-        },
-        {
-          date: "2016-05-04",
-          outputVolume: 3,
-        },
-        {
-          date: "2016-05-01",
-          outputVolume: 4,
-        },
-        {
-          date: "2016-05-03",
-          outputVolume: 3,
-        },
-        {
-          date: "2016-05-03",
-          outputVolume: 9,
-        },
-        {
-          date: "2016-05-03",
-          outputVolume: 4,
-        },
-        {
-          date: "2016-05-03",
-          outputVolume: 6,
-        },
-        {
-          date: "2016-05-03",
-          outputVolume: 8,
-        },
-        {
-          date: "2016-05-03",
-          outputVolume: 5,
-        },
-        {
-          date: "2016-05-03",
-          outputVolume: 1,
-        },
-      ],
+      //企业的违规记录
+      Violation_record: [],
+      //触底的时候停止无限加载
+      disabled123: false,
+      //加载的页数
+      num: 0,
+
       //真实排污数据
       show_data: [],
+
+      //预测排污数据
+      forcastinfo_data: [],
+      forcastinfo_name: [],
 
       //所有公司(申请所有的公司以获取第一个公司的数据)
       all_companies: {},
       //第一个公司的数据:
       first_companies: {},
+      eId: "",
+      default_eid: "",
+      eNumber: "",
+      falg_id: null,
 
       /* 是否收藏 */
       iscollect: false,
@@ -316,40 +313,22 @@ export default {
       Echarts_1_serieslist: [],
 
       //第一张表上的选择时间
-      chosetime:'',
-
+      chosetime: "",
+      //第一张表的选择时间
+      timelist: [],
 
       //下面三张表
-      Echarts_show_1:{
-        name:'',
-        data:[],
+      Echarts_show_1: {
+        name: "",
+        data: [],
       },
-      Echarts_show_2:{
-        name:'',
-        data:[],
+      Echarts_show_2: {
+        name: "",
+        data: [],
       },
-      Echarts_show_3:{},
-      name:'',
-      data:[],
-
-
-    };
-  },
-  async mounted() {
-    // this.Echarts();
-    this.Echarts1();
-    this.Echarts2();
-    this.Echarts3();
-    this.Echarts4();
-
-    /* 图表响应式 */
-    let _this = this;
-    window.onresize = function () {
-      _this.mycharts.resize();
-      _this.mycharts1.resize();
-      _this.mycharts2.resize();
-      _this.mycharts3.resize();
-      _this.mycharts4.resize();
+      Echarts_show_3: {},
+      name: "",
+      data: [],
     };
   },
   methods: {
@@ -359,37 +338,38 @@ export default {
       this.mycharts = this.$echarts.init(document.getElementById("box"));
       let option = {
         title: {
-          text: "真实污数据",
+          text: "真实排污数据",
         },
         tooltip: {
           trigger: "axis",
         },
         legend: {
+          left: "10%",
           data: this.All_sewage_name,
         },
         grid: {
           left: "3%",
           right: "4%",
-          bottom: "3%",
+          bottom: "5%",
           containLabel: true,
         },
         xAxis: {
+          axisTick: {
+            show: false,
+          },
           type: "category",
           boundaryGap: false,
-          data: [
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-            "Sun",
-            "Sun",
-            "Sun",
-            "Sun",
-          ],
+          data: this.timelist,
         },
         yAxis: {
+          axisLabel: {
+            // formatter: "{value} °C",
+            color: "rgb(48, 65, 86)",
+          },
+          axisLine: {
+            show: true,
+            color: "rgb(72, 171, 219)",
+          },
           type: "value",
         },
         series: this.Echarts_1_serieslist,
@@ -402,36 +382,26 @@ export default {
     Echarts1() {
       this.mycharts1 = this.$echarts.init(document.getElementById("echarts1"));
       let option = {
-        title:{
-          text:this.Echarts_show_1.name,
+        title: {
+          text: this.Echarts_show_1.name || "暂无数据",
+          textStyle: {
+            color: "white",
+          },
         },
-        // legend: {
-        //   top: "bottom",
-        // },
-        // tooltip: {
-        //   trigger: "item",
-        //   formatter: "{a} <br/>{b} : {c} ({d}%)",
-        // },
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)",
+        },
         series: [
           {
-            name: "Nightingale Chart",
+            name: this.Echarts_show_1.name,
             type: "pie",
             radius: [20, 100],
-            center: ["50%", "45%"],
-            roseType: "area",
+            center: ["50%", "50%"],
             itemStyle: {
               borderRadius: 8,
             },
-            data: [
-              { value: 40, name: "rose 1" },
-              { value: 38, name: "rose 2" },
-              { value: 32, name: "rose 3" },
-              { value: 30, name: "rose 4" },
-              { value: 28, name: "rose 5" },
-              { value: 26, name: "rose 6" },
-              { value: 22, name: "rose 7" },
-              { value: 18, name: "rose 8" },
-            ],
+            data: this.Echarts_show_1.data,
           },
         ],
       };
@@ -441,14 +411,26 @@ export default {
     Echarts2() {
       this.mycharts2 = this.$echarts.init(document.getElementById("echarts2"));
       let option = {
+        title: {
+          text: this.Echarts_show_2.name || "暂无数据",
+          textStyle: {
+            color: "white",
+          },
+        },
         tooltip: {
           trigger: "axis",
         },
-        legend: {
-          data: ["Rainfall", "Evaporation"],
-        },
+        // legend: {
+        //   data: ["Rainfall", "Evaporation"],
+        // },
         xAxis: [
           {
+            axisLabel: {
+              rotate: -45,
+              textStyle: {
+                color: "#999",
+              },
+            },
             type: "category",
             data: ["-4", "-3", "-2", "-1", "today", "1", "2", "3", "4", "5"],
           },
@@ -460,14 +442,9 @@ export default {
         ],
         series: [
           {
-            name: "real",
+            name: this.Echarts_show_2.name,
             type: "bar",
-            data: this.real,
-          },
-          {
-            name: "forecast",
-            type: "bar",
-            data: this.forecast,
+            data: this.Echarts_show_2.data,
           },
         ],
       };
@@ -477,29 +454,42 @@ export default {
     Echarts3() {
       this.mycharts3 = this.$echarts.init(document.getElementById("echarts3"));
       let option = {
+        title: {
+          text: this.Echarts_show_3.name || "暂无数据",
+          textStyle: {
+            color: "white",
+          },
+        },
         radar: {
-          // shape: 'circle',
           indicator: [
-            { name: "Sales", max: 6500 },
-            { name: "Administration", max: 16000 },
-            { name: "Information Technology", max: 30000 },
-            { name: "Customer Support", max: 38000 },
-            { name: "Development", max: 52000 },
-            { name: "Marketing", max: 25000 },
+            { name: -5 },
+            { name: -4 },
+            { name: -3 },
+            { name: -2 },
+            { name: -1 },
+            { name: "today" },
+            { name: 1 },
+            { name: 2 },
+            { name: 3 },
+            { name: 4 },
           ],
         },
         series: [
           {
+            itemStyle: {
+              //此属性的颜色和下面areaStyle属性的颜色都设置成相同色即可实现
+              color: "#5840D4",
+              borderColor: "#5840D4",
+            },
+            areaStyle: {
+              color: "#5840D4",
+            },
             name: "Budget vs spending",
             type: "radar",
             data: [
               {
-                value: [4200, 3000, 20000, 35000, 50000, 18000],
+                value: this.Echarts_show_3.data || null,
                 name: "Allocated Budget",
-              },
-              {
-                value: [5000, 14000, 28000, 26000, 42000, 21000],
-                name: "Actual Spending",
               },
             ],
           },
@@ -518,24 +508,19 @@ export default {
           trigger: "axis",
         },
         legend: {
-          right: "0%",
+          left: "120px",
+          data: this.forcastinfo_name,
         },
         grid: {
           top: "50px",
           left: "50px",
-          right: "15px",
+          right: "35px",
           bottom: "50px",
         },
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["-4", "-3", "-2", "-1", "today", "1", "2", "3", "4", "5"],
-          axisLabel: {
-            color: "rgb(72, 171, 219)",
-          },
-          axisTick: {
-            show: false,
-          },
+          data: ["today", "tomorrow", "acquired"],
         },
         yAxis: {
           type: "value",
@@ -548,21 +533,7 @@ export default {
             color: "rgb(72, 171, 219)",
           },
         },
-        series: [
-          {
-            name: "real",
-            type: "line",
-            data: this.real,
-          },
-          {
-            name: "forecast",
-            type: "line",
-            data: this.forecast,
-            markPoint: {
-              data: [{ name: "周最低", value: -2, xAxis: 1, yAxis: -1.5 }],
-            },
-          },
-        ],
+        series: this.forcastinfo_data,
       };
       this.mycharts4.setOption(option);
     },
@@ -583,73 +554,43 @@ export default {
       } else {
         //在这里要阻止事件冒泡 ， click.stop
         this.$router.push("/home/search");
+        this.$store.commit("changepath", "/home/search");
       }
     },
 
     //点击收藏
     async handletap(value) {
-      /* 要判断是否收藏此公司 */
-      // console.log(value);
+      let eId = this.eId || this.default_eid;
+
+      console.log(eId, "我是收藏中的eId");
+
       if (value) {
         //判断是不是默认的公司
-        if (this.$store.state.flag === 1) {
-          // console.log(this.searchinfo);
-          // 订阅此企业
-          let res = await this.$request(
-            "post",
-            "/collection/add",
-            {
-              userId: 1,
-              eId: this.searchinfo.eId,
-            },
-            0
-          );
-          // console.log(res,'search');
-        } else {
-          let res = await this.$request(
-            "post",
-            "/collection/add",
-            {
-              userId: 1,
-              eId: this.first_companies.eId,
-            },
-            0
-          );
-          // console.log(res,'默认');
-        }
+        await this.$request(
+          "post",
+          "/collection/add",
+          {
+            userId: window.sessionStorage.getItem("userId"),
+            eId,
+          },
+          0
+        );
 
         this.iscollect = true;
         this.$message.success("成功收藏");
         this.$store.commit("changeIsCollect", true);
         this.judgecollect = 1;
-        // console.log(this.iscollect);
       } else {
         //判断是不是默认的公司
-        if (this.$store.state.flag === 1) {
-          // console.log(this.searchinfo);
-          // 取消订阅此企业
-          let res = await this.$request(
-            "post",
-            "/collection/cancel",
-            {
-              userId: 1,
-              eId: this.searchinfo.eId,
-            },
-            0
-          );
-          // console.log(res,'search');
-        } else {
-          let res = await this.$request(
-            "post",
-            "/collection/cancel",
-            {
-              userId: 1,
-              eId: this.first_companies.eId,
-            },
-            0
-          );
-          // console.log(res,'默认');
-        }
+        await this.$request(
+          "post",
+          "/collection/add",
+          {
+            userId: window.sessionStorage.getItem("userId"),
+            eId,
+          },
+          0
+        );
 
         this.iscollect = false;
         this.$message.info("取消收藏");
@@ -657,110 +598,106 @@ export default {
         this.judgecollect = 0;
       }
       this.iscollect = !this.iscollect;
-
-      // console.log(this.iscollect);
-      // this.reload()
-    },
-
-    //获取所有企业
-    async getallinfo() {
-      let res = await this.$request(
-        "post",
-        "/enterprise/queryAll",
-        { pageNum: 1 },
-        0
-      );
-      // console.log(res);
-      this.all_companies = res.data.data.list;
-      this.first_companies = this.all_companies[0];
-
-      // 获取到了之后就传到vuex上去 , 方便公司简介的时候备用
-      // this.$store.commit('change_first_companies',this.first_companies)
-      // 把eid上传到session
-      window.sessionStorage.setItem("default_eid", this.first_companies.eId);
-    },
-
-    //查询企业的真实排污数据
-    async searchinfo1() {
-      let res = await this.$request(
-        "post",
-        "/data/query",
-        {
-          eId: 3,
-          pageNum: 1,
-        },
-        0
-      );
-      // console.log(res);
-      // this.Sewage_data = res.data.list;
-      // this.Sewage_data.forEach((item) => {
-      //   this.show_data.push(item.outputVolume);
-      // });
-      // console.log(this.show_data,'我是排污数据');
     },
 
     //查询用户是否收藏该企业
     async iscollect121138() {
-      let eId =
-        window.sessionStorage.getItem("eId") ||
-        window.sessionStorage.getItem("default_eid");
+      let eId = this.eId || this.default_eid;
       let res = await this.$request(
         "post",
         "/collection/isCollected",
         {
-          userId: 1,
+          userId: window.sessionStorage.getItem("userId"),
           eId,
         },
         0
       );
-      // console.log(res);
-      //1 订阅 , 0 未订阅
       this.judgecollect = res.data.data;
-      // console.log('是否订阅',this.judgecollect==0?'未订阅':"订阅");
     },
 
     changepath() {
-      this.$router.push("/home/enterprise_information");
+      // this.$router.push("/home/enterprise_information");
+      this.$router.push({
+        path: "/home/enterprise_information",
+        query: {
+          companyInfo: this.searchinfo || this.first_companies,
+        },
+      });
+      this.$store.commit("changepath", "/home/enterprise_information");
     },
 
     //先暂时获取一段时间的污染物的数据
     async getContaminantData() {
+      let eId = this.eId || this.default_eid; //只需要把下面的eNumber的值改成eid
+
+      let data = new Date();
+      let left_time = `${data.getFullYear()}-${data.getMonth() + 1}-${
+        data.getDate() - 5
+      } ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`;
+
+      // console.log(left_time, "我是左边的时间");
+
+      let right_time = `${data.getFullYear()}-${data.getMonth() + 1}-${
+        data.getDate() + 4
+      } ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`;
+
+      // console.log(right_time, "我是右边的时间");
+
+      //请求的时候使用左边的时间left_time和右边的时间right_time来
       let res4 = await this.$request(
         "post",
         "/data/query/getContaminantData",
         {
-          eNumber: 273,
-          startTime: "2021-01-20 00:00:00",
-          endTime: "2021-01-30 00:00:00",
+          eNumber: 1,
+          startTime: "2021-10-01 0:0:0",
+          endTime: "2021-10-11 0:0:0",
         },
         0
       );
 
-      
+      console.log(res4, "我是真实");
+
+      //设置时间的显示
+      this.timelist = [
+        "2021-10-01",
+        "2021-10-02",
+        "2021-10-03",
+        "2021-10-04",
+        "2021-10-05",
+        "2021-10-06",
+        "2021-10-07",
+        "2021-10-08",
+        "2021-10-09",
+        "2021-10-10",
+      ];
 
       this.All_sewage = res4.data.data;
 
-      console.log(this.All_sewage, "我是全部数据");
-      console.log(Object.keys(this.All_sewage), "我是全部数据的属性名");
+      // console.log(this.All_sewage, "我是全部数据");
+      // console.log(Object.keys(this.All_sewage), "我是全部数据的属性名");
       //我只需要前三个属性名
-      let attr1 = Object.keys(this.All_sewage)[0]
-      let attr2 = Object.keys(this.All_sewage)[1]
-      let attr3 = Object.keys(this.All_sewage)[2]
+      let attr1 = Object.keys(this.All_sewage)[0];
+      let attr2 = Object.keys(this.All_sewage)[1];
+      let attr3 = Object.keys(this.All_sewage)[2];
 
-      this.Echarts_show_1.data = this.All_sewage[Object.keys(this.All_sewage)[0]]
-      this.Echarts_show_1.name = Object.keys(this.All_sewage)[0]
+      //这是表一的数据
+      this.Echarts_show_1.data =
+        this.All_sewage[Object.keys(this.All_sewage)[0]];
+      this.Echarts_show_1.name = Object.keys(this.All_sewage)[0];
+      //处理表一的数据
+      this.Echarts_show_1.data = this.Echarts_show_1.data.map((item, index) => {
+        return { value: item, name: index + 1 };
+      });
 
-      this.Echarts_show_2.data = this.All_sewage[Object.keys(this.All_sewage)[1]]
-      this.Echarts_show_2.name = Object.keys(this.All_sewage)[1]
+      //表二的数据
+      this.Echarts_show_2.data =
+        this.All_sewage[Object.keys(this.All_sewage)[1]];
+      this.Echarts_show_2.name = Object.keys(this.All_sewage)[1];
 
-      this.Echarts_show_3.data = this.All_sewage[Object.keys(this.All_sewage)[2]]
-      this.Echarts_show_3.name = Object.keys(this.All_sewage)[2]
-
-    
-
-      console.log(this.Echarts_show_1,'表一');
-      console.log(this.Echarts_show_2,'表二');
-      console.log(this.Echarts_show_3,'表三');
+      //表三的数据
+      this.Echarts_show_3.data =
+        this.All_sewage[Object.keys(this.All_sewage)[3]];
+      this.Echarts_show_3.name = Object.keys(this.All_sewage)[3];
 
       for (let i in this.All_sewage) {
         this.All_sewage_name.push(i);
@@ -776,35 +713,294 @@ export default {
           data: that.All_sewage_data[i],
         });
       }
+
+      // console.log(this.Echarts_1_serieslist, "我是初始化的数据");
+    },
+
+    //点击时间选择器的时候提醒用户
+    infoToUser() {
+      const h = this.$createElement;
+
+      this.$notify({
+        title: "提示",
+        message: h(
+          "i",
+          { style: "color: teal" },
+          "请在 2020-1-1 至 2021-12-29 之间进行选择"
+        ),
+        duration: 5000,
+      });
     },
     //第一张表选择时间改变的时候触发
-    async timepickerchange(value){
+    async timepickerchange(value) {
+      let startTime = `${value[0].getFullYear()}-${
+        value[0].getMonth() + 1
+      }-${value[0].getDate()} ${value[0].getHours()}:${value[0].getMinutes()}:${value[0].getSeconds()}`;
+      let endTime = `${value[1].getFullYear()}-${
+        value[1].getMonth() + 1
+      }-${value[1].getDate()} ${value[1].getHours()}:${value[1].getMinutes()}:${value[1].getSeconds()}`;
 
-      let startTime = `${value[0].getFullYear()}-${value[0].getMonth()+1}-${value[0].getDate()} ${value[0].getHours()}:${value[0].getMinutes()}:${value[0].getSeconds()}`
-      let endTime = `${value[1].getFullYear()}-${value[1].getMonth()+1}-${value[1].getDate()} ${value[1].getHours()}:${value[1].getMinutes()}:${value[1].getSeconds()}`
-      let res = await this.$request(
+      //截取年份
+      let time1 = startTime.split(" ")[0].toString().split("-");
+      let time1_year = Number(time1[0]);
+      let time1_month = Number(time1[1]);
+      let time1_day = Number(time1[2]);
+      let time2 = endTime.split(" ")[0].toString().split("-");
+      let time2_year = Number(time2[0]);
+      let time2_month = Number(time2[1]);
+      let time2_day = Number(time2[2]);
+
+      if (time1_year < 2020 || time2_year > 2021) {
+        this.$message.warning("请在 2020-1-1 至 2021-12-29 之间进行选择");
+        return;
+      }
+
+      let res4 = await this.$request(
         "post",
         "/data/query/getContaminantData",
         {
-          eNumber: 273,
+          eNumber: 1,
           startTime,
           endTime,
         },
         0
       );
+      let all = res4.data.data;
+      let a = [];
+      let b = [];
+      for (let i in all) {
+        a.push(i);
+        let series = {
+          name: i,
+          type: "line",
+          data: all[i],
+        };
+        b.push(series);
+      }
+      //重新渲染大图表
+      this.mycharts.setOption({
+        series: b,
+        legend: {
+          data: a,
+        },
+        xAxis: {
+          data: [time1, "1", "2", "3", "4", "5", "6", "7", "8", time2],
+        },
+      });
 
-      console.log(res);
+      //那我就给这里显示最后面的三个数据
+      //这是三个属性
+      let Echarts_1 = {
+        name: [],
+        data: [],
+      };
+      //这是返回的所有属性的名字
+      let arr_name = Object.keys(all);
+      Echarts_1.name = arr_name[0];
+      //饼图的data格式是[{value:  , name:  },{value:  , name:  }]
+      Echarts_1.data = all[arr_name[0]].map((item, index) => {
+        if (index == 0) return { value: item, name: startTime.split(" ")[0] };
+        if (index == all[arr_name[0]].length - 1)
+          return { value: item, name: endTime.split(" ")[0] };
+        return { value: item, name: index + 1 };
+      });
+      // //重新渲染下面的三个图表中的第一个图表
+      this.mycharts1.setOption({
+        title: {
+          text: `${Echarts_1.name} ${startTime.split(" ")[0]}` || "暂无数据",
+        },
+        series: [
+          {
+            name: Echarts_1.name,
+            data: Echarts_1.data,
+          },
+        ],
+      });
 
+      let Echarts_2 = {
+        name: [],
+        data: [],
+      };
+      Echarts_2.name = arr_name[1];
+      Echarts_2.data = all[arr_name[0]];
 
+      this.mycharts2.setOption({
+        title: {
+          text: `${Echarts_2.name} ${startTime.split(" ")[0]}` || "暂无数据",
+        },
+        series: [
+          {
+            name: Echarts_2.name,
+            data: Echarts_2.data,
+          },
+        ],
+        xAxis: [
+          {
+            data: [
+              startTime.split(" ")[0],
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              endTime.split(" ")[0],
+            ],
+          },
+        ],
+      });
+
+      //现在来设置表三
+      let Echarts_3 = {
+        name: [],
+        data: [],
+      };
+      Echarts_3.name = arr_name[3];
+      Echarts_3.data = all[arr_name[3]];
+      this.mycharts3.setOption({
+        radar: {
+          indicator: [
+            { name: startTime.split(" ")[0] },
+            { name: 1 },
+            { name: 2 },
+            { name: 3 },
+            { name: 4 },
+            { name: 5 },
+            { name: 6 },
+            { name: 7 },
+            { name: 8 },
+            { name: endTime.split(" ")[0] },
+          ],
+        },
+        title: {
+          text: `${Echarts_2.name} ${startTime.split(" ")[0]}` || "暂无数据",
+        },
+        series: [
+          {
+            name: "Budget vs spending",
+            type: "radar",
+            data: [
+              {
+                value: Echarts_3.data || null,
+                name: "Allocated Budget",
+              },
+            ],
+          },
+        ],
+      });
+    },
+    //查询某个企业的违规记录
+    async selectEnterpriseIllegalHistory() {
+      let res = await this.$axios({
+        url: "/data/selectEnterpriseIllegalHistory",
+        method: "get",
+        params: {
+          pageNum: 1,
+          eNumber: 1,
+        },
+      });
+
+      this.Violation_record.push(...res.data.data.list);
+    },
+
+    //获取全部的公司
+    async allInfo() {
+      let res = await this.$request(
+        "post",
+        "/enterprise/queryAll",
+        { pageNum: 1 },
+        0
+      );
+
+      this.first_companies = res.data.data.list[0];
+      this.$store.commit("changecompanyInfoShow", this.first_companies);
+      window.sessionStorage.setItem("default_eid", this.first_companies.eId);
+      window.sessionStorage.setItem(
+        "default_eNumber",
+        this.first_companies.eNumber
+      );
+      console.log(this.first_companies, "我是login默认的");
+    },
+
+    //查询预测数据
+    async forecastdata() {
+      let data = [];
+      let res = await this.$axios({
+        url: "/data/queryRedata",
+        method: "get",
+        params: {
+          eNumber: 1,
+        },
+      });
+      data = res.data.data;
+
+      for (let i in data) {
+        this.forcastinfo_name.push(i);
+        this.forcastinfo_data.push(data[i]);
+      }
+      this.forcastinfo_data = this.forcastinfo_data.map((item, index) => {
+        return {
+          data: item,
+          type: "line",
+          areaStyle: {},
+          name: this.forcastinfo_name[index],
+        };
+      });
+    },
+    //根据id查询公司信息
+    async getinfobyid() {
+      let eNumber =
+        window.sessionStorage.getItem("eNumber") ||
+        window.sessionStorage.getItem("default_eNumber");
+
+      let res = await this.$request(
+        "post",
+        "/enterprise/query",
+        {
+          pageNum: 1,
+          eNumber,
+        },
+        0
+      );
+
+      // console.log(res,'我是根据公司id查询的公司信息');
+      this.searchinfo = res.data.data.list[0];
+      this.first_companies = res.data.data.list[0];
     },
   },
+  async mounted() {
+    this.eNumber =
+      window.sessionStorage.getItem("eNumber") ||
+      window.sessionStorage.getItem("default_eNumber");
+    this.eId =
+      window.sessionStorage.getItem("eId") ||
+      window.sessionStorage.getItem("default_eid");
+    this.falg_id = window.sessionStorage.getItem("eNumber") || null;
+    console.log(this.falg_id);
+    /* 图表响应式 */
+    let _this = this;
+    window.onresize = function () {
+      _this.mycharts.resize();
+      _this.mycharts1.resize();
+      _this.mycharts2.resize();
+      _this.mycharts3.resize();
+      _this.mycharts4.resize();
+    };
+  },
   async created() {
-    /* 从search跳转过来 , searchInfo保存路由信息 */
-    this.searchinfo = this.$route.query.companyInfo;
+    this.getinfobyid();
+    this.first_companies = this.$store.state.companyInfoShow;
+    await this.forecastdata();
+    this.selectEnterpriseIllegalHistory();
     await this.getContaminantData();
     this.Echarts();
-    this.getallinfo();
-    this.searchinfo1();
+    this.Echarts1();
+    this.Echarts2();
+    this.Echarts3();
+    this.Echarts4();
+    this.allInfo();
     this.iscollect121138();
   },
 };
@@ -907,6 +1103,7 @@ export default {
   top: 0;
   height: 100%;
 }
+
 .item_0_name {
   /* flex: 1; */
   position: relative;
@@ -1003,13 +1200,13 @@ export default {
   position: relative;
   /* background-color: pink; */
 }
-.time_picker{
+.time_picker {
   position: absolute;
   right: 10px;
   top: 10px;
   cursor: pointer;
 }
-.el-date-picker{
+.el-date-picker {
   cursor: pointer;
 }
 
@@ -1053,13 +1250,31 @@ export default {
 }
 
 .record {
-  /* flex: 1; */
   box-shadow: 0 3px 8px 6px rgba(167, 98, 20, 0.06);
   margin-right: 30px;
-  /* background-color: yellow; */
-  /* width: 50%; */
   height: 70vh;
   width: 50%;
+  /* display: relative; */
+}
+.lookmore {
+  /* display: absolute; */
+  /* right: 0; */
+  font-size: 14px;
+  color: rgb(144, 147, 153);
+  width: 100%;
+  /* background-color: pink; */
+  text-align: right;
+ 
+  background-color: rgb(243, 244, 247);
+  /* display: relative; */
+}
+.lookmore2{
+   cursor: pointer;
+  margin-left: 88%;
+  /* background-color: pink; */
+  width: 12%;
+  /* display: absolute;
+  right: 0; */
 }
 .both_right {
   border-radius: 10px;
@@ -1143,6 +1358,10 @@ img {
 }
 </style>
 <style>
+.el-table th.el-table__cell,
+.el-table__fixed-right-patch {
+  background-color: rgb(243, 244, 247) !important;
+}
 .item_3_span,
 label {
   text-align: left;
@@ -1459,9 +1678,8 @@ circle:nth-child(6) {
 .el-table__header-wrapper,
 .el-dialog__header,
 .el-table_3_column_12,
-.is-leaf, 
-.el-table__cell
-{
+.is-leaf,
+.el-table__cell {
   line-height: 0 !important;
 }
 </style>

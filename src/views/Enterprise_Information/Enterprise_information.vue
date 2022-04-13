@@ -38,18 +38,16 @@
       <!-- 3-1 -->
       <div class="blog-header">
         <div class="blog-article header-article">
-          <div class="blog-big__title">General</div>
+          <div class="blog-big__title">Present</div>
           <div class="blog-menu small-title date">
-            {{ this.testinfo.creatTime }}
+           Established Time : {{ this.testinfo.creatTime }}
           </div>
         </div>
         <div class="blog-article">
-          <img :src="this.testinfo.imgurl" alt="" />
+          <img src="../../../public/img/imgcompany.jpg" alt="" />
 
-          <h2>
-             <span>50</span
-            > days have been detected
-          </h2>
+          <h2 style="paddingBottom:30px;">Company Profile : {{ this.testinfo.introduction }}</h2>
+
           <div class="blog-detail">
             <div class="blog_item">
               <span>address</span>
@@ -71,7 +69,7 @@
               <span>{{ this.testinfo.introduction }}</span>
             </div>
           </div>
-          <p>Company Profile : {{ this.testinfo.introduction }}</p>
+          <!-- <p>Company Profile : {{ this.testinfo.introduction }}</p> -->
           <a href="#" style="cursion: text">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -96,19 +94,15 @@
         <div class="blog-article header-article">
           <div class="blog-big__title">Contact</div>
           <div class="blog-menu small-title date">
-            {{ this.testinfo.eContact }}
+           Telephone Number : {{ this.testinfo.eContact }}
           </div>
         </div>
         <div class="blog-article">
-          <img :src="this.imgs.img1" alt="" />
-          <h2>Talking About <span>Vulnerability</span> During Quarantine</h2>
-          <div class="blog-detail">
-            <span>By Tom Hiddleston</span>
-            <span>5 Min Read</span>
-          </div>
+          <img src="../../../public/img/src=http _up.enterdesk.com_edpic_source_e2_bb_96_e2bb96f4f5a3d5618c6481a3044f8917.jpg&refer=http _up.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto.webp" alt="" />
+          <h2 style="paddingBottom:30px;">Contamination type : </h2>
+
           <p>
-            Having traveled to Turkey multiple times, with critics praising
-            Ocean's introspective lyrics and the album's unconventional
+           {{sewagetype.join(' ')}}
           </p>
           <a href="#" style="cursion: text">
             <svg
@@ -121,148 +115,63 @@
               class="feather feather-corner-down-right"
               viewBox="0 0 24 24"
             >
-              <!-- <path d="M15 10l5 5-5 5" />
-              <path d="M4 4v7a4 4 0 004 4h12" /> -->
-            </svg>
-            <i class="el-icon-bottom"></i>
-            Next
-          </a>
-        </div>
-      </div>
-      <!-- 3-3 -->
-      <div class="blog-header">
-        <div class="blog-article header-article">
-          <div class="blog-big__title">Control</div>
-          <div class="blog-menu small-title date">12.06.2021</div>
-        </div>
-        <div class="blog-article">
-          <img :src="this.imgs.img2" alt="" />
-          <h2>How 2020 Changed <span>Understanding</span> Of Mental Health</h2>
-          <div class="blog-detail">
-            <span>By Scarlett Witch</span>
-            <span>5 Min Read</span>
-          </div>
-          <p>
-            Time is defines ad the indefinete continued progress, with critics
-            praising Ocean's introspective lyrics and the album's
-          </p>
-          <a href="#" style="cursion: text">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="feather feather-corner-down-right"
-              viewBox="0 0 24 24"
-            >
-              <!-- <path d="M15 10l5 5-5 5" />
-              <path d="M4 4v7a4 4 0 004 4h12" /> -->
             </svg>
             <i class="el-icon-top"></i>
             In the end
           </a>
         </div>
       </div>
+      
     </div>
     <!-- 4 -->
-    <div class="blog-part right-blog">
-      <marquee width="100%" direction="left">
-        <span>Company Profile : {{ this.testinfo.introduction }}</span>
-        <span>Sewage data : {{ this.testinfo.state }}</span>
-        <span>sewage outfall : {{ this.testinfo.outputNum }}</span>
-      </marquee>
-      <div class="blog-right-title-container">
-        <div class="blog-right-title">Featured Articles</div>
-        <div class="blog-menu rounded">See All</div>
-      </div>
-      <div class="blog-right">
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">1</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">Blonde - Widespread Acclaim</div>
-          <div class="blog-right-page-subtitle">
-            Blonde received widespread acclaim, with critics praising Ocean's
-            introspective lyrics and the album's
-          </div>
-        </div>
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">2</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">
-            Introspective Lyrics and Beats
-          </div>
-          <div class="blog-right-page-subtitle">
-            When we toured Scotland we stopped at several selft-sealing hpuses
-            because hotels would
-          </div>
-        </div>
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">3</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">
-            The Language Of Gris: Comples Beauty Of Monochrome
-          </div>
-          <div class="blog-right-page-subtitle">
-            The interior concept was conceived of by Dutch archtitect Studio
-            Anne Holtrop who cleverly emulated
-          </div>
-        </div>
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">4</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">
-            A24 IS LAUNCHING ITS OWN BEAUTY BRAND
-          </div>
-          <div class="blog-right-page-subtitle">
-            Blonde received widespread acclaim, with critics praising Ocean's
-            introspective lyrics and the album's
-          </div>
-        </div>
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">5</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">
-            Elon Musk's SpaceX is launching a moon satellite
-          </div>
-          <div class="blog-right-page-subtitle">
-            The interior concept was conceived of by Dutch archtitect Studio
-            Anne Holtrop who cleverly emulated
-          </div>
-        </div>
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">6</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">
-            What Happens When You Leave Your Old life Behind
-          </div>
-          <div class="blog-right-page-subtitle">
-            The interior concept was conceived of by Dutch archtitect Studio
-            Anne Holtrop who cleverly emulated
-          </div>
-        </div>
-        <div class="circle">
-          <div class="circle-title">Leave Your Old Life Behind</div>
-          <div class="circle-subtitle">
-            Don't try to be like someone else, be yourself. Be secure with
-            yourself.
-          </div>
-          <div class="circle-footer">Explore</div>
-        </div>
-      </div>
+    <div class=" right-blog">
+    <el-table
+
+            v-el-table-infinite-scroll="loadmore"
+            :data="Violation_record"
+            height="100vh"
+          >
+            <el-table-column
+              type="index"
+              align="center"
+              label="序号"
+              width="50"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="createTime"
+              label="违规日期"
+              align="center"
+              width="200"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="state"
+              fixed="right"
+              label="状态"
+              width="120"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-tag
+                  class="item_btn"
+                  v-if="scope.row.state == 1"
+                  type="warning"
+                  size="mini"
+                  plain
+                  >软件伪造数据</el-tag
+                >
+                <el-tag
+                  class="item_btn"
+                  v-else
+                  type="danger"
+                  plain
+                  size="mini"
+                  >数据伪造</el-tag
+                >
+              </template>
+            </el-table-column>
+          </el-table>
     </div>
   </div>
 </template>
@@ -273,19 +182,61 @@ export default {
     return {
       // 第一次展示的公司的数据
       testinfo: {},
+      //企业的违规记录
+      Violation_record: [],
 
       // 还要备用两张照片
       imgs: {
         img1: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic_source%2Fe2%2Fbb%2F96%2Fe2bb96f4f5a3d5618c6481a3044f8917.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1650782449&t=bf5e7941bbbd599def4d0db883121d60",
         img2: "https://img1.baidu.com/it/u=2838359103,4082675852&fm=253&fmt=auto&app=120&f=JPEG?w=889&h=500",
       },
+
+      //这个公司的污染数据
+      All_sewage:{},
+
+      //污染物种类
+      sewagetype:[],
+      nextPage:1,
+      disabled123: false,
+      pageNum: 2,
     };
   },
   methods: {
+    async loadmore(){
+      if(this.nextPage==0){
+        this.$message.info('所有信息展示完毕')
+        return
+      }
+      let res = await this.$axios({
+        url: "/data/selectEnterpriseIllegalHistory",
+        method: "get",
+        params: {
+          pageNum: this.pageNum++,
+          eNumber: 1,
+        },
+      });
+      this.nextPage = res.data.data.nextPage
+      this.Violation_record.push(...res.data.data.list);
+    },
+     async selectEnterpriseIllegalHistory() {
+      let res = await this.$axios({
+        url: "/data/selectEnterpriseIllegalHistory",
+        method: "get",
+        params: {
+          pageNum: 1,
+          eNumber: 1,
+        },
+      });
+
+      this.Violation_record.push(...res.data.data.list);
+      console.log(res);
+
+    },
     /* 点击左边的导航跳转到相应的页面 */
     pageForward(value) {
       if(value=='/home/data/echarts')
       {
+        this.$store.commit("changepath",'/home/data');
         this.$router.push({
         path:value,
         query:{
@@ -294,48 +245,72 @@ export default {
       });
       return;
       }
+      this.$store.commit("changepath",value);
       this.$router.push(value)
     },
     changepath() {
+      this.$store.commit("changepath",'/home/data');
       this.$router.push("/home/data/echarts");
     },
-    //搜索有eid的页面
-    async getinfo() {
-      // 判断eid的来源
-      let eId = window.sessionStorage.getItem("eId");
-      let default_eId = window.sessionStorage.getItem("default_eid");
-      if (eId) {
-        let res = await this.$request(
-          "post",
-          "/enterprise/query",
-          {
-            eId,
-            pageNum: 1,
-          },
-          0
-        );
-        this.testinfo = res.data.data.list[0];
-      } else {
-        let res = await this.$request(
-          "post",
-          "/enterprise/query",
-          {
-            eId: default_eId,
-            pageNum: 1,
-          },
-          0
-        );
-        this.testinfo = res.data.data.list[0];
+    //获取这个公司的污染数据
+    //先暂时获取一段时间的污染物的数据
+    async getContaminantData() {
+      let data = new Date();
+      let left_time = `${data.getFullYear()}-${data.getMonth() + 1}-${
+        data.getDate() - 5
+      } ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`;
+
+      console.log(left_time, "我是左边的时间");
+
+      let right_time = `${data.getFullYear()}-${data.getMonth() + 1}-${
+        data.getDate() + 4
+      } ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`;
+
+      console.log(right_time, "我是右边的时间");
+
+      //请求的时候使用左边的时间left_time和右边的时间right_time来
+      let res4 = await this.$request(
+        "post",
+        "/data/query/getContaminantData",
+        {
+          eNumber: 1,
+          startTime: "2021-10-01 0:0:0",
+          endTime: "2021-10-11 0:0:0",
+        },
+        0
+      );
+
+      this.All_sewage = res4.data.data;
+
+      for(let i in this.All_sewage){
+          this.sewagetype.push(i)
       }
+      
+
+
+      console.log(this.All_sewage, "我是全部数据");
+     
+    },
+    //根据id查询公司信息
+    async getinfobyid(){
+      let eNumber =window.sessionStorage.getItem("eNumber")||window.sessionStorage.getItem("default_eNumber")
+
+      let res = await this.$request('post','/enterprise/query',{
+        pageNum:1,
+        eNumber
+      },0)
+
+      // console.log(res,'我是根据公司id查询的公司信息');
+      this.testinfo = res.data.data.list[0]
     },
   },
   created() {
-    /* 加载页面的时候就关闭折叠框 */
+    this.getinfobyid()
+    this.getContaminantData()
+    this.selectEnterpriseIllegalHistory()
+  },
+  mounted() {
     this.$store.commit("changeIsCollapse", true);
-    this.getinfo();
-
-    // 打印默认企业
-    // console.log(this.first_companies);
   },
   beforeDestroy() {
     /* 打开折叠框 */
