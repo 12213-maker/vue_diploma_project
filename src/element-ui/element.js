@@ -41,8 +41,10 @@ import {
     Popconfirm,
     DatePicker,
 
+
     TimePicker,
     Tooltip,
+
 
     Badge, 
     Divider,
@@ -51,6 +53,7 @@ import {
     Avatar,
     InputNumber,
 
+    Loading,
 
 }
     from 'element-ui'
@@ -74,6 +77,7 @@ Vue.use(Carousel)
 Vue.use(CarouselItem)
 Vue.use(InfiniteScroll)
 Vue.use(Col);
+Vue.use(Loading);
 Vue.use(Pagination)
 Vue.use(Form)
 Vue.use(FormItem)
@@ -94,8 +98,10 @@ Vue.use(Tag)
 Vue.use(Popconfirm)
 Vue.use(DatePicker)
 Vue.use(TimePicker)
+
 Vue.use(Avatar)
 Vue.use(Tooltip)
+
 
 
 

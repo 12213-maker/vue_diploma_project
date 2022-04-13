@@ -38,18 +38,16 @@
       <!-- 3-1 -->
       <div class="blog-header">
         <div class="blog-article header-article">
-          <div class="blog-big__title">General</div>
+          <div class="blog-big__title">Present</div>
           <div class="blog-menu small-title date">
-            {{ this.testinfo.creatTime }}
+           Established Time : {{ this.testinfo.creatTime }}
           </div>
         </div>
         <div class="blog-article">
-          <img :src="this.testinfo.imgurl" alt="" />
+          <img src="../../../public/img/imgcompany.jpg" alt="" />
 
-          <h2>
-             <span>50</span
-            > days have been detected
-          </h2>
+          <h2 style="paddingBottom:30px;">Company Profile : {{ this.testinfo.introduction }}</h2>
+
           <div class="blog-detail">
             <div class="blog_item">
               <span>address</span>
@@ -71,7 +69,7 @@
               <span>{{ this.testinfo.introduction }}</span>
             </div>
           </div>
-          <p>Company Profile : {{ this.testinfo.introduction }}</p>
+          <!-- <p>Company Profile : {{ this.testinfo.introduction }}</p> -->
           <a href="#" style="cursion: text">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -96,19 +94,15 @@
         <div class="blog-article header-article">
           <div class="blog-big__title">Contact</div>
           <div class="blog-menu small-title date">
-            {{ this.testinfo.eContact }}
+           Telephone Number : {{ this.testinfo.eContact }}
           </div>
         </div>
         <div class="blog-article">
-          <img :src="this.imgs.img1" alt="" />
-          <h2>Talking About <span>Vulnerability</span> During Quarantine</h2>
-          <div class="blog-detail">
-            <span>By Tom Hiddleston</span>
-            <span>5 Min Read</span>
-          </div>
+          <img src="../../../public/img/src=http _up.enterdesk.com_edpic_source_e2_bb_96_e2bb96f4f5a3d5618c6481a3044f8917.jpg&refer=http _up.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto.webp" alt="" />
+          <h2 style="paddingBottom:30px;">Contamination type : </h2>
+
           <p>
-            Having traveled to Turkey multiple times, with critics praising
-            Ocean's introspective lyrics and the album's unconventional
+           {{sewagetype.join(' ')}}
           </p>
           <a href="#" style="cursion: text">
             <svg
@@ -121,98 +115,63 @@
               class="feather feather-corner-down-right"
               viewBox="0 0 24 24"
             >
-              <!-- <path d="M15 10l5 5-5 5" />
-              <path d="M4 4v7a4 4 0 004 4h12" /> -->
-            </svg>
-            <i class="el-icon-bottom"></i>
-            Next
-          </a>
-        </div>
-      </div>
-      <!-- 3-3 -->
-      <div class="blog-header">
-        <div class="blog-article header-article">
-          <div class="blog-big__title">Control</div>
-          <div class="blog-menu small-title date">12.06.2021</div>
-        </div>
-        <div class="blog-article">
-          <img :src="this.imgs.img2" alt="" />
-          <h2>How 2020 Changed <span>Understanding</span> Of Mental Health</h2>
-          <div class="blog-detail">
-            <span>By Scarlett Witch</span>
-            <span>5 Min Read</span>
-          </div>
-          <p>
-            Time is defines ad the indefinete continued progress, with critics
-            praising Ocean's introspective lyrics and the album's
-          </p>
-          <a href="#" style="cursion: text">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="feather feather-corner-down-right"
-              viewBox="0 0 24 24"
-            >
-              <!-- <path d="M15 10l5 5-5 5" />
-              <path d="M4 4v7a4 4 0 004 4h12" /> -->
             </svg>
             <i class="el-icon-top"></i>
             In the end
           </a>
         </div>
       </div>
+      
     </div>
     <!-- 4 -->
-    <div class="blog-part right-blog">
-      <marquee width="100%" direction="left">
-        <span>Company Profile : {{ this.testinfo.introduction }}</span>
-        <span>Sewage data : {{ this.testinfo.state }}</span>
-        <span>sewage outfall : {{ this.testinfo.outputNum }}</span>
-      </marquee>
-      
-      <!-- 下面展示各种污染物的东西 -->
-      <div class="blog-right">
-        <div class="blog-right-container" 
-        v-for="(item,index) in All_sewage"
-        :key="index"
-        >
-          <div class="blog-title-date">
-            <div class="blog-right-page">{{item}}</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">Blonde - Widespread Acclaim</div>
-          <div class="blog-right-page-subtitle">
-            Blonde received widespread acclaim, with critics praising Ocean's
-            introspective lyrics and the album's
-          </div>
-        </div>
+    <div class=" right-blog">
+    <el-table
 
-
-
-        <div class="blog-right-container">
-          <div class="blog-title-date">
-            <div class="blog-right-page">上面是循环的部分</div>
-            <div class="date">12.06.2021</div>
-          </div>
-          <div class="blog-right-page-title">
-            Introspective Lyrics and Beats
-          </div>
-          <div class="blog-right-page-subtitle">
-            When we toured Scotland we stopped at several selft-sealing hpuses
-            because hotels would
-          </div>
-        </div>
-        <div class="circle">
-          <div class="circle-title">THE END</div>
-          <div class="circle-subtitle">
-            The company's sewage data has been shown
-          </div>
-        </div>
-      </div>
+            v-el-table-infinite-scroll="loadmore"
+            :data="Violation_record"
+            height="100vh"
+          >
+            <el-table-column
+              type="index"
+              align="center"
+              label="序号"
+              width="50"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="createTime"
+              label="违规日期"
+              align="center"
+              width="200"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="state"
+              fixed="right"
+              label="状态"
+              width="120"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-tag
+                  class="item_btn"
+                  v-if="scope.row.state == 1"
+                  type="warning"
+                  size="mini"
+                  plain
+                  >软件伪造数据</el-tag
+                >
+                <el-tag
+                  class="item_btn"
+                  v-else
+                  type="danger"
+                  plain
+                  size="mini"
+                  >数据伪造</el-tag
+                >
+              </template>
+            </el-table-column>
+          </el-table>
     </div>
   </div>
 </template>
@@ -223,6 +182,8 @@ export default {
     return {
       // 第一次展示的公司的数据
       testinfo: {},
+      //企业的违规记录
+      Violation_record: [],
 
       // 还要备用两张照片
       imgs: {
@@ -232,13 +193,50 @@ export default {
 
       //这个公司的污染数据
       All_sewage:{},
+
+      //污染物种类
+      sewagetype:[],
+      nextPage:1,
+      disabled123: false,
+      pageNum: 2,
     };
   },
   methods: {
+    async loadmore(){
+      if(this.nextPage==0){
+        this.$message.info('所有信息展示完毕')
+        return
+      }
+      let res = await this.$axios({
+        url: "/data/selectEnterpriseIllegalHistory",
+        method: "get",
+        params: {
+          pageNum: this.pageNum++,
+          eNumber: 1,
+        },
+      });
+      this.nextPage = res.data.data.nextPage
+      this.Violation_record.push(...res.data.data.list);
+    },
+     async selectEnterpriseIllegalHistory() {
+      let res = await this.$axios({
+        url: "/data/selectEnterpriseIllegalHistory",
+        method: "get",
+        params: {
+          pageNum: 1,
+          eNumber: 1,
+        },
+      });
+
+      this.Violation_record.push(...res.data.data.list);
+      console.log(res);
+
+    },
     /* 点击左边的导航跳转到相应的页面 */
     pageForward(value) {
       if(value=='/home/data/echarts')
       {
+        this.$store.commit("changepath",'/home/data');
         this.$router.push({
         path:value,
         query:{
@@ -247,42 +245,12 @@ export default {
       });
       return;
       }
+      this.$store.commit("changepath",value);
       this.$router.push(value)
     },
     changepath() {
+      this.$store.commit("changepath",'/home/data');
       this.$router.push("/home/data/echarts");
-    },
-    //搜索有eid的页面
-    async getinfo() {
-      // 判断eid的来源
-      let eId = window.sessionStorage.getItem("eId");
-      let default_eId = window.sessionStorage.getItem("default_eid");
-      if (eId) {
-        console.log('我是eid');
-        let res = await this.$request(
-          "post",
-          "/enterprise/query",
-          {
-            eId,
-            pageNum: 1,
-          },
-          0
-        );
-        console.log(res,'我是eid');
-        this.testinfo = res.data.data.list[0];
-      } else {
-        let res = await this.$request(
-          "post",
-          "/enterprise/query",
-          {
-            eId: default_eId,
-            pageNum: 1,
-          },
-          0
-        );
-        console.log(res,'我是defaultid');
-        this.testinfo = res.data.data.list[0];
-      }
     },
     //获取这个公司的污染数据
     //先暂时获取一段时间的污染物的数据
@@ -305,72 +273,44 @@ export default {
         "post",
         "/data/query/getContaminantData",
         {
-          eNumber: 273,
-          startTime: "2021-01-20 00:00:00",
-          endTime: "2021-01-30 00:00:00",
+          eNumber: 1,
+          startTime: "2021-10-01 0:0:0",
+          endTime: "2021-10-11 0:0:0",
         },
         0
       );
 
       this.All_sewage = res4.data.data;
 
+      for(let i in this.All_sewage){
+          this.sewagetype.push(i)
+      }
+      
+
+
       console.log(this.All_sewage, "我是全部数据");
-      // console.log(Object.keys(this.All_sewage), "我是全部数据的属性名");
-      // //我只需要前三个属性名
-      // let attr1 = Object.keys(this.All_sewage)[0];
-      // let attr2 = Object.keys(this.All_sewage)[1];
-      // let attr3 = Object.keys(this.All_sewage)[2];
+     
+    },
+    //根据id查询公司信息
+    async getinfobyid(){
+      let eNumber =window.sessionStorage.getItem("eNumber")||window.sessionStorage.getItem("default_eNumber")
 
+      let res = await this.$request('post','/enterprise/query',{
+        pageNum:1,
+        eNumber
+      },0)
 
-      // //这是表一的数据
-      // this.Echarts_show_1.data =
-      //   this.All_sewage[Object.keys(this.All_sewage)[0]];
-      // this.Echarts_show_1.name = Object.keys(this.All_sewage)[0];
-      // //处理表一的数据
-      // this.Echarts_show_1.data = this.Echarts_show_1.data.map((item, index) => {
-      //   return { value: item, name: index+1 };
-      // });
-
-
-      // //表二的数据
-      // this.Echarts_show_2.data =
-      //   this.All_sewage[Object.keys(this.All_sewage)[1]];
-      // this.Echarts_show_2.name = Object.keys(this.All_sewage)[1];
-
-
-      // //表三的数据
-      // this.Echarts_show_3.data =
-      //   this.All_sewage[Object.keys(this.All_sewage)[2]];
-      // this.Echarts_show_3.name = Object.keys(this.All_sewage)[2];
-
-      // console.log(this.Echarts_show_1, "表一");
-      // console.log(this.Echarts_show_2, "表二");
-      // console.log(this.Echarts_show_3, "表三");
-
-      // for (let i in this.All_sewage) {
-      //   this.All_sewage_name.push(i);
-      //   this.All_sewage_data.push(this.All_sewage[i]);
-      // }
-
-      // let len = this.All_sewage_data.length;
-      // for (let i = 0; i < len; i++) {
-      //   let that = this;
-      //   this.Echarts_1_serieslist.push({
-      //     name: that.All_sewage_name[i],
-      //     type: "line",
-      //     data: that.All_sewage_data[i],
-      //   });
-      // }
+      // console.log(res,'我是根据公司id查询的公司信息');
+      this.testinfo = res.data.data.list[0]
     },
   },
   created() {
+    this.getinfobyid()
     this.getContaminantData()
-    /* 加载页面的时候就关闭折叠框 */
+    this.selectEnterpriseIllegalHistory()
+  },
+  mounted() {
     this.$store.commit("changeIsCollapse", true);
-    this.getinfo();
-
-    // 打印默认企业
-    // console.log(this.first_companies);
   },
   beforeDestroy() {
     /* 打开折叠框 */

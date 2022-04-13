@@ -115,10 +115,9 @@
 
 
 
-
-
         <el-form-item label="省份" 
         style="position: relative; left: 0px">
+
           <el-select
             v-model="selectprovinceid"
             style="left: 0px; position: absolute; width: 620px"
@@ -126,12 +125,15 @@
             @change="cityid"
           >
             <el-option
+
               v-for="(item,index) in province[0]"
+
               :key="index"
               :label="item.provinceName"
               :value="item.provinceId"
             ></el-option>
           </el-select>
+
         </el-form-item>
 
         <el-form-item label="城市" 
@@ -153,13 +155,6 @@
 
 
 
-
-
-
-
-
-
-
         <el-form-item prop="reason" label="申请理由">
           <el-input
             v-model="registerinfo.resolution"
@@ -177,6 +172,7 @@
 </template>
 
 <script>
+import { mapAcitons, mapGetters } from "vuex";
 export default {
   data() {
     var glowInTexts = document.querySelectorAll(".glowIn");
@@ -196,6 +192,7 @@ export default {
       isLogin: false,
       //注册信息
       registerinfo: {
+
         userName: "",
         phoneNumber: "",
         password2: "",
@@ -203,6 +200,7 @@ export default {
         role: '',
         city: '',
         resolution: "",
+
       },
 
       //这是登录的数据
@@ -212,6 +210,7 @@ export default {
       },
 
       //保存所有省份的id
+
       province:[],
       //选择的省份id
       selectprovinceid:'',
@@ -219,19 +218,23 @@ export default {
       city:[],
       //选择的城市id
       cityId:'',
+
     };
   },
+  computed: {
+    ...mapGetters(["allInfo"]),
+  },
   methods: {
+    // ...mapAcitons(['pullUserInfo']),
     /* 将登录成功之后的token,保存到客户端的sessionstorage中*/
     async login() {
       if (this.loginForm.phoneNumber.length != 11)
         this.$message.error("请输入正确的手机号");
 
       let res = await this.$request("post", "/user/login", this.loginForm, 1);
-      // res = await this.$request("post", "/user/login", this.loginForm, 0);
+      res = await this.$request("post", "/user/login", this.loginForm, 0);
       console.log(res, "我是登录");
 
-      
 
       //将token保存到sessionStorage
       window.sessionStorage.setItem("token", res.data.data.token);
@@ -248,6 +251,38 @@ export default {
       } else this.$message.success("管理员登录成功");
       console.log(window.sessionStorage.getItem("token"));
 
+      //将登录人员的种类登记在vuex中
+      // this.pullUserInfo(res)
+      let  user={
+            phone: '',
+            userName: '',
+            userId: '',
+            cityName: '',
+            cityId:'',
+            role: ''
+        };
+      user.phone=res.data.data.phone;
+      user.userName=res.data.data.userName;
+      user.userId=res.data.data.userId;
+      user.cityName=res.data.data.cityName;
+      user.role=res.data.data.role;
+      user.cityId=res.data.data.cityId;
+
+      this.$store.dispatch("pullUserInfo", user);
+      console.log("我是allinfo");
+      console.log(this.allInfo);
+
+      let role = res.data.data.role;
+      window.sessionStorage.setItem("role", role);
+      if (window.sessionStorage.getItem("role") == 1) {
+        this.$message.success("登录成功");
+      } else this.$message.success("管理员登录成功");
+      console.log(window.sessionStorage.getItem("token"));
+      // 将登陆信息存入vuex
+      this.$store.commit("SET_LOGIN", this.loginForm);
+      console.log('这是登陆信息')
+      console.log(this.$store.state.logindate)
+
       this.$router.push("/home");
       // this.$message.success("登录成功");
       this.$store.commit("changeLogin", true);
@@ -259,20 +294,6 @@ export default {
       this.loginForm = {};
     },
     async logon() {
-      if(this.registerinfo.phoneNumber==''||
-      this.registerinfo.userName==''||
-      this.registerinfo.password2==''||
-      this.registerinfo.password1==''||
-      this.registerinfo.resolution==''||
-      this.registerinfo.role==''||
-      this.cityId==''||
-      this.selectprovinceid==''
-      )
-      {
-        this.$message.info('请填写完整信息')
-        return
-      }
-      
 
       if (this.registerinfo.phoneNumber.length != 11) {
         this.$message.error("请输入正确的手机号");
@@ -292,16 +313,32 @@ export default {
       let city = this.cityId
 
 
+
       let res = await this.$request(
         "post",
         "/user/logon",
         {
+
         userName,
         phoneNumber,
         password,
         role,
         city,
         resolution
+        },
+        0
+
+      );
+      res = await this.$request(
+        "post",
+        "/user/logon",
+        {
+          userName,
+          phoneNumber,
+          password,
+          role,
+          city,
+          resolution,
         },
         0
       );
@@ -341,22 +378,47 @@ export default {
       }
       
     },
-    //根据省份选择城市
-    async cityid(){
-      console.log('我被触发了');
 
-      let num = 1
-      let nextPage = 2
-      while(nextPage!=0){
-        let res = await this.$request('post','/city/query',{
-        pageNum:num++,
-        provinceId:this.selectprovinceid
-      },0)
-      nextPage = res.data.data.nextPage
-      this.city = []
-      this.city.push(res.data.data.list)
+
+    //申请省份
+    async sheng() {
+      let num = 1;
+      let nextPage = 2;
+      while (nextPage != 0) {
+        let res = await this.$request(
+          "post",
+          "/province/query",
+          { pageNum: num++ },
+          0
+        );
+        nextPage = res.data.data.nextPage;
+        this.province.push(res.data.data.list);
       }
-    }
+    },
+    //根据省份选择城市
+    async cityid() {
+      console.log("我被触发了");
+
+      let num = 1;
+      let nextPage = 2;
+      while (nextPage != 0) {
+        let res = await this.$request(
+          "post",
+          "/city/query",
+          {
+            pageNum: num++,
+            provinceId: this.selectprovinceid,
+          },
+          0
+        );
+        nextPage = res.data.data.nextPage;
+        this.city.push(res.data.data.list);
+      }
+    },
+  },
+  created() {
+    this.sheng();
+
   },
   created(){
     this.sheng()

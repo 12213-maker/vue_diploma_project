@@ -70,6 +70,7 @@ export default {
     //点击跳转
     async routerpath(value, eId) {
       if (value == 0) {
+        this.$store.commit("changepath",'/home/data');
           //跳转过去之前 , 要把公司的数据传递给它
           let res =await this.$request("post", "/enterprise/query", {
             eId,
@@ -84,12 +85,19 @@ export default {
             companyInfo:res.data.data.list[0]
           }
         });
+        
       } else if(value==1){
         window.sessionStorage.setItem("eId", eId);
+        this.$store.commit("changepath",'/home/enterprise_information');
         this.$router.push("/home/enterprise_information");
+        
       }
       else
+      {
+      this.$store.commit("changepath",'/home/search');
       this.$router.push('/home/search')
+      
+      }
     },
     //点击删除
     async handletap(type, eId) {

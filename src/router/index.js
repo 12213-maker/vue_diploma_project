@@ -47,10 +47,6 @@ const routes = [
             path:'/home/administartor/unfinished',
             component:()=>import('../views/User_Center/Unfinished'),
           },
-          {
-            path:'/home/administartor/finished',
-            component:()=>import('../views/User_Center/Finished')
-          }
         ]
       },
       /* 企业排污 */
